@@ -87,8 +87,8 @@ const RIGHT_DATA = [
   { label: "LOCATION",    value: "CHENNAI // INDIA",          href: null,                                  isStatus: false },
   { label: "COORDINATES", value: "13.0827°N / 80.2707°E",    href: null,                                  isStatus: false },
   { label: "ROLE",        value: "AI ENGINEER",               href: null,                                  isStatus: false },
-  { label: "GITHUB",      value: "github.com/adithyaak",      href: "https://github.com/adithyaak",       isStatus: false },
-  { label: "LINKEDIN",    value: "linkedin.com/in/adithyaak", href: "https://linkedin.com/in/adithyaak",  isStatus: false },
+  { label: "GITHUB",      value: "github.com/adithyaak",      href: "https://github.com/Adithyaa-Kumar",       isStatus: false },
+  { label: "LINKEDIN",    value: "linkedin.com/in/adithyaak", href: "https://www.linkedin.com/in/adithyaa-k-a496b03ba/",  isStatus: false },
 ];
 
 export default function HeroSection({ onEnter }: HeroSectionProps) {
@@ -384,11 +384,12 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
       }}/>
 
       {/* ── BOOT ─────────────────────────────────────── */}
-      <div ref={bootRef} style={{
-        position:"absolute", inset:0, zIndex:200, background:"#000",
-        display:"flex", flexDirection:"column", justifyContent:"center", padding:"0 8%",
-        fontFamily:"var(--font-mono)",
-      }}>
+<div ref={bootRef} style={{
+  position:"absolute", inset:0, zIndex:200, background:"#000",
+  display:"flex", flexDirection:"column", justifyContent:"center", padding:"0 8%",
+  fontFamily:"var(--font-mono)",
+  pointerEvents:"none",   // ← ADD THIS LINE
+}}>
         <div style={{ position:"absolute", top:"6%", left:"8%", display:"flex", flexDirection:"column", gap:"5px" }}>
           <div style={{ fontFamily:"var(--font-orbitron)", fontSize:"0.5rem", letterSpacing:"0.44em", color:"rgba(255,255,255,0.45)" }}>
             AK/OS v3.1.4 // CINEMATIC OPERATING ENVIRONMENT

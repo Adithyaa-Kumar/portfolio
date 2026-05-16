@@ -79,7 +79,7 @@ export default function SectionLabel({ section }: SectionLabelProps) {
   return (
     <div ref={wrapRef} style={{
       position: "absolute",
-      top: "56px",
+      top: "16px",
       left: "24px",
       zIndex: 15,
       pointerEvents: "none",
@@ -97,7 +97,6 @@ export default function SectionLabel({ section }: SectionLabelProps) {
         gap: "8px",
       }}>
         <span style={{ display:"inline-block", width:"16px", height:"1px", background:"rgba(255,255,255,0.2)" }}/>
-        CURRENT MODULE
       </div>
 
       {/* Main section name */}

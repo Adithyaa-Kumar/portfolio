@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import TopFrame    from "./TopFrame";
 import SideNav     from "./SideNav";
 import SectionLabel from "../UI/SectionLabel";
 import AboutSection         from "../About/AboutSection";
@@ -42,14 +41,6 @@ import ContactSection       from "../Contact/ContactSection";
 
 export type SectionId = "about" | "education" | "skills" | "projects" | "certifications" | "contact";
 
-const SECTION_CONTENT: Record<SectionId, React.ReactNode> = {
-  about:          <AboutSection />,
-  education:      <EducationSection />,
-  skills:         <SkillsSection />,
-  projects:       <ProjectsSection />,
-  certifications: <CertificationsSection />,
-  contact:        <ContactSection />,
-};
 
 export default function SystemShell() {
   const shellRef   = useRef<HTMLDivElement>(null);
@@ -59,8 +50,8 @@ export default function SystemShell() {
   const sweepRef   = useRef<HTMLDivElement>(null);
 
   const [activeSection, setActiveSection] = useState<SectionId>("about");
-  const [displaySection, setDisplaySection] = useState<SectionId>("about");
-  const [labelKey, setLabelKey] = useState(0); // increment to retrigger label animation
+  const [labelKey, setLabelKey] = useState(0);
+  
 
   // ── ENTRY ANIMATION ──────────────────────────────────────
   useEffect(() => {
@@ -106,24 +97,46 @@ export default function SystemShell() {
 
   // ── SECTION SWITCH ───────────────────────────────────────
   const switchSection = (id: SectionId) => {
-    if (id === activeSection) return;
-    setActiveSection(id);
+  const el = document.getElementById(`section-${id}`);
+  if (!el || !contentRef.current) return;
 
-    // Fade out content
-    gsap.to(contentRef.current, {
-      opacity: 0, y: -12, filter: "blur(6px)", duration: 0.22, ease: "power2.in",
-      onComplete: () => {
-        setDisplaySection(id);
-        setLabelKey(k => k + 1);
-        // Fade in new content
-        gsap.fromTo(contentRef.current,
-          { opacity: 0, y: 18, filter: "blur(8px)" },
-          { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.45, ease: "power3.out" }
-        );
-      },
-    });
+  contentRef.current.scrollTo({
+    top: el.offsetTop,
+    behavior: "smooth",
+  });
+};
+useEffect(() => {
+  const container = contentRef.current;
+  if (!container) return;
+
+  const handleScroll = () => {
+    const sections: SectionId[] = [
+      "about",
+      "education",
+      "skills",
+      "projects",
+      "certifications",
+      "contact",
+    ];
+
+    for (let i = sections.length - 1; i >= 0; i--) {
+      const el = document.getElementById(`section-${sections[i]}`);
+      if (!el) continue;
+
+      if (el.offsetTop <= container.scrollTop + container.clientHeight*0.45) {
+        if (sections[i] !== activeSection) {
+          setActiveSection(sections[i]);
+          setLabelKey((k) => k + 1);
+        }
+        break;
+      }
+    }
   };
 
+  container.addEventListener("scroll", handleScroll);
+
+  return () => container.removeEventListener("scroll", handleScroll);
+}, [activeSection]);
   return (
     <div ref={shellRef} style={{
       position: "relative",
@@ -161,15 +174,11 @@ export default function SystemShell() {
         position: "absolute", inset: 0, zIndex: 4, pointerEvents: "none",
         background: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.045) 2px, rgba(0,0,0,0.045) 4px)",
       }}/>
-
-      {/* ── TOP FRAME ────────────────────────────────────── */}
-      <TopFrame activeSection={activeSection}/>
-
       {/* ── FRAME LINES ──────────────────────────────────── */}
       <div style={{ position: "absolute", inset: 0, zIndex: 20, pointerEvents: "none" }}>
         {/* Frame sweep */}
         <div ref={sweepRef} style={{
-          position: "absolute", top: "44px", left: "-18%",
+          position: "absolute", top: "0px", left: "-18%",
           width: "18%", height: "1px",
           background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.65), transparent)",
           zIndex: 25,
@@ -177,7 +186,7 @@ export default function SystemShell() {
 
         {/* Top line */}
         <div className="shell-frame-h" style={{
-          position: "absolute", top: "44px", left: "2%", right: "80px",
+          position: "absolute", top: "0px", left: "2%", right: "80px",
           height: "1px", background: "rgba(255,255,255,0.07)", transformOrigin: "left",
         }}/>
 
@@ -214,38 +223,91 @@ export default function SystemShell() {
       <SectionLabel key={labelKey} section={activeSection}/>
 
       {/* ── CONTENT AREA ─────────────────────────────────── */}
-      <div
+      {/* ── CONTENT AREA — scrollable ───────────────── */}
+<div
   ref={contentRef}
   style={{
     position: "absolute",
-
-    top: "120px",
-    left: "80px",
+    top: "12px",
+    left: "28px",
     right: "120px",
     bottom: "70px",
-
     zIndex: 10,
-
-    overflow: "hidden",
-
+    overflowY: "auto",
+    overflowX: "visible",
     border: "1px solid rgba(255,255,255,0.06)",
-
     background:
       "linear-gradient(to bottom, rgba(255,255,255,0.015), rgba(255,255,255,0.008))",
-
-    backdropFilter: "blur(10px)",
-
-    clipPath:
-      "polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px))",
-
     boxShadow:
       "0 0 0 1px rgba(255,255,255,0.03), inset 0 0 80px rgba(255,255,255,0.015)",
-
-    padding: "40px",
+    scrollbarWidth: "none",
   }}
 >
-        {SECTION_CONTENT[displaySection]}
-      </div>
+  <style>{`
+    div::-webkit-scrollbar {
+      display: none;
+    }
+  `}</style>
+
+  <div id="section-about" style={{ minHeight: "auto", padding: "40px" }}>
+    <AboutSection />
+  </div>
+
+  <div
+    id="section-education"
+    style={{
+      minHeight: "100%",
+      padding: "40px",
+      borderTop: "1px solid rgba(255,255,255,0.05)",
+    }}
+  >
+    <EducationSection />
+  </div>
+
+  <div
+    id="section-skills"
+    style={{
+      minHeight: "100%",
+      padding: "40px",
+      borderTop: "1px solid rgba(255,255,255,0.05)",
+    }}
+  >
+    <SkillsSection />
+  </div>
+
+  <div
+    id="section-projects"
+    style={{
+      minHeight: "100%",
+      padding: "40px",
+      borderTop: "1px solid rgba(255,255,255,0.05)",
+    }}
+  >
+    <ProjectsSection />
+  </div>
+
+  <div
+    id="section-certifications"
+    style={{
+      minHeight: "100%",
+      padding: "40px",
+      borderTop: "1px solid rgba(255,255,255,0.05)",
+    }}
+  >
+    <CertificationsSection />
+  </div>
+
+  <div
+    id="section-contact"
+    style={{
+      minHeight: "100%",
+      padding: "40px",
+      borderTop: "1px solid rgba(255,255,255,0.05)",
+    }}
+  >
+    <ContactSection />
+  </div>
+</div>
 
       {/* ── SIDE NAV ─────────────────────────────────────── */}
       <SideNav activeSection={activeSection} onNavigate={switchSection}/>
