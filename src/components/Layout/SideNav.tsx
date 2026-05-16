@@ -273,7 +273,7 @@ function ProfileFrame() {
       }}>
         {/* Portrait image */}
         <img
-          src="/images/stock/hero-cutout.png"
+          src="/images/stock/hero.png"
           alt="AK"
           style={{
             width: "100%",
