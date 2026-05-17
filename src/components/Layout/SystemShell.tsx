@@ -279,7 +279,7 @@ useEffect(() => {
     id="section-projects"
     style={{
       minHeight: "100%",
-      padding: "40px",
+      padding: "0px",
       borderTop: "1px solid rgba(255,255,255,0.05)",
     }}
   >
