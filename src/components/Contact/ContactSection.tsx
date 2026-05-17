@@ -130,7 +130,7 @@ export default function ContactSection() {
   return (
     <div style={{
       width: "100%",
-      height: "100%",
+      height: "auto",
       display: "grid",
       gridTemplateColumns: "1fr 1.4fr",
       gap: "0",
@@ -150,9 +150,6 @@ export default function ContactSection() {
         <div>
           <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"8px" }}>
             <div style={{ width:20, height:1, background:"rgba(255,255,255,0.2)" }}/>
-            <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.38rem", letterSpacing:"0.44em", color:"rgba(255,255,255,0.2)" }}>
-              06 // CONTACT
-            </span>
           </div>
           <div style={{
             fontFamily:"var(--font-bebas)",
@@ -167,7 +164,7 @@ export default function ContactSection() {
           <p style={{
             fontFamily:"var(--font-grotesk)",
             fontSize:"0.78rem", fontWeight:300,
-            color:"rgba(255,255,255,0.42)",
+            color:"rgba(255,255,255,0.6)",
             lineHeight:1.7, margin:0, maxWidth:"280px",
           }}>
             Open to collaborations, roles, and interesting problems.
@@ -195,11 +192,11 @@ export default function ContactSection() {
               background:"rgba(255,255,255,0.85)",
               animation:"blink-block 2s step-end infinite",
             }}/>
-            <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.3rem", letterSpacing:"0.3em", color:"rgba(255,255,255,0.35)" }}>
+            <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.55rem", letterSpacing:"0.3em", color:"rgba(255,255,255,0.6)" }}>
               TRANSMISSION READY
             </span>
           </div>
-          <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.28rem", letterSpacing:"0.22em", color:"rgba(255,255,255,0.2)" }}>
+          <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.52rem", letterSpacing:"0.22em", color:"rgba(255,255,255,0.55)" }}>
             AK/OS v3.1.4
           </span>
         </div>
@@ -217,7 +214,7 @@ export default function ContactSection() {
         {/* Form header */}
         <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"4px" }}>
           <div style={{ width:20, height:1, background:"rgba(255,255,255,0.15)" }}/>
-          <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.36rem", letterSpacing:"0.4em", color:"rgba(255,255,255,0.18)" }}>
+          <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.55rem", letterSpacing:"0.4em", color:"rgba(255,255,255,0.5)" }}>
             TRANSMISSION CONSOLE
           </span>
         </div>
@@ -250,8 +247,8 @@ export default function ContactSection() {
           {/* Message */}
           <div style={{ flex:1, display:"flex", flexDirection:"column", gap:"5px" }}>
             <label style={{
-              fontFamily:"var(--font-mono)", fontSize:"0.33rem",
-              letterSpacing:"0.38em", color:"rgba(255,255,255,0.22)",
+              fontFamily:"var(--font-mono)", fontSize:"0.55rem",
+              letterSpacing:"0.55em", color:"rgba(255,255,255,0.5)",
             }}>
               MESSAGE
             </label>
@@ -308,9 +305,9 @@ export default function ContactSection() {
                 border:"1px solid rgba(255,255,255,0.08)",
                 background:"rgba(255,255,255,0.02)",
                 fontFamily:"var(--font-mono)",
-                fontSize:"0.32rem",
+                fontSize:"0.55rem",
                 letterSpacing:"0.28em",
-                color: fileName ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.25)",
+                color: fileName ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.6)",
                 cursor:"pointer",
                 transition:"all 0.2s ease",
                 clipPath:"polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px)",
@@ -404,7 +401,7 @@ export default function ContactSection() {
               <div style={{
                 fontFamily:"var(--font-mono)",
                 fontSize:"0.35rem", letterSpacing:"0.3em",
-                color:"rgba(255,255,255,0.35)",
+                color:"rgba(255,255,255,0.5)",
               }}>
                 MESSAGE SENT — SIGNAL DELIVERED
               </div>
@@ -488,7 +485,7 @@ function ContactRow({ item }: {
       {/* Icon box */}
       <div style={{
         width:"32px", height:"32px",
-        border:`1px solid ${hov ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.1)"}`,
+        border:`1px solid ${hov ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.6)"}`,
         background: hov ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.02)",
         display:"flex", alignItems:"center", justifyContent:"center",
         flexShrink:0,
@@ -501,8 +498,8 @@ function ContactRow({ item }: {
       {/* Text */}
       <div>
         <div style={{
-          fontFamily:"var(--font-mono)", fontSize:"0.3rem",
-          letterSpacing:"0.38em", color:"rgba(255,255,255,0.2)",
+          fontFamily:"var(--font-mono)", fontSize:"0.55rem",
+          letterSpacing:"0.38em", color:"rgba(255,255,255,0.5)",
           marginBottom:"3px",
         }}>
           {item.label}
@@ -522,7 +519,7 @@ function ContactRow({ item }: {
         <div style={{
           marginLeft:"auto",
           fontFamily:"var(--font-mono)", fontSize:"0.5rem",
-          color:"rgba(255,255,255,0.3)",
+          color:"rgba(255,255,255,0.6)",
         }}>
           →
         </div>
@@ -563,8 +560,8 @@ function FormField({
   return (
     <div style={{ display:"flex", flexDirection:"column", gap:"5px" }}>
       <label style={{
-        fontFamily:"var(--font-mono)", fontSize:"0.33rem",
-        letterSpacing:"0.38em", color:"rgba(255,255,255,0.22)",
+        fontFamily:"var(--font-mono)", fontSize:"0.55rem",
+        letterSpacing:"0.38em", color:"rgba(255,255,255,0.5)",
       }}>
         {label}
       </label>

@@ -55,6 +55,8 @@ export default function SystemShell() {
 
   // ── ENTRY ANIMATION ──────────────────────────────────────
   useEffect(() => {
+    // add this line at the very top of the entry animation useEffect
+if (contentRef.current) contentRef.current.scrollTop = 0;
     const ctx = gsap.context(() => {
       gsap.set(shellRef.current, { opacity: 0, x: 60 });
 
@@ -244,7 +246,7 @@ useEffect(() => {
     }
   `}</style>
 
-  <div id="section-about" style={{ minHeight: "auto", padding: "80px 40px" }}>
+  <div id="section-about" style={{ minHeight: "auto", padding: "70px 40px 10px" }}>
     <AboutSection />
   </div>
 
@@ -252,7 +254,7 @@ useEffect(() => {
     id="section-education"
     style={{
       minHeight: "100%",
-      padding: "80px 40px",
+      padding: "120px 40px 0px",
       borderTop: "1px solid rgba(255,255,255,0.05)",
     }}
   >
@@ -295,8 +297,8 @@ useEffect(() => {
   <div
     id="section-contact"
     style={{
-      minHeight: "100%",
-      padding: "80px 100px",
+      minHeight: "auto",
+      padding: "100px 100px 0px 100px",
       borderTop: "1px solid rgba(255,255,255,0.05)",
     }}
   >
@@ -321,8 +323,17 @@ function ShellCornerMk({ pos }: { pos: "tl" | "bl" }) {
       left: "16px",
       display: "flex", flexDirection: "column", alignItems: "flex-start",
     }}>
-      <div style={{ width:"16px", height:"1px", background:"rgba(255,255,255,0.35)" }}/>
-      <div style={{ width:"1px", height:"16px", background:"rgba(255,255,255,0.35)" }}/>
+      {top ? (
+          <>
+              <div style={{ width:"16px", height:"1px", background:"rgba(255,255,255,0.35)" }}/>
+              <div style={{ width:"1px", height:"16px", background:"rgba(255,255,255,0.35)" }}/>
+          </>
+      ) : (
+          <>
+              <div style={{ width:"1px", height:"16px", background:"rgba(255,255,255,0.35)" }}/>
+              <div style={{ width:"16px", height:"1px", background:"rgba(255,255,255,0.35)" }}/>
+          </>
+    )}
     </div>
   );
 }

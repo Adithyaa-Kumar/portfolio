@@ -9,7 +9,7 @@ export default function AboutSection() {
       width: "100%",
       minHeight: "100%",
       display: "grid",
-      gridTemplateColumns: "1.15fr 0.85fr",
+      gridTemplateColumns: "1.5fr 0.6fr",
       gap: "0",
       padding: "0",
     }}>
@@ -27,27 +27,35 @@ export default function AboutSection() {
         <div style={{
   position: "absolute",
   top: "24px",
-  left: "20px",
+  left: "0px",
   width: "1px",
   bottom: "24px",
-  background: "linear-gradient(to bottom, rgba(255,255,255,0.12), transparent)",
+  background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.26), transparent)",
 }}/>
 
         {/* Main description */}
         <div>
           <p style={{
             fontFamily: "var(--font-orbitron)",
-            fontSize: "clamp(0.95rem, 1.15vw, 1.05rem)",
+            fontSize: "clamp(0.8rem, 0.95vw, 2rem)",
             fontWeight: 400,
             letterSpacing: "0.06em",
-            color: "rgba(255,255,255,0.75)",
-            lineHeight: 1.8,
-            maxWidth: "720px",
-            width: "88%",
+            color: "rgba(255, 255, 255, 0.93)",
+            lineHeight: 1.6,
+            maxWidth: "1500px",
+            width: "100%",
           }}>
-            I'm an AI Engineer who builds systems that think — pipelines that move,
-            models that ship, and interfaces that make intelligence feel human.
-            Not research. Not prototypes. Production systems.
+            I’m an AI/Software Engineer focused on building intelligent systems,
+            LLM-powered applications, and scalable backend architectures.
+            <br/>
+            <br/>
+            My work spans multi-agent systems, RAG pipelines, network intelligence,
+            and real-world AI workflows — with a strong emphasis on system design,
+            performance, and practical implementation.
+            <br/>
+            <br/>
+            I enjoy turning complex ideas into functional systems that are reliable,
+            scalable, and engineered to solve real problems.
           </p>
         </div>
 
@@ -55,7 +63,7 @@ export default function AboutSection() {
         <div style={{
           display: "flex",
           flexDirection: "column",
-          gap: "8px",
+          gap: "2px",
         }}>
           {TRAIT_BOXES.map((box, i) => (
             <TraitBox key={i} {...box} />
@@ -72,9 +80,9 @@ export default function AboutSection() {
         <div>
           <div style={{
             fontFamily: "var(--font-mono)",
-            fontSize: "0.38rem",
+            fontSize: "0.55rem",
             letterSpacing: "0.45em",
-            color: "rgba(255,255,255,0.2)",
+            color: "rgba(255, 255, 255, 0.63)",
             marginBottom: "14px",
           }}>
             CORE STACK
@@ -92,8 +100,8 @@ export default function AboutSection() {
 
         {/* Philosophy */}
         <div style={{
-          padding: "16px 20px",
-          border: "1px solid rgba(255,255,255,0.07)",
+          padding: "5px 10px",
+          border: "1px solid rgba(255, 255, 255, 0.66)",
           background: "rgba(255,255,255,0.02)",
           position: "relative",
         }}>
@@ -105,9 +113,9 @@ export default function AboutSection() {
           }}/>
           <p style={{
             fontFamily: "var(--font-orbitron)",
-            fontSize: "0.58rem",
+            fontSize: "0.7rem",
             letterSpacing: "0.1em",
-            color: "rgba(255,255,255,0.4)",
+            color: "rgba(255, 255, 255, 0.8)",
             lineHeight: 1.9,
             margin: 0,
           }}>
@@ -135,7 +143,7 @@ export default function AboutSection() {
           display: "flex",
           flexDirection: "column",
           gap: "1px",
-          background: "rgba(255,255,255,0.04)",
+          background: "rgba(255, 255, 255, 0.05)",
         }}>
           {[
             { label: "DESIGNATION", value: PERSONAL.title },
@@ -148,23 +156,23 @@ export default function AboutSection() {
               justifyContent: "space-between",
               alignItems: "center",
               padding: "10px 16px",
-              background: "#000",
+              background: "#000000",
               borderBottom: i < 3 ? "1px solid rgba(255,255,255,0.04)" : "none",
             }}>
               <span style={{
                 fontFamily: "var(--font-mono)",
-                fontSize: "0.36rem",
+                fontSize: "0.6rem",
                 letterSpacing: "0.4em",
-                color: "rgba(255,255,255,0.2)",
+                color: "rgba(255, 255, 255, 0.41)",
               }}>
                 {row.label}
               </span>
               <span style={{
                 fontFamily: "var(--font-orbitron)",
-                fontSize: "0.55rem",
+                fontSize: "0.6rem",
                 letterSpacing: "0.1em",
                 fontWeight: 600,
-                color: "rgba(255,255,255,0.8)",
+                color: "rgba(255, 255, 255, 0.87)",
               }}>
                 {row.value}
               </span>
@@ -177,7 +185,7 @@ export default function AboutSection() {
           width: "100%",
           display: "grid",
           gridTemplateColumns: "1fr 1fr",
-          gap: "8px",
+          gap: "10px",
         }}>
           <LinkBox
             label="GITHUB"
@@ -202,18 +210,18 @@ export default function AboutSection() {
 
 const TRAIT_BOXES = [
   {
-    tag: "BUILDER",
-    text: "I ship production AI — not Jupyter notebooks. Models, APIs, pipelines, deployed.",
+    tag: "AI SYSTEMS",
+    text: "Building LLM pipelines, multi-agent workflows, and intelligent applications designed for real-world usage.",
     accent: false,
   },
   {
-    tag: "ENGINEER",
-    text: "Computer vision, NLP, multimodal systems. Real inference. Real latency constraints.",
+    tag: "ENGINEERING",
+    text: "Focused on backend architecture, scalable APIs, system design, and performance-driven implementation.",
     accent: true,
   },
   {
-    tag: "DESIGNER",
-    text: "I believe every AI system needs a cinematic interface. Intelligence should feel like something.",
+    tag: "RESEARCH",
+    text: "Exploring network intelligence, NLP, machine learning, and distributed AI systems through hands-on projects.",
     accent: false,
   },
 ];
@@ -232,14 +240,14 @@ function TraitBox({ tag, text, accent }: { tag: string; text: string; accent: bo
       onMouseLeave={() => setHov(false)}
       style={{
         display: "flex",
-        gap: "16px",
+        gap: "15px",
         alignItems: "flex-start",
-        padding: "14px 18px",
-        border: `1px solid ${hov ? "rgba(255,255,255,0.25)" : accent ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.05)"}`,
+        padding: "14px 14px",
+        border: `1px solid ${hov ? "rgba(255, 255, 255, 0.7)" : accent ? "rgba(255, 255, 255, 0)" : "rgba(255,255,255,0.05)"}`,
         background: hov
           ? "rgba(255,255,255,0.05)"
           : accent
-          ? "rgba(255,255,255,0.03)"
+          ? "rgba(255, 255, 255, 0)"
           : "transparent",
         cursor: "default",
         transition: "all 0.25s ease",
@@ -252,17 +260,17 @@ function TraitBox({ tag, text, accent }: { tag: string; text: string; accent: bo
         position: "absolute",
         top: 0, left: 0, right: 0,
         height: "1px",
-        background: hov ? "rgba(255,255,255,0.4)" : "transparent",
+        background: hov ? "rgba(255, 255, 255, 0.71)" : "transparent",
         transition: "background 0.25s ease",
       }}/>
 
       {/* Tag */}
       <div style={{
         fontFamily: "var(--font-orbitron)",
-        fontSize: "0.42rem",
+        fontSize: "0.6rem",
         fontWeight: 700,
-        letterSpacing: "0.3em",
-        color: hov ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.45)",
+        letterSpacing: "0.2em",
+        color: hov ? "rgba(255,255,255,0.95)" : "rgba(255, 255, 255, 0.62)",
         minWidth: "70px",
         paddingTop: "2px",
         transition: "color 0.25s ease",
@@ -283,10 +291,10 @@ function TraitBox({ tag, text, accent }: { tag: string; text: string; accent: bo
       {/* Text */}
       <p style={{
         fontFamily: "var(--font-grotesk)",
-        fontSize: "0.72rem",
+        fontSize: "0.82rem",
         fontWeight: 300,
         letterSpacing: "0.02em",
-        color: hov ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.5)",
+        color: hov ? "rgba(255,255,255,0.85)" : "rgba(255, 255, 255, 0.65)",
         lineHeight: 1.7,
         maxWidth: "90%",
         margin: 0,
@@ -308,11 +316,11 @@ function StackTag({ label }: { label: string }) {
       onMouseLeave={() => setHov(false)}
       style={{
         padding: "4px 12px",
-        border: `1px solid ${hov ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.1)"}`,
+        border: `1px solid ${hov ? "rgba(255, 255, 255, 0.59)" : "rgba(255, 255, 255, 0.23)"}`,
         fontFamily: "var(--font-orbitron)",
-        fontSize: "0.4rem",
+        fontSize: "0.6rem",
         letterSpacing: "0.2em",
-        color: hov ? "#fff" : "rgba(255,255,255,0.4)",
+        color: hov ? "#fff" : "rgba(255, 255, 255, 0.51)",
         background: hov ? "rgba(255,255,255,0.06)" : "transparent",
         transition: "all 0.2s ease",
         cursor: "default",
@@ -345,7 +353,7 @@ function LinkBox({ label, sub, href, icon }: {
       onMouseLeave={() => setHov(false)}
       onClick={handleClick}
       style={{
-        padding: "18px 16px",
+        padding: "15px 15px 15px 15px",
         border: `1px solid ${clicked ? "rgba(255,255,255,0.9)" : hov ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.1)"}`,
         background: clicked
           ? "rgba(255,255,255,0.15)"
@@ -389,9 +397,9 @@ function LinkBox({ label, sub, href, icon }: {
       {/* Icon */}
       <div style={{
         fontFamily: "var(--font-orbitron)",
-        fontSize: "0.9rem",
+        fontSize: "2rem",
         color: hov ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.25)",
-        marginBottom: "8px",
+        marginBottom: "5px",
         transition: "color 0.2s ease",
       }}>
         {icon}
@@ -400,7 +408,7 @@ function LinkBox({ label, sub, href, icon }: {
       {/* Label */}
       <div style={{
         fontFamily: "var(--font-orbitron)",
-        fontSize: "0.5rem",
+        fontSize: "0.7rem",
         fontWeight: 700,
         letterSpacing: "0.3em",
         color: hov ? "#fff" : "rgba(255,255,255,0.7)",
@@ -408,17 +416,6 @@ function LinkBox({ label, sub, href, icon }: {
         transition: "color 0.2s ease",
       }}>
         {label}
-      </div>
-
-      {/* Sub */}
-      <div style={{
-        fontFamily: "var(--font-mono)",
-        fontSize: "0.36rem",
-        letterSpacing: "0.2em",
-        color: hov ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.2)",
-        transition: "color 0.2s ease",
-      }}>
-        /{sub}
       </div>
 
       {/* Bottom status line on hover */}
@@ -501,7 +498,7 @@ function TechFrame() {
           left: 0, right: 0,
           height: "2px",
           background: "linear-gradient(to right, transparent, rgba(255,255,255,0.5), transparent)",
-          animation: "tech-scan 3s linear infinite",
+          animation: "tech-scan 4s linear infinite",
           top: 0,
         }}/>
       </div>
@@ -518,8 +515,8 @@ function TechFrame() {
           objectPosition: "center top",
           display: "block",
           filter: hov
-            ? "grayscale(85%) contrast(1.15) brightness(0.9) blur(1.5px)"
-            : "grayscale(100%) contrast(1.1) brightness(0.75) blur(3px)",
+            ? "grayscale(85%) contrast(1.15) brightness(0.9)"
+            : "grayscale(100%) contrast(1.1) brightness(0.75) blur(1px)",
           transition: "filter 0.5s ease",
           position: "relative",
           zIndex: 1,
@@ -540,7 +537,7 @@ function TechFrame() {
       <div style={{
         position: "absolute",
         bottom: 0, left: 0, right: 0,
-        height: "35%",
+        height: "10%",
         background: "linear-gradient(to top, #000, transparent)",
         zIndex: 2,
         pointerEvents: "none",
@@ -558,9 +555,9 @@ function TechFrame() {
           fontFamily: "var(--font-mono)",
           fontSize: "0.35rem",
           letterSpacing: "0.4em",
-          color: "rgba(255,255,255,0.25)",
+          color: "rgba(255, 255, 255, 0.28)",
         }}>
-          ID // AK-2025
+          ID : AK
         </div>
       </div>
 
@@ -583,7 +580,7 @@ function TechFrame() {
         }}/>
         <span style={{
           fontFamily: "var(--font-mono)",
-          fontSize: "0.3rem",
+          fontSize: "0.4rem",
           letterSpacing: "0.35em",
           color: "rgba(255,255,255,0.3)",
         }}>

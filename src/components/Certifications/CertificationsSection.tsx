@@ -71,21 +71,22 @@ export default function CertificationsSection() {
   const navigate = useCallback((dir: 1 | -1) => {
     if (isAnimating) return;
     setIsAnimating(true);
-
+    const nextIndex = (current + dir + CERTS.length) % CERTS.length;
     if (!cardsRef.current) { setIsAnimating(false); return; }
 
     gsap.to(cardsRef.current, {
-      opacity: 0, x: dir === 1 ? -30 : 30,
-      duration: 0.22, ease: "power2.in",
-      onComplete: () => {
-        setCurrent((prev) => (prev + dir + CERTS.length) % CERTS.length);
-        gsap.fromTo(cardsRef.current,
-          { opacity: 0, x: dir === 1 ? 30 : -30 },
-          { opacity: 1, x: 0, duration: 0.28, ease: "power2.out",
-            onComplete: () => setIsAnimating(false) }
-        );
-      },
-    });
+    opacity: 0, x: dir === 1 ? -30 : 30,
+    duration: 0.22, ease: "power2.in",
+    onComplete: () => {
+      setCurrent(nextIndex);
+      setActiveCert(CERTS[nextIndex]);
+      gsap.fromTo(cardsRef.current,
+        { opacity: 0, x: dir === 1 ? 30 : -30 },
+        { opacity: 1, x: 0, duration: 0.28, ease: "power2.out",
+          onComplete: () => setIsAnimating(false) }
+      );
+    },
+  });
   }, [isAnimating]);
 
   // ── KEYBOARD ──────────────────────────────────────────────
@@ -147,7 +148,7 @@ export default function CertificationsSection() {
       height: "100%",
       display: "flex",
       flexDirection: "column",
-      padding: "20px 16px",
+      padding: "30px 16px 0px 16px",
       overflow: "hidden",
     }}>
 
@@ -156,20 +157,20 @@ export default function CertificationsSection() {
         <div style={{
           display: "flex", alignItems: "center", gap: "10px", marginBottom: "6px",
         }}>
-          <div style={{ width: "20px", height: "1px", background: "rgba(255,255,255,0.2)" }}/>
+          <div style={{ width: "20px", height: "1px", background: "rgba(255, 255, 255, 0.47)" }}/>
           <span style={{
-            fontFamily: "var(--font-mono)", fontSize: "0.4rem",
-            letterSpacing: "0.44em", color: "rgba(255,255,255,0.2)",
+            fontFamily: "var(--font-mono)", fontSize: "0.6rem",
+            letterSpacing: "0.44em", color: "rgba(255, 255, 255, 0.4)",
           }}>
-            ACHIEVEMENT ARCHIVE · {CERTS.length} RECORDS
+            ACHIEVEMENT ARCHIVE
           </span>
         </div>
         <div style={{
           display: "flex", justifyContent: "space-between", alignItems: "flex-end",
         }}>
           <p style={{
-            fontFamily: "var(--font-grotesk)", fontSize: "0.78rem",
-            fontWeight: 300, color: "rgba(255,255,255,0.4)",
+            fontFamily: "var(--font-mono)", fontSize: "0.9rem",
+            fontWeight: 300, color: "rgba(255, 255, 255, 0.79)",
             lineHeight: 1.6, margin: 0,
           }}>
             Verified credentials and completed specializations.
@@ -190,7 +191,7 @@ export default function CertificationsSection() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        gap: "16px",
+        gap: "30px",
         position: "relative",
         minHeight: 0,
       }}>
@@ -202,7 +203,7 @@ export default function CertificationsSection() {
           ref={cardsRef}
           style={{
             display: "flex",
-            gap: "16px",
+            gap: "30px",
             alignItems: "center",
             justifyContent: "center",
             flex: 1,
@@ -271,7 +272,15 @@ export default function CertificationsSection() {
             padding: "20px",
           }}
         >
-          <CertModal ref={modalRef} cert={activeCert} onClose={closeModal} />
+          <ArrowButton dir="left" onClick={() => navigate(-1)} disabled={isAnimating} />
+          <CertModal
+            ref={modalRef}
+            cert={activeCert}
+            onClose={closeModal}
+            onPrev={() => navigate(-1)}
+            onNext={() => navigate(1)}
+          />
+          <ArrowButton dir="right" onClick={() => navigate(1)} disabled={isAnimating} />
         </div>
       )}
     </div>
@@ -292,6 +301,7 @@ function ArrowButton({
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
+        gap: "48px",
         width: "44px", height: "44px", flexShrink: 0,
         border: `1px solid ${hov ? "rgba(255,255,255,0.5)" : "rgba(255,255,255,0.15)"}`,
         background: hov ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.02)",
@@ -335,7 +345,7 @@ function CertCard({
       onMouseLeave={() => setHov(false)}
       onClick={onClick}
       style={{
-        width: "220px",
+        width: "360px",
         flexShrink: 0,
         background: "linear-gradient(160deg, rgba(18,18,18,0.98), rgba(8,8,8,0.99))",
         boxShadow: isCenter
@@ -387,7 +397,7 @@ function CertCard({
           border: "1px solid rgba(255,255,255,0.2)",
           background: "rgba(0,0,0,0.7)",
           fontFamily: "var(--font-mono)",
-          fontSize: "0.28rem", letterSpacing: "0.22em",
+          fontSize: "0.5rem", letterSpacing: "0.22em",
           color: "rgba(255,255,255,0.7)",
         }}>
           VERIFIED
@@ -399,7 +409,7 @@ function CertCard({
             position: "absolute", left: 0, right: 0,
             height: "2px",
             background: "linear-gradient(to right, transparent, rgba(255,255,255,0.5), transparent)",
-            animation: "cert-scan 2s linear infinite",
+            animation: "cert-scan 4s linear infinite",
             top: 0,
           }}/>
         )}
@@ -409,7 +419,7 @@ function CertCard({
       <div style={{ padding: "12px 14px" }}>
         <div style={{
           fontFamily: "var(--font-orbitron)",
-          fontSize: "0.6rem", fontWeight: 700,
+          fontSize: "1rem", fontWeight: 700,
           letterSpacing: "0.03em",
           color: isCenter ? "rgba(255,255,255,0.94)" : "rgba(255,255,255,0.5)",
           lineHeight: 1.3,
@@ -426,14 +436,14 @@ function CertCard({
           display: "flex", justifyContent: "space-between", alignItems: "center",
         }}>
           <span style={{
-            fontFamily: "var(--font-mono)", fontSize: "0.28rem",
-            letterSpacing: "0.2em", color: "rgba(255,255,255,0.25)",
+            fontFamily: "var(--font-mono)", fontSize: "0.8rem",
+            letterSpacing: "0.2em", color: "rgba(255, 255, 255, 0.8)",
           }}>
             {cert.organization}
           </span>
           <span style={{
-            fontFamily: "var(--font-orbitron)", fontSize: "0.4rem",
-            fontWeight: 700, letterSpacing: "0.1em",
+            fontFamily: "var(--font-orbitron)", fontSize: "0.8rem",
+            fontWeight: 900, letterSpacing: "0.1em",
             color: "rgba(255,255,255,0.4)",
           }}>
             {cert.year}
@@ -482,17 +492,19 @@ import { forwardRef } from "react";
 const CertModal = forwardRef<HTMLDivElement, {
   cert: Cert;
   onClose: () => void;
-}>(({ cert, onClose }, ref) => {
+  onPrev: () => void;
+  onNext: () => void;
+}>(({ cert, onClose, onPrev, onNext }, ref) => {
 
   return (
     <div
       ref={ref}
       style={{
         position: "relative",
-        width: "min(960px, 90%)",
-        maxHeight: "80vh",
+        width: "min(1200px, 100%)",
+        maxHeight: "100vh",
         overflow: "hidden",
-        border: "1px solid rgba(255,255,255,0.12)",
+        border: "1px solid rgba(255,255,255,0.2)",
         background: "rgba(6,6,6,0.98)",
         display: "grid",
         gridTemplateColumns: "1fr 1fr",
@@ -500,6 +512,15 @@ const CertModal = forwardRef<HTMLDivElement, {
         boxShadow: "0 40px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.08)",
       }}
     >
+      {/* Prev arrow */}
+      <div style={{ position:"absolute",left:"-120px", top:"50%", transform:"translateY(-50%)", zIndex:200 }}>
+        <ArrowButton dir="left" onClick={onPrev} disabled={false} />
+      </div>
+
+      {/* Next arrow */}
+      <div style={{ position:"absolute", right:"-120px", top:"50%", transform:"translateY(-50%)", zIndex:200 }}>
+        <ArrowButton dir="right" onClick={onNext} disabled={false} />
+      </div>
       {/* Ambient grid */}
       <div style={{
         position:"absolute", inset:0, pointerEvents:"none", zIndex:0, opacity:0.02,
@@ -512,7 +533,7 @@ const CertModal = forwardRef<HTMLDivElement, {
         <div style={{ width:16, height:1, background:"rgba(255,255,255,0.5)" }}/>
         <div style={{ width:1, height:16, background:"rgba(255,255,255,0.5)" }}/>
       </div>
-      <div style={{ position:"absolute", bottom:20, right:4, zIndex:20, pointerEvents:"none", display:"flex", flexDirection:"column", alignItems:"flex-end" }}>
+      <div style={{ position:"absolute", bottom:4, right:4, zIndex:20, pointerEvents:"none", display:"flex", flexDirection:"column", alignItems:"flex-end" }}>
         <div style={{ width:1, height:16, background:"rgba(255,255,255,0.5)", alignSelf:"flex-end" }}/>
         <div style={{ width:16, height:1, background:"rgba(255,255,255,0.5)" }}/>
       </div>
@@ -528,9 +549,9 @@ const CertModal = forwardRef<HTMLDivElement, {
       }}>
         {/* System label */}
         <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"16px" }}>
-          <div style={{ width:18, height:1, background:"rgba(255,255,255,0.2)" }}/>
-          <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.34rem", letterSpacing:"0.36em", color:"rgba(255,255,255,0.2)" }}>
-            ACHIEVEMENT RECORD · {cert.id.toUpperCase()}
+          <div style={{ width:18, height:1, background:"rgba(255, 255, 255, 0.78)" }}/>
+          <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.55rem", letterSpacing:"0.36em", color:"rgba(255, 255, 255, 0.79)" }}>
+            ACHIEVEMENT RECORD 
           </span>
         </div>
 
@@ -538,15 +559,15 @@ const CertModal = forwardRef<HTMLDivElement, {
         <div style={{ display:"flex", gap:"8px", marginBottom:"14px", flexWrap:"wrap" }}>
           <div style={{
             padding:"3px 10px", border:"1px solid rgba(255,255,255,0.15)",
-            fontFamily:"var(--font-mono)", fontSize:"0.3rem", letterSpacing:"0.26em",
-            color:"rgba(255,255,255,0.5)",
+            fontFamily:"var(--font-mono)", fontSize:"0.6rem", letterSpacing:"0.26em",
+            color:"rgba(255, 255, 255, 0.82)",
           }}>
             {cert.organization}
           </div>
           <div style={{
             padding:"3px 10px", border:"1px solid rgba(255,255,255,0.08)",
-            fontFamily:"var(--font-mono)", fontSize:"0.3rem", letterSpacing:"0.26em",
-            color:"rgba(255,255,255,0.3)",
+            fontFamily:"var(--font-mono)", fontSize:"0.6rem", letterSpacing:"0.26em",
+            color:"rgba(255, 255, 255, 0.83)",
           }}>
             {cert.year}
           </div>
@@ -569,8 +590,8 @@ const CertModal = forwardRef<HTMLDivElement, {
         {/* Description */}
         <p style={{
           fontFamily:"var(--font-grotesk)",
-          fontSize:"0.78rem", lineHeight:1.85, fontWeight:300,
-          color:"rgba(255,255,255,0.52)", marginBottom:"22px",
+          fontSize:"0.95rem", lineHeight:1.85, fontWeight:300,
+          color:"rgba(255, 255, 255, 0.78)", marginBottom:"22px",
         }}>
           {cert.description}
         </p>
@@ -578,25 +599,25 @@ const CertModal = forwardRef<HTMLDivElement, {
         {/* Credential ID */}
         <div style={{
           padding:"10px 14px",
-          border:"1px solid rgba(255,255,255,0.07)",
-          background:"rgba(255,255,255,0.015)",
+          border:"1px solid rgba(255, 255, 255, 0.68)",
+          background:"rgba(255, 255, 255, 0)",
           marginBottom:"22px",
           display:"flex", justifyContent:"space-between", alignItems:"center",
         }}>
-          <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.32rem", letterSpacing:"0.3em", color:"rgba(255,255,255,0.2)" }}>
+          <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.55rem", letterSpacing:"0.3em", color:"rgba(255, 255, 255, 0.73)" }}>
             CREDENTIAL ID
           </span>
-          <span style={{ fontFamily:"var(--font-orbitron)", fontSize:"0.45rem", fontWeight:600, letterSpacing:"0.08em", color:"rgba(255,255,255,0.55)" }}>
+          <span style={{ fontFamily:"var(--font-orbitron)", fontSize:"0.6rem", fontWeight:600, letterSpacing:"0.08em", color:"rgba(255, 255, 255, 0.72)" }}>
             {cert.credentialId}
           </span>
         </div>
 
         {/* Skills */}
         <div>
-          <div style={{ fontFamily:"var(--font-mono)", fontSize:"0.34rem", letterSpacing:"0.38em", color:"rgba(255,255,255,0.2)", marginBottom:"10px" }}>
+          <div style={{ fontFamily:"var(--font-mono)", fontSize:"0.7rem", letterSpacing:"0.38em", color:"rgba(255, 255, 255, 0.71)", marginBottom:"10px" }}>
             SKILLS VERIFIED
           </div>
-          <div style={{ display:"flex", flexWrap:"wrap", gap:"7px" }}>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:"10px" }}>
             {cert.skills.map((skill) => (
               <SkillPill key={skill} skill={skill} />
             ))}
@@ -615,7 +636,7 @@ const CertModal = forwardRef<HTMLDivElement, {
         <button
           onClick={onClose}
           style={{
-            position:"absolute", top:"14px", right:"20px",
+            position:"absolute",top:"10px", right:"10px",
             width:"38px", height:"38px",
             border:"1px solid rgba(255,255,255,0.14)",
             background:"rgba(255,255,255,0.02)",
@@ -701,11 +722,11 @@ const CertModal = forwardRef<HTMLDivElement, {
               background:"rgba(255,255,255,0.8)",
               animation:"blink-block 2s step-end infinite",
             }}/>
-            <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.3rem", letterSpacing:"0.28em", color:"rgba(255,255,255,0.35)" }}>
+            <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.6rem", letterSpacing:"0.28em", color:"rgba(255, 255, 255, 0.73)" }}>
               VERIFIED ACTIVE
             </span>
           </div>
-          <span style={{ fontFamily:"var(--font-orbitron)", fontSize:"0.38rem", fontWeight:700, letterSpacing:"0.1em", color:"rgba(255,255,255,0.4)" }}>
+          <span style={{ fontFamily:"var(--font-orbitron)", fontSize:"0.6rem", fontWeight:700, letterSpacing:"0.1em", color:"rgba(255, 255, 255, 0.69)" }}>
             {cert.year}
           </span>
         </div>
@@ -726,10 +747,10 @@ function SkillPill({ skill }: { skill: string }) {
       onMouseLeave={() => setHov(false)}
       style={{
         padding:"5px 10px",
-        border:`1px solid ${hov ? "rgba(255,255,255,0.28)" : "rgba(255,255,255,0.08)"}`,
+        border:`1px solid ${hov ? "rgba(255, 255, 255, 0.75)" : "rgba(255,255,255,0.08)"}`,
         background: hov ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.02)",
-        fontFamily:"var(--font-mono)", fontSize:"0.33rem", letterSpacing:"0.18em",
-        color: hov ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.38)",
+        fontFamily:"var(--font-mono)", fontSize:"0.7rem", letterSpacing:"0.18em",
+        color: hov ? "rgba(255,255,255,0.75)" : "rgba(255, 255, 255, 0.89)",
         transition:"all 0.18s ease", cursor:"default",
         clipPath:"polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px)",
       }}

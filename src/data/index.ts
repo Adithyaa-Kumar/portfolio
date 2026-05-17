@@ -23,55 +23,23 @@ export const SECTIONS: SectionMeta[] = [
 export const PERSONAL = {
   name:        "Adithyaa K",
   nameShort:   "AK",
-  title:       "AI ENGINEER",                             // REPLACE
+  title:       "AI&ML ENGINEER",                             // REPLACE
   tagline:     "Building Intelligence at the Edge",       // REPLACE
   location:    "Chennai, India",                          // REPLACE
   email:       "adithyaa@email.com",                      // REPLACE
-  github:      "https://github.com/adithyaak",            // REPLACE
-  linkedin:    "https://linkedin.com/in/adithyaak",       // REPLACE
+  github:      "https://github.com/Adithyaa-Kumar",            // REPLACE
+  linkedin:    "https://www.linkedin.com/in/adithyaa-k-a496b03ba/",       // REPLACE
   bio: {
     p1: "I engineer intelligent systems that sit at the intersection of machine learning, computer vision, and real-world deployment. My work focuses on building AI that doesn't just run in notebooks — it ships.", // REPLACE
     p2: "I believe the best AI systems are invisible to users and indispensable to workflows. Every model I train, every pipeline I deploy, is designed with that philosophy.",                                       // REPLACE
     p3: "When I'm not training models or optimizing inference pipelines, I'm exploring multimodal systems, generative architectures, and the edges of what current AI can do.",                                      // REPLACE
   },
-  philosophy:    "Build systems that think. Deploy experiences that feel.",  // REPLACE
+  philosophy: "Engineering matters when intelligence meets execution.",
   systemStatus:  "ONLINE",
   coordinates:   "13.0827° N, 80.2707° E",                                  // REPLACE
   stock:         "/images/stock/stock.png",
   profile:       "/images/profile/adithyaa.jpg",
 };
-
-// ─── Education ────────────────────────────────────────────────────────────────
-
-export const EDUCATION: Education[] = [
-  {
-    id:             "edu-01",
-    institution:    "Your University Name",                    // REPLACE
-    degree:         "B.Tech / B.E.",                           // REPLACE
-    specialization: "Artificial Intelligence & Data Science",  // REPLACE
-    year:           "2021 — 2025",                             // REPLACE
-    grade:          "8.5 CGPA",                                // REPLACE
-    location:       "Chennai, India",                          // REPLACE
-    highlights: [
-      "Specialized in deep learning and computer vision",      // REPLACE
-      "Final year project on multimodal AI systems",           // REPLACE
-      "AI/ML Club lead, organized 3 hackathons",               // REPLACE
-    ],
-  },
-  {
-    id:             "edu-02",
-    institution:    "Your School Name",                        // REPLACE
-    degree:         "Higher Secondary Certificate",             // REPLACE
-    specialization: "Computer Science & Mathematics",          // REPLACE
-    year:           "2019 — 2021",                             // REPLACE
-    grade:          "94.2%",                                   // REPLACE
-    location:       "Chennai, India",                          // REPLACE
-    highlights: [
-      "State rank in Mathematics",                             // REPLACE
-      "School tech club president",                            // REPLACE
-    ],
-  },
-];
 
 // ─── Skills ───────────────────────────────────────────────────────────────────
 

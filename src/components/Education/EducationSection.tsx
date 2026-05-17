@@ -5,21 +5,21 @@ import { motion } from "framer-motion";
 const EDUCATION_DATA = [
   {
     title: "Secondary Education",
-    institute: "Narayana Institute of Technology",
+    institute: "Narayana Institute of Technology, Chennai",
     duration: "2020 - 2022",
     grade: "91.6%",
     status: "ARCHIVED",
   },
   {
     title: "Higher Secondary",
-    institute: "Narayana Institute of Technology",
+    institute: "Narayana Institute of Technology, Chennai",
     duration: "2022 - 2024",
     grade: "85%",
     status: "COMPLETED",
   },
   {
-    title: "Undergraduate",
-    institute: "VIT Chennai · B.Tech CSE (AI & ML)",
+    title: "Undergraduate - B.Tech CSE (AI & ML)",
+    institute: "Vellore Institute of Technology, Chennai",
     duration: "2024 - 2028",
     grade: "9.03 CGPA",
     status: "ACTIVE NODE",
@@ -75,16 +75,16 @@ export default function EducationSection() {
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
         style={{
-          marginBottom: "90px",
-          paddingLeft: "12px",
+          marginBottom: "50px",
+          paddingLeft: "20px",
         }}
       >
         <div
           style={{
             fontFamily: "var(--font-mono)",
-            fontSize: "0.42rem",
+            fontSize: "0.5rem",
             letterSpacing: "0.42em",
-            color: "rgba(255,255,255,0.22)",
+            color: "rgba(255, 255, 255, 0.35)",
             marginBottom: "12px",
           }}
         >
@@ -101,8 +101,8 @@ export default function EducationSection() {
             maxWidth: "1000px",
           }}
         >
-          A structured progression of engineering, systems thinking,
-          computation, and AI-focused specialization.
+          Building a strong foundation in computer science, engineering,
+and AI through academic learning and hands-on development.
         </div>
       </motion.div>
 
@@ -240,7 +240,7 @@ export default function EducationSection() {
                   viewport={{ once: true }}
                   style={{
                     fontFamily: "var(--font-mono)",
-                    fontSize: "0.42rem",
+                    fontSize: "0.6rem",
                     letterSpacing: "0.35em",
                     color: "rgba(255,255,255,0.28)",
                     marginBottom: "24px",
@@ -249,12 +249,12 @@ export default function EducationSection() {
                   {item.status}
                 </motion.div>
 
-                {/* Title */}
+                {/* Institute */}
                 <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
                   transition={{
-                    delay: 1.05 + index * 0.18,
+                    delay: 1.12 + index * 0.18,
                   }}
                   viewport={{ once: true }}
                   style={{
@@ -267,15 +267,14 @@ export default function EducationSection() {
                     lineHeight: 1.5,
                   }}
                 >
-                  {item.title}
+                  {item.institute}
                 </motion.div>
-
-                {/* Institute */}
+                {/* Title */}
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   transition={{
-                    delay: 1.12 + index * 0.18,
+                    delay: 1.05 + index * 0.18,
                   }}
                   viewport={{ once: true }}
                   style={{
@@ -286,7 +285,7 @@ export default function EducationSection() {
                     marginBottom: "34px",
                   }}
                 >
-                  {item.institute}
+                  {item.title}
                 </motion.div>
 
                 {/* Bottom */}
@@ -316,9 +315,9 @@ export default function EducationSection() {
                     <span
                       style={{
                         fontFamily: "var(--font-mono)",
-                        fontSize: "0.44rem",
+                        fontSize: "0.64rem",
                         letterSpacing: "0.28em",
-                        color: "rgba(255,255,255,0.24)",
+                        color: "rgba(255, 255, 255, 0.46)",
                       }}
                     >
                       DURATION
@@ -346,9 +345,9 @@ export default function EducationSection() {
                     <span
                       style={{
                         fontFamily: "var(--font-mono)",
-                        fontSize: "0.44rem",
+                        fontSize: "0.64rem",
                         letterSpacing: "0.28em",
-                        color: "rgba(255,255,255,0.24)",
+                        color: "rgba(255, 255, 255, 0.46)",
                       }}
                     >
                       GRADE
@@ -376,7 +375,7 @@ export default function EducationSection() {
       <style jsx>{`
         .edu-card {
           position: relative;
-          padding: 24px;
+          padding: 15px;
           min-height: 245px;
           border: 1px solid rgba(255, 255, 255, 0.08);
           background: rgba(255, 255, 255, 0.02);
