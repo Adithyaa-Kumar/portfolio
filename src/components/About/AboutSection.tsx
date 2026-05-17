@@ -27,7 +27,7 @@ export default function AboutSection() {
         <div style={{
   position: "absolute",
   top: "24px",
-  left: "0",
+  left: "20px",
   width: "1px",
   bottom: "24px",
   background: "linear-gradient(to bottom, rgba(255,255,255,0.12), transparent)",
@@ -518,8 +518,8 @@ function TechFrame() {
           objectPosition: "center top",
           display: "block",
           filter: hov
-            ? "grayscale(80%) contrast(1.1) brightness(0.95)"
-            : "grayscale(100%) contrast(1.05) brightness(0.85)",
+            ? "grayscale(85%) contrast(1.15) brightness(0.9) blur(1.5px)"
+            : "grayscale(100%) contrast(1.1) brightness(0.75) blur(3px)",
           transition: "filter 0.5s ease",
           position: "relative",
           zIndex: 1,
@@ -528,7 +528,14 @@ function TechFrame() {
           (e.currentTarget as HTMLImageElement).style.display = "none";
         }}
       />
-
+      <div style={{
+  position: "absolute",
+  inset: 0,
+  background: "radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 70%)",
+  filter: "blur(40px)",
+  zIndex: 1,
+  pointerEvents: "none",
+}}/>
       {/* Bottom gradient */}
       <div style={{
         position: "absolute",

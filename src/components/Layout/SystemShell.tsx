@@ -228,18 +228,13 @@ useEffect(() => {
   ref={contentRef}
   style={{
     position: "absolute",
-    top: "12px",
-    left: "28px",
-    right: "120px",
-    bottom: "70px",
+    top: "0px",          /* flush to viewport top — label floats above via z-index */
+    left: "0px",
+    right: "80px",       /* sidebar width */
+    bottom: "56px",
     zIndex: 10,
     overflowY: "auto",
-    overflowX: "visible",
-    border: "1px solid rgba(255,255,255,0.06)",
-    background:
-      "linear-gradient(to bottom, rgba(255,255,255,0.015), rgba(255,255,255,0.008))",
-    boxShadow:
-      "0 0 0 1px rgba(255,255,255,0.03), inset 0 0 80px rgba(255,255,255,0.015)",
+    overflowX: "hidden",
     scrollbarWidth: "none",
   }}
 >
@@ -249,7 +244,7 @@ useEffect(() => {
     }
   `}</style>
 
-  <div id="section-about" style={{ minHeight: "auto", padding: "40px" }}>
+  <div id="section-about" style={{ minHeight: "auto", padding: "80px 40px" }}>
     <AboutSection />
   </div>
 
@@ -257,7 +252,7 @@ useEffect(() => {
     id="section-education"
     style={{
       minHeight: "100%",
-      padding: "40px",
+      padding: "80px 40px",
       borderTop: "1px solid rgba(255,255,255,0.05)",
     }}
   >
@@ -268,7 +263,7 @@ useEffect(() => {
     id="section-skills"
     style={{
       minHeight: "100%",
-      padding: "40px",
+      padding: "80px 60px",
       borderTop: "1px solid rgba(255,255,255,0.05)",
     }}
   >
@@ -279,8 +274,9 @@ useEffect(() => {
     id="section-projects"
     style={{
       minHeight: "100%",
-      padding: "0px",
+      padding: "80px 70px",
       borderTop: "1px solid rgba(255,255,255,0.05)",
+      animation: "scan-down 4s linear infinite",
     }}
   >
     <ProjectsSection />
@@ -290,8 +286,7 @@ useEffect(() => {
     id="section-certifications"
     style={{
       minHeight: "100%",
-      padding: "40px",
-      borderTop: "1px solid rgba(255,255,255,0.05)",
+      padding: "80px 80px",
     }}
   >
     <CertificationsSection />
@@ -301,7 +296,7 @@ useEffect(() => {
     id="section-contact"
     style={{
       minHeight: "100%",
-      padding: "40px",
+      padding: "80px 100px",
       borderTop: "1px solid rgba(255,255,255,0.05)",
     }}
   >

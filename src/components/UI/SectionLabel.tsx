@@ -80,24 +80,27 @@ export default function SectionLabel({ section }: SectionLabelProps) {
     <div ref={wrapRef} style={{
       position: "absolute",
       top: "16px",
-      left: "24px",
+      left: "20px",
       zIndex: 15,
       pointerEvents: "none",
       opacity: 0,
     }}>
-      {/* Micro label above */}
+      {/*
+        Frosted blur frame — sits behind the text, spans full label width.
+        Grows left→right as a gradient so it doesn't hard-box.
+        backdrop-filter blurs whatever content is scrolling behind.
+      */}
       <div style={{
-        fontFamily: "var(--font-mono)",
-        fontSize: "0.38rem",
-        letterSpacing: "0.48em",
-        color: "rgba(255,255,255,0.2)",
-        marginBottom: "4px",
-        display: "flex",
-        alignItems: "center",
-        gap: "8px",
-      }}>
-        <span style={{ display:"inline-block", width:"16px", height:"1px", background:"rgba(255,255,255,0.2)" }}/>
-      </div>
+        position: "absolute",
+        inset: "-10px -24px -14px -24px",
+        backdropFilter: "blur(18px)",
+        WebkitBackdropFilter: "blur(18px)",
+        background: "linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.55) 60%, transparent 100%)",
+        maskImage: "linear-gradient(to right, black 0%, black 65%, transparent 100%)",
+        WebkitMaskImage: "linear-gradient(to right, black 0%, black 65%, transparent 100%)",
+        zIndex: -1,
+        pointerEvents: "none",
+      }}/>
 
       {/* Main section name */}
       <div style={{
@@ -105,19 +108,20 @@ export default function SectionLabel({ section }: SectionLabelProps) {
         fontSize: "clamp(1.8rem, 3.5vw, 3.2rem)",
         fontWeight: 900,
         letterSpacing: "0.04em",
-        color: "rgba(255,255,255,0.92)",
+        color: "rgba(255,255,255,0.96)",
         lineHeight: 1,
         userSelect: "none",
+        textShadow: "0 0 40px rgba(0,0,0,0.8)",
       }}>
         {display}
       </div>
 
-      {/* Underline */}
+      {/* Underline — draws left to right */}
       <div ref={underlineRef} style={{
         height: "1px",
         width: "100%",
-        background: "linear-gradient(90deg, rgba(255,255,255,0.4), transparent)",
-        marginTop: "8px",
+        background: "linear-gradient(90deg, rgba(255,255,255,0.45), transparent)",
+        marginTop: "10px",
       }}/>
     </div>
   );

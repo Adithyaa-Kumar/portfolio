@@ -162,6 +162,8 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
       gsap.set([imgMain.current, imgRed.current, imgBlue.current], {
         opacity: 0, scale: 1.06, clipPath: "inset(100% 0 0 0)",
       });
+      const sweepLight = document.getElementById("sweep-light");
+      if (sweepLight) gsap.set(sweepLight, { x: -120 });
       runBoot();
     }, secRef);
     return () => ctx.revert();
@@ -174,9 +176,16 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
     startGlitch();
 
     gsap.to(grainRef.current,  { backgroundPosition:"300px 300px", duration:12, repeat:-1, ease:"none" });
-    gsap.to(portRef.current,   { y:-10, duration:5, repeat:-1, yoyo:true, ease:"sine.inOut" });
     gsap.to(gridRef.current,   { backgroundPosition:"160px 160px", duration:30, repeat:-1, ease:"none" });
-    gsap.to(sweepRef.current,  { left:"110%", duration:5.5, repeat:-1, ease:"none" });
+    // REPLACE WITH:
+    const sweepLight = document.getElementById("sweep-light");
+    if (sweepLight) {
+      const frameW = sweepRef.current?.offsetWidth ?? (window.innerWidth * 0.92);
+      gsap.fromTo(sweepLight,
+        { x: -120 },
+        { x: frameW + 120, duration: 4.5, repeat: -1, ease: "none", repeatDelay: 0.6 }
+      );
+    }
 
     const cr = () => gsap.to(portRef.current, {
       keyframes:[{x:-5,duration:0.03},{x:7,duration:0.03},{x:-3,duration:0.02},{x:0,duration:0.03}],
@@ -214,10 +223,6 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
 
     tl.to({}, { duration:3.6 }, 0.1);
 
-    tl.call(() => gsap.to(flashRef.current, {
-      opacity:1, duration:0.05,
-      onComplete: () => gsap.to(flashRef.current, { opacity:0, duration:0.12 }),
-    }), [], 3.55);
 
     tl.to(bootRef.current, { keyframes:[
       { x:-14, skewX:10,  opacity:0.8,  duration:0.04 },
@@ -307,25 +312,17 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
     });
 
     // 2. Brief white flash after a short delay
+    // 2. Scanline glitch exit — no white flash
     setTimeout(() => {
-      gsap.to(flashRef.current, {
-        opacity: 1,
-        duration: 0.08,
+      gsap.to(secRef.current, {
+        keyframes: [
+          { x: -16, skewX: 12,  opacity: 0.9,  filter: "brightness(1.4) blur(1px)", duration: 0.05 },
+          { x:  22, skewX: -14, opacity: 0.45, filter: "brightness(0.6) blur(2px)", duration: 0.05 },
+          { x:  -8, skewX:  8,  opacity: 0.75, filter: "brightness(1.2) blur(1px)", duration: 0.04 },
+          { x:   0, skewX:  0,  opacity: 0,    filter: "brightness(1) blur(0px)",   duration: 0.18 },
+        ],
         onComplete: () => {
-          // 3. Glitch-exit the entire hero
-          gsap.to(secRef.current, {
-            keyframes: [
-              { x: -16, skewX: 12,  opacity: 0.9,  duration: 0.04 },
-              { x:  22, skewX: -14, opacity: 0.4,  duration: 0.04 },
-              { x:  -8, skewX:  8,  opacity: 0.7,  duration: 0.03 },
-              { x:   0, skewX:  0,  opacity: 0,    duration: 0.16 },
-            ],
-            onComplete: () => {
-              if (onEnter) onEnter();
-            },
-          });
-          // Flash fades during glitch
-          gsap.to(flashRef.current, { opacity: 0, duration: 0.28, delay: 0.04 });
+          if (onEnter) onEnter();
         },
       });
     }, 150);
@@ -376,11 +373,6 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
       <div style={{
         position:"absolute", inset:0, zIndex:4, pointerEvents:"none",
         background:"repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.05) 2px,rgba(0,0,0,0.05) 4px)",
-      }}/>
-
-      {/* FLASH */}
-      <div ref={flashRef} style={{
-        position:"absolute", inset:0, background:"#fff", zIndex:300, pointerEvents:"none",
       }}/>
 
       {/* ── BOOT ─────────────────────────────────────── */}
@@ -563,6 +555,7 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
         left:"54%", transform:"translateX(-50%)",
         width:"40vw", maxWidth:"660px",
         zIndex:50, pointerEvents:"none", opacity:0,
+        overflow:"hidden",
       }}>
         <div ref={glitchOvRef} style={{
           position:"absolute", inset:0, zIndex:3,pointerEvents:"none",
@@ -592,10 +585,6 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
         }}/>
         <div style={{
           position:"absolute", inset:0, zIndex:12, pointerEvents:"none",
-          background:`
-            linear-gradient(to right,rgba(0,0,0,0.82) 0%,transparent 22%,transparent 78%,rgba(0,0,0,0.82) 100%),
-            linear-gradient(to bottom,rgba(0,0,0,0.45) 0%,transparent 16%,transparent 70%,rgba(0,0,0,1) 100%)
-          `,
         }}/>
         {glitchSlice && (
           <div style={{
@@ -609,9 +598,22 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
       {/* FRAME OVERLAY */}
       <div style={{ position:"absolute", inset:0, zIndex:35, pointerEvents:"none" }}>
         <div ref={sweepRef} style={{
-          position:"absolute", top:"44px", left:"-18%", width:"18%", height:"1px",
-          background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.7),transparent)", zIndex:40,
-        }}/>
+          position:"absolute", top:"44px",
+          left:"4%", right:"4%",
+          height:"2px",
+          overflow:"hidden",
+          zIndex:40,
+          pointerEvents:"none",
+        }}>
+          <div id="sweep-light" style={{
+            position:"absolute",
+            top:0, left:0,
+            width:"120px", height:"2px",
+            background:"linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.9) 50%,transparent 100%)",
+            pointerEvents:"none",
+            willChange:"transform",
+          }}/>
+        </div>
         <div className="hero-frame-h" style={{ position:"absolute", top:"44px", left:"4%", right:"4%", height:"1px", background:"rgba(255,255,255,0.07)", transformOrigin:"left" }}/>
         <div className="hero-frame-h" style={{ position:"absolute", bottom:"44px", left:"4%", right:"4%", height:"1px", background:"rgba(255,255,255,0.07)", transformOrigin:"right" }}/>
         {(["tl","tr","bl","br"] as const).map(p => <HeroCornerMk key={p} pos={p}/>)}
@@ -685,11 +687,43 @@ function HeroRightRow({ index, label, value, href, isStatus }: { index:number; l
 }
 
 function HeroCornerMk({ pos }: { pos:"tl"|"tr"|"bl"|"br" }) {
-  const top  = pos[0]==="t", left = pos[1]==="l";
+  const isTop  = pos[0] === "t";
+  const isLeft = pos[1] === "l";
+  const COLOR = "rgba(255,255,255,0.45)";
+  const ARM_W = 20; // horizontal arm length px
+  const ARM_H = 20; // vertical arm height px
+  // Top corners sit AT the frame line (44px), not the screen edge.
+  // Bottom corners sit AT the bottom frame line (44px from bottom).
+  // Left/right offset: 24px so they align with the OS label text.
   return (
-    <div className="hero-corner-mk" style={{ position:"absolute", top:top?"16px":undefined, bottom:!top?"16px":undefined, left:left?"16px":undefined, right:!left?"16px":undefined, display:"flex", flexDirection:"column", alignItems:left?"flex-start":"flex-end" }}>
-      <div style={{ width:"18px", height:"1px", background:"rgba(255,255,255,0.38)" }}/>
-      <div style={{ width:"1px", height:"18px", background:"rgba(255,255,255,0.38)", alignSelf:left?"flex-start":"flex-end" }}/>
+    <div
+      className="hero-corner-mk"
+      style={{
+        position: "absolute",
+        top:    isTop  ? "43px"  : undefined,
+        bottom: !isTop ? "43px"  : undefined,
+        left:   isLeft ? "20px"  : undefined,
+        right:  !isLeft ? "20px" : undefined,
+        display: "flex",
+        flexDirection: isTop? "column" : "column-reverse",
+        alignItems: isLeft ? "flex-start" : "flex-end",
+      }}
+    >
+      {/* Horizontal arm */}
+      <div style={{
+        width: `${ARM_W}px`,
+        height: "1px",
+        background: COLOR,
+        flexShrink: 0,
+      }}/>
+      {/* Vertical arm */}
+      <div style={{
+        width: "1px",
+        height: `${ARM_H}px`,
+        background: COLOR,
+        flexShrink: 0,
+        alignSelf: isLeft ? "flex-start" : "flex-end",
+      }}/>
     </div>
   );
 }
