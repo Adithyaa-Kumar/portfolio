@@ -58,7 +58,7 @@ export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
-    const sw = PROJECTS.length * CARD_STRIDE;
+    const sw = PROJECTS.length * CARD_STRIDE*2;
     const xSetter = gsap.quickSetter(track, "x", "px");
     const tick = () => {
       if (speedRef.current === 0) return;
@@ -117,7 +117,7 @@ export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
     return () => window.removeEventListener("keydown", onKey);
   }, [modalVisible, closeModal]);
 
-  const allCards = [...PROJECTS, ...PROJECTS];
+  const allCards = [...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS, ...PROJECTS]; // 4x for seamless looping
 
   return (
     <div style={{
@@ -798,7 +798,7 @@ const ProjectModal = forwardRef<HTMLDivElement, {
             fill
             style={{
               objectFit: "cover",
-              filter: "grayscale(100%) contrast(1.1) brightness(0.82)",
+              filter: " contrast(1.1) brightness(0.82)",
               transition: "opacity 0.3s ease",
             }}
           />
@@ -928,7 +928,7 @@ const ProjectModal = forwardRef<HTMLDivElement, {
                   fill
                   style={{
                     objectFit: "cover",
-                    filter: "grayscale(100%) brightness(0.75)",
+                    filter: " brightness(0.75)",
                   }}
                 />
               </button>

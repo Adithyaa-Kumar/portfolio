@@ -186,7 +186,7 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
   // ── BOOT ─────────────────────────────────────────────────
   const runBoot = () => {
     const tl = gsap.timeline();
-    const D: Record<LineType, number> = { ok: 80, warn: 125, err: 140, dim: 60, bright: 100, gap: 40 ,done : 120};
+    const D: Record<LineType, number> = { ok: 80, warn: 125, err: 140, dim: 60, bright: 100, gap: 40, done: 120 };
 
     tl.call(() => {
       let i = 0;
@@ -381,7 +381,7 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
             {bootLines.map((line, i) => {
               const c: Record<LineType, string> = {
                 ok: "rgba(255,255,255,0.85)", warn: "rgba(255,195,50,0.90)", err: "rgba(255,70,70,0.90)",
-                dim: "rgba(255,255,255,0.26)", bright: "rgba(255,255,255,0.97)", gap: "transparent",done: "rgb(17, 157, 12)",
+                dim: "rgba(255,255,255,0.26)", bright: "rgba(255,255,255,0.97)", gap: "transparent", done: "rgb(17, 157, 12)",
               };
               return (
                 <div key={i} style={{ fontFamily: "var(--font-mono)", fontSize: "0.58rem", letterSpacing: "0.08em", lineHeight: 1.6, color: c[line.type], whiteSpace: "pre" }}>
@@ -503,9 +503,9 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
             onMouseEnter={() => hTag(true)} onMouseLeave={() => hTag(false)}
           >
             Architecting intelligent systems,<br />
-            LLM-driven infrastructures,<br/>
-            and autonomous AI workflows<br/>
-            where engineering precision meets<br/>
+            LLM-driven infrastructures,<br />
+            and autonomous AI workflows<br />
+            where engineering precision meets<br />
             next-generation computational intelligence.
           </p>
 
@@ -1047,18 +1047,23 @@ function BootVisor() {
       <div style={{
         display: "flex", alignItems: "center", gap: "10px",
         animation: "fade-in 0.5s ease forwards 1.5s",
-        opacity: 0,
+        opacity: 0,paddingBottom: "30px",
       }}>
         <div style={{
-          width: "8px", height: "8px", borderRadius: "50%",
+          width: "8px",
+          height: "8px",
+          borderRadius: "50%",
           background: "rgba(255,255,255,0.9)",
           boxShadow: "0 0 12px rgba(255,255,255,0.6)",
           animation: "status-pulse 2s ease infinite 3.2s",
+          flexShrink: 0,
+          marginTop: "1px",
         }} />
         <span style={{
           fontFamily: "var(--font-orbitron)", fontSize: "0.55rem",
           fontWeight: 700, letterSpacing: "0.3em",
           color: "rgba(255,255,255,0.85)",
+          paddingBottom: "0px",
         }}>
           IDENTITY VERIFIED
         </span>

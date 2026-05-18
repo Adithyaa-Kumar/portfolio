@@ -95,110 +95,121 @@ export const SKILL_GROUPS = [
 export const PROJECTS = [
   {
     id: "1",
-    title: "Cinematic AI Portfolio",
-    short: "Futuristic OS-inspired portfolio with cinematic motion systems.",
+
+    title: "Multi-Agent Misinformation Detection System",
+
+    short:
+      "Distributed AI agent architecture for detecting and analyzing misinformation across multimodal sources.",
+
     description:
-      "A futuristic AI operating-system-inspired portfolio built with cinematic motion systems, layered UI architecture, persistent dashboard states, and immersive transformation-driven navigation. Every transition is engineered for cinematic quality — boot sequences, glitch reveals, parallax portrait, and signal corruption effects.",
+      "A multi-agent intelligence system designed for misinformation detection using coordinated AI agents capable of contextual reasoning, source validation, semantic verification, and response orchestration. The architecture integrates NLP pipelines, transformer inference systems, contextual memory handling, and autonomous agent collaboration for real-time misinformation analysis across digital content streams.",
+
     images: [
-      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop",
+      "/images/misinfo/1.png",
+      "/images/misinfo/2.png",
+      "/images/misinfo/3.png",
     ],
+
     github: "https://github.com/adithyaak",
-    stack: ["Next.js", "TypeScript", "GSAP", "TailwindCSS", "Framer Motion"],
-    category: "INTERFACE",
+
+    stack: [
+      "Python",
+      "Transformers",
+      "LangChain",
+      "FastAPI",
+      "Vector DB",
+      "Docker",
+    ],
+
+    category: "AI SYSTEMS",
+
     year: "2025",
+
     stats: [
-      { label: "INTELLIGENCE", value: "ACTIVE", icon: "brain" },
-      { label: "STATE", value: "ONLINE", icon: "db" },
-      { label: "SYSTEM", value: "OPTIMIZED", icon: "cpu" },
-      { label: "MODULE", value: "DEPLOYED", icon: "arrow" },
+      { label: "ARCHITECTURE", value: "MULTI-AGENT", icon: "brain" },
+      { label: "REASONING", value: "CONTEXTUAL", icon: "db" },
+      { label: "PIPELINE", value: "REALTIME", icon: "cpu" },
+      { label: "VALIDATION", value: "SOURCE-AWARE", icon: "arrow" },
     ],
   },
+
   {
     id: "2",
-    title: "Multimodal AI Assistant",
-    short: "Transformer-based multimodal assistant with vision + language.",
+
+    title: "CAFE — Context Aware Flow Embeddings",
+
+    short:
+      "Context-aware embedding framework for intelligent network packet analysis.",
+
     description:
-      "An intelligent multimodal system capable of processing text, image, and contextual reasoning using transformer pipelines, LangChain orchestration, and optimized inference workflows. Supports real-time streaming, tool use, and persistent memory across sessions.",
+      "CAFE is a network intelligence framework engineered for generating context-aware flow embeddings from packet-level network traffic. The system focuses on extracting semantic behavioral representations from flow sequences to improve traffic understanding, anomaly detection, and intelligent packet classification workflows. Designed with scalable embedding pipelines, temporal flow analysis, and efficient feature orchestration for cybersecurity and network intelligence applications.",
+
     images: [
-      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop",
+      "/images/cafe/1.png",
+      "/images/cafe/2.png",
+      "/images/cafe/3.png",
     ],
+
     github: "https://github.com/adithyaak",
-    stack: ["PyTorch", "LangChain", "OpenCV", "Transformers", "FastAPI", "Docker"],
-    category: "AI / ML",
-    year: "2024",
+
+    stack: [
+      "Python",
+      "PyTorch",
+      "Network Analysis",
+      "Embedding Models",
+      "Scikit-learn",
+      "NumPy",
+    ],
+
+    category: "NETWORK INTELLIGENCE",
+
+    year: "2025",
+
     stats: [
-      { label: "INFERENCE", value: "REALTIME", icon: "brain" },
-      { label: "STATE", value: "STREAMING", icon: "db" },
-      { label: "MODALITIES", value: "3 ACTIVE", icon: "cpu" },
-      { label: "MODULE", value: "DEPLOYED", icon: "arrow" },
+      { label: "EMBEDDINGS", value: "FLOW-AWARE", icon: "brain" },
+      { label: "ANALYSIS", value: "PACKET-LEVEL", icon: "db" },
+      { label: "PIPELINE", value: "SCALABLE", icon: "cpu" },
+      { label: "SECURITY", value: "NETWORK AI", icon: "arrow" },
     ],
   },
+
   {
     id: "3",
-    title: "Neural Vision Engine",
-    short: "Real-time computer vision pipeline for edge inference.",
+
+    title: "Smart Grocery Management System",
+
+    short:
+      "Intelligent grocery tracking and automation platform for inventory optimization.",
+
     description:
-      "A real-time computer vision pipeline for intelligent visual analysis, optimized object tracking, and edge inference deployment with high-performance streaming systems. CUDA-accelerated, TensorRT optimized for sub-10ms detection on edge hardware.",
+      "A smart grocery management platform engineered to streamline inventory monitoring, product tracking, and automated management workflows through intelligent system orchestration. The platform focuses on reducing manual management overhead using structured inventory pipelines, automated updates, data-driven monitoring, and optimized user interaction systems for efficient grocery handling.",
+
     images: [
-      "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1200&auto=format&fit=crop",
+      "/images/grocery/1.png",
+      "/images/grocery/2.png",
+      "/images/grocery/3.png",
     ],
+
     github: "https://github.com/adithyaak",
-    stack: ["Python", "YOLO", "OpenCV", "TensorRT", "CUDA", "Flask"],
-    category: "VISION",
-    year: "2024",
-    stats: [
-      { label: "LATENCY", value: "<10ms", icon: "brain" },
-      { label: "STATE", value: "ONLINE", icon: "db" },
-      { label: "HARDWARE", value: "CUDA", icon: "cpu" },
-      { label: "MODULE", value: "DEPLOYED", icon: "arrow" },
+
+    stack: [
+      "Next.js",
+      "Node.js",
+      "MongoDB",
+      "Express",
+      "REST API",
+      "JWT",
     ],
-  },
-  {
-    id: "4",
-    title: "Autonomous Trading Bot",
-    short: "Autonomous crypto trading engine with signal intelligence.",
-    description:
-      "A meme-coin trading automation engine featuring signal analysis, transaction orchestration, liquidity monitoring, and intelligent execution systems. Real-time WebSocket feeds, Redis-backed state management, and Docker-orchestrated microservices.",
-    images: [
-      "https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=1200&auto=format&fit=crop",
-    ], github: "https://github.com/adithyaak",
-    stack: ["Node.js", "Python", "WebSockets", "Redis", "MongoDB", "Docker"],
-    category: "AUTOMATION",
+
+    category: "SMART PLATFORM",
+
     year: "2024",
+
     stats: [
-      { label: "SIGNAL", value: "LIVE", icon: "brain" },
-      { label: "STATE", value: "ACTIVE", icon: "db" },
-      { label: "LATENCY", value: "<50ms", icon: "cpu" },
-      { label: "MODULE", value: "DEPLOYED", icon: "arrow" },
-    ],
-  },
-  {
-    id: "5",
-    title: "Relationship Management",
-    short: "Automated communication and scheduling platform.",
-    description:
-      "A scheduling and automated communication platform enabling timed email delivery, relationship tracking, intelligent reminders, and personalized interaction systems. JWT-authenticated, AWS-hosted, with Next.js frontend and FastAPI backend.",
-    images: [
-      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1200&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200&auto=format&fit=crop",
-    ], github: "https://github.com/adithyaak",
-    stack: ["Next.js", "FastAPI", "MongoDB", "SMTP", "JWT", "AWS"],
-    category: "PLATFORM",
-    year: "2023",
-    stats: [
-      { label: "USERS", value: "ACTIVE", icon: "brain" },
-      { label: "STATE", value: "ONLINE", icon: "db" },
-      { label: "INFRA", value: "AWS", icon: "cpu" },
-      { label: "MODULE", value: "DEPLOYED", icon: "arrow" },
+      { label: "INVENTORY", value: "AUTOMATED", icon: "brain" },
+      { label: "TRACKING", value: "REALTIME", icon: "db" },
+      { label: "BACKEND", value: "API-DRIVEN", icon: "cpu" },
+      { label: "WORKFLOW", value: "OPTIMIZED", icon: "arrow" },
     ],
   },
 ];
