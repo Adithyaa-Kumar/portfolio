@@ -5,38 +5,10 @@ import { gsap } from "gsap";
 import { Mail, MapPin, Phone, Send, X, Paperclip } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
+import { CONTACT_DETAILS } from "@/data";
 // ─── TYPES ────────────────────────────────────────────────────────────────────
 
 type SendStatus = "idle" | "sending" | "success" | "error";
-
-// ─── CONTACT DATA ─────────────────────────────────────────────────────────────
-
-const CONTACT_DETAILS = [
-  {
-    icon: "mail",
-    label: "EMAIL",
-    value: "adithyaakumarrr@gmail.com",
-    href: "mailto:adithyaakumarrr@gmail.com",
-  },
-  {
-    icon: "location",
-    label: "LOCATION",
-    value: "Chennai, India",
-    href: null,
-  },
-  {
-    icon: "github",
-    label: "GITHUB",
-    value: "github.com/adithyaak",
-    href: "https://github.com/adithyaak",
-  },
-  {
-    icon: "linkedin",
-    label: "LINKEDIN",
-    value: "linkedin.com/in/adithyaak",
-    href: "https://linkedin.com/in/adithyaak",
-  },
-];
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 

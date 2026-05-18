@@ -1,30 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-const EDUCATION_DATA = [
-  {
-    title: "Secondary Education",
-    institute: "Narayana Institute of Technology, Chennai",
-    duration: "2020 - 2022",
-    grade: "91.6%",
-    status: "ARCHIVED",
-  },
-  {
-    title: "Higher Secondary",
-    institute: "Narayana Institute of Technology, Chennai",
-    duration: "2022 - 2024",
-    grade: "85%",
-    status: "COMPLETED",
-  },
-  {
-    title: "Undergraduate - B.Tech CSE (AI & ML)",
-    institute: "Vellore Institute of Technology, Chennai",
-    duration: "2024 - 2028",
-    grade: "9.03 CGPA",
-    status: "ACTIVE NODE",
-  },
-];
+import { EDUCATION } from "@/data";
 
 export default function EducationSection() {
   return (
@@ -169,7 +146,7 @@ and AI through academic learning and hands-on development.
             zIndex: 10,
           }}
         >
-          {EDUCATION_DATA.map((item, index) => (
+          {EDUCATION.map((item, index) => (
             <motion.div
               key={index}
               initial={{

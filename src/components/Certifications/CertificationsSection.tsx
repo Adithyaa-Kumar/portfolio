@@ -1,57 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback, forwardRef } from "react";
 import { gsap } from "gsap";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
-
-// ─── DATA ─────────────────────────────────────────────────────────────────────
-
-const CERTS = [
-  {
-    id: "cert-01",
-    title: "Deep Learning Specialization",
-    organization: "Coursera / DeepLearning.AI",
-    year: "2024",
-    image: "/images/certifications/cert-01.jpg",
-    credentialId: "CREDENTIAL-ID-01",
-    skills: ["Neural Networks", "CNNs", "RNNs", "Transformers", "Sequence Models"],
-    description:
-      "5-course specialization covering neural network fundamentals, convolutional networks, sequence models, and NLP applications. Built and trained deep neural networks, identified architectures suited to different problems, and implemented recurrent networks including LSTMs.",
-  },
-  {
-    id: "cert-02",
-    title: "AWS Solutions Architect",
-    organization: "Amazon Web Services",
-    year: "2024",
-    image: "/images/certifications/cert-02.jpg",
-    credentialId: "CREDENTIAL-ID-02",
-    skills: ["Cloud Architecture", "EC2", "S3", "Lambda", "IAM", "VPC"],
-    description:
-      "Associate-level certification covering AWS core services, architecture best practices, high availability patterns, and cloud security principles. Designed distributed systems using AWS infrastructure with emphasis on cost optimization and reliability.",
-  },
-  {
-    id: "cert-03",
-    title: "Machine Learning with Python",
-    organization: "IBM / Coursera",
-    year: "2023",
-    image: "/images/certifications/cert-03.jpg",
-    credentialId: "CREDENTIAL-ID-03",
-    skills: ["Scikit-learn", "Pandas", "NumPy", "ML Algorithms", "Model Evaluation"],
-    description:
-      "Applied machine learning covering supervised, unsupervised, and recommender systems. Implemented classification, regression, clustering, and recommendation algorithms using Python and Scikit-learn on real-world datasets.",
-  },
-  {
-    id: "cert-04",
-    title: "LangChain & LLM Development",
-    organization: "DeepLearning.AI",
-    year: "2024",
-    image: "/images/certifications/cert-04.jpg",
-    credentialId: "CREDENTIAL-ID-04",
-    skills: ["LangChain", "RAG", "Agents", "Prompt Engineering", "Vector DBs"],
-    description:
-      "Hands-on course building LLM-powered applications using LangChain, including RAG systems and autonomous agents. Covered prompt engineering, tool use, memory systems, and deployment patterns for production LLM applications.",
-  },
-];
+import { CERTS } from "@/data";
 
 type Cert = typeof CERTS[number];
 
@@ -363,7 +315,7 @@ function CertCard({
       {/* Image */}
       <div style={{
         width: "100%",
-        aspectRatio: "1/1",
+        aspectRatio: "9/8",
         position: "relative",
         overflow: "hidden",
         background: "rgba(20,20,20,1)",
@@ -374,8 +326,8 @@ function CertCard({
           alt={cert.title}
           style={{
             width: "100%", height: "100%",
-            objectFit: "cover",
-            filter: "grayscale(100%) contrast(1.05) brightness(0.8)",
+            objectFit: "contain",
+            filter: "grayscale(100%) contrast(1.05) brightness(1)",
             transition: "filter 0.4s ease, transform 0.4s ease",
             transform: hov && isCenter ? "scale(1.04)" : "scale(1)",
           }}
@@ -486,8 +438,6 @@ function CertCard({
 }
 
 // ─── CERT MODAL ───────────────────────────────────────────────────────────────
-
-import { forwardRef } from "react";
 
 const CertModal = forwardRef<HTMLDivElement, {
   cert: Cert;
@@ -674,7 +624,7 @@ const CertModal = forwardRef<HTMLDivElement, {
               width:"100%", height:"100%",
               objectFit:"contain",
               objectPosition:"center",
-              filter:"grayscale(100%) contrast(1.1) brightness(0.85)",
+              filter:" contrast(1.1) brightness(1)",
               padding:"16px",
             }}
             onError={(e) => {
