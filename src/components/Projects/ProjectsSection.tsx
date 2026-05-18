@@ -22,7 +22,7 @@ interface Project {
   title: string;
   short: string;
   description: string;
-  image: string;
+  images: string[];
   github: string;
   stack: string[];
   stats: ProjectStat[];
@@ -370,7 +370,7 @@ function ProjectCard({
       }}>
         <div ref={imageRef} style={{ position: "absolute", inset: 0, willChange: "transform" }}>
           <Image
-            src={project.image}
+            src={project.images[0]}
             alt={project.title}
             fill
             priority={isPriority}
@@ -439,18 +439,18 @@ function ProjectCard({
         transform: "scaleX(0)",
         zIndex: 4,
       }}/>
-
-      {/* ── CONTENT — 50% height ──────────────────────── */}
+{/* ── CONTENT — 50% height — fixed layout, no dynamic growth ── */}
       <div style={{
         position: "absolute",
         top: "50%", left: 0, right: 0, bottom: 0,
         padding: "18px 20px 16px 20px",
         display: "flex",
         flexDirection: "column",
-        gap: "10px",
+        gap: "8px",
         zIndex: 3,
+        overflow: "hidden",   /* hard clip — nothing can escape the 50% box */
       }}>
-        {/* Title */}
+        {/* Title — fixed 2-line max, ellipsis if longer */}
         <div style={{
           fontFamily: "var(--font-orbitron)",
           fontSize: "0.95rem",
@@ -458,26 +458,34 @@ function ProjectCard({
           letterSpacing: "0.02em",
           color: "rgba(255,255,255,0.95)",
           lineHeight: 1.25,
+          // Fixed height = 2 lines × lineHeight 1.25 × fontSize 0.95rem
+          height: "calc(0.95rem * 1.25 * 2)",
+          overflow: "hidden",
+          display: "-webkit-box",
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
+          flexShrink: 0,
         }}>
           {project.title}
         </div>
 
-        {/* Description */}
+        {/* Description — fixed 3-line max, ellipsis if longer */}
         <div style={{
           fontFamily: "var(--font-grotesk)",
           fontSize: "0.9rem",
           lineHeight: 1.65,
           fontWeight: 300,
           color: "rgba(255,255,255,0.5)",
-          flex: 1,
+          // Fixed height = 3 lines × lineHeight 1.65 × fontSize 0.9rem
+          height: "calc(0.9rem * 1.65 * 3)",
           overflow: "hidden",
           display: "-webkit-box",
           WebkitLineClamp: 3,
           WebkitBoxOrient: "vertical",
+          flexShrink: 0,
         }}>
           {project.short}
         </div>
-
         {/* Stack pills */}
         <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
           {project.stack.slice(0, 3).map((s) => (
@@ -579,137 +587,144 @@ function CardCorners() {
   );
 }
 
-// ─── PROJECT MODAL ───────────────────────────────────────────────────────────
-
 const ProjectModal = forwardRef<HTMLDivElement, {
   project: Project;
   onClose: () => void;
 }>(({ project, onClose }, ref) => {
-  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  const [imgIdx, setImgIdx] = useState(0);
+  const images = project.images ?? [];
+
+  const prev = () => setImgIdx((i) => (i - 1 + images.length) % images.length);
+  const next = () => setImgIdx((i) => (i + 1) % images.length);
 
   return (
     <div
       ref={ref}
       style={{
         position: "relative",
-        width: "min(2000px, 90%)",
-        maxHeight: "100vh",
+        width: "min(1500px, 94vw)",
+        height: "min(560px, 88vh)",
         overflow: "hidden",
         border: "1px solid rgba(255,255,255,0.12)",
-        background: "rgba(6,6,6,0.98)",
+        background: "rgba(6,6,6,0.99)",
         display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        clipPath: "polygon(0 0, calc(100% - 24px) 0, 100% 24px, 100% 100%, 24px 100%, 0 calc(100% - 24px))",
-        boxShadow: "0 40px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.08)",
+        gridTemplateColumns: "1.25fr 1fr",   // left wider than right
+        clipPath: "polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px))",
+        boxShadow: "0 40px 80px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.07)",
       }}
     >
       {/* Ambient grid */}
       <div style={{
-        position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0.02,
+        position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0.018,
         backgroundImage: `linear-gradient(rgba(255,255,255,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.08) 1px,transparent 1px)`,
-        backgroundSize: "50px 50px",
+        backgroundSize: "44px 44px",
       }}/>
 
       {/* Corner brackets */}
       <div style={{ position:"absolute", top:4, left:4, zIndex:20, pointerEvents:"none" }}>
-        <div style={{ width:18, height:1, background:"rgba(255,255,255,0.5)" }}/>
-        <div style={{ width:1, height:18, background:"rgba(255,255,255,0.5)" }}/>
+        <div style={{ width:14, height:1, background:"rgba(255,255,255,0.45)" }}/>
+        <div style={{ width:1, height:14, background:"rgba(255,255,255,0.45)" }}/>
       </div>
-      <div style={{ position:"absolute", bottom:22, right:4, zIndex:20, pointerEvents:"none", display:"flex", flexDirection:"column", alignItems:"flex-end" }}>
-        <div style={{ width:1, height:18, background:"rgba(255,255,255,0.5)", alignSelf:"flex-end" }}/>
-        <div style={{ width:18, height:1, background:"rgba(255,255,255,0.5)" }}/>
+      <div style={{ position:"absolute", bottom:4, right:4, zIndex:20, pointerEvents:"none", display:"flex", flexDirection:"column", alignItems:"flex-end" }}>
+        <div style={{ width:1, height:14, background:"rgba(255,255,255,0.45)", alignSelf:"flex-end" }}/>
+        <div style={{ width:14, height:1, background:"rgba(255,255,255,0.45)" }}/>
       </div>
 
-      {/* ── LEFT PANEL ──────────────────────────────────── */}
+      {/* ── LEFT PANEL — independently scrollable ──────────── */}
       <div style={{
         position: "relative", zIndex: 1,
-        padding: "32px 28px",
+        padding: "16px 16px 16px 16px",
         display: "flex", flexDirection: "column",
         borderRight: "1px solid rgba(255,255,255,0.07)",
-        overflowY: "auto", scrollbarWidth: "none",
-        maxHeight: "100vh",
+        overflowY: "auto",
+        scrollbarWidth: "none",
+        height: "100%",
+        gap: "0",
       }}>
 
-      {/* Title */}
+        {/* System label */}
+        <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"10px", marginTop:"10px" }}>
+          <div style={{ width:16, height:1, background:"rgba(255,255,255,0.18)" }}/>
+          <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.45rem", letterSpacing:"0.36em", color:"rgba(255,255,255,0.2)" }}>
+            SYS_{String(project.id).padStart(3,"0")} · {project.category}
+          </span>
+        </div>
+
+        {/* Title */}
         <div style={{
           fontFamily: "var(--font-orbitron)",
-          fontSize: "clamp(1.3rem, 2.2vw, 2rem)",
+          fontSize: "clamp(1.1rem, 2vw, 1.7rem)",
           fontWeight: 900, letterSpacing: "0.02em",
           color: "rgba(255,255,255,0.96)",
-          lineHeight: 1.15, marginBottom: "20px",
+          lineHeight: 1.15, marginBottom: "14px",
         }}>
           {project.title}
         </div>
 
         {/* Category + year */}
-        <div style={{ display:"flex", gap:"8px", marginBottom:"16px" }}>
+        <div style={{ display:"flex", gap:"7px", marginBottom:"16px", flexWrap:"wrap" }}>
           <div style={{
-            padding:"3px 10px", border:"1px solid rgba(255,255,255,0.15)",
-            fontFamily:"var(--font-mono)", fontSize:"0.5rem", letterSpacing:"0.28em",
-            color:"rgba(255, 255, 255, 0.77)",
+            padding:"3px 9px", border:"1px solid rgba(255, 255, 255, 0.27)",
+            fontFamily:"var(--font-mono)", fontSize:"0.6rem", letterSpacing:"0.24em",
+            color:"rgba(255, 255, 255, 0.83)",
           }}>
             {project.category}
           </div>
           <div style={{
-            padding:"3px 10px", border:"1px solid rgba(255,255,255,0.08)",
-            fontFamily:"var(--font-mono)", fontSize:"0.5rem", letterSpacing:"0.28em",
-            color:"rgba(255, 255, 255, 0.8)",
+            padding:"3px 9px", border:"1px solid rgba(255, 255, 255, 0.37)",
+            fontFamily:"var(--font-mono)", fontSize:"0.6rem", letterSpacing:"0.24em",
+            color:"rgba(255, 255, 255, 0.71)",
           }}>
             {project.year}
           </div>
         </div>
 
         {/* Divider */}
-        <div style={{ width:50, height:1, background:"rgba(255,255,255,0.18)", marginBottom:"15px" }}/>
+        <div style={{ width:100, height:1, background:"rgba(255,255,255,0.16)", marginBottom:"10px" }}/>
 
         {/* Description */}
         <p style={{
           fontFamily: "var(--font-grotesk)",
-          fontSize: "1rem", lineHeight: 1.85, fontWeight: 300,
-          color: "rgba(255, 255, 255, 0.8)", marginBottom: "14px",
+          fontSize: "0.99rem", lineHeight: 1.85, fontWeight: 300,
+          color: "rgba(255, 255, 255, 0.8)", marginBottom: "20px",
         }}>
           {project.description}
         </p>
-{/* Stats grid */}
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"10px", marginBottom:"24px" }}>
+        {/* Stats grid */}
+        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"10px", marginBottom:"15px" }}>
           {project.stats.map((stat) => (
-            <StatCard key={stat.label} label={stat.label} value={stat.value} icon={stat.icon}/>
+            <StatCard key={stat.label} label={stat.label} value={stat.value} icon={stat.icon as "brain" | "db" | "cpu" | "arrow" | "zap"}/>
           ))}
         </div>
+
         {/* Stack */}
-        <div style={{ marginTop:"auto" }}>
+        <div>
           <div style={{
-            fontFamily:"var(--font-mono)", fontSize:"0.36rem",
-            letterSpacing:"0.4em", color:"rgba(255,255,255,0.2)", marginBottom:"12px",
+            fontFamily:"var(--font-mono)", fontSize:"0.7rem",
+            letterSpacing:"0.6em", color:"rgba(255, 255, 255, 0.5)", marginBottom:"10px",
           }}>
             TECHNOLOGY STACK
           </div>
-          <div style={{ display:"flex", flexWrap:"wrap", gap:"7px" }}>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
             {project.stack.map((tech) => <TechPill key={tech} tech={tech}/>)}
           </div>
         </div>
       </div>
 
-      {/* ── RIGHT PANEL ─────────────────────────────────── */}
-      <div style={{
-        position: "relative", zIndex: 1,
-        padding: "32px 28px 28px 28px",
-        display: "flex", flexDirection: "column", gap: "14px",
-        overflowY: "auto", scrollbarWidth: "none",
-        maxHeight: "80vh",
-      }}>
-        {/* Close button */}
+      
+
+      {/* ── RIGHT PANEL — independently scrollable ─────────── */}
+      {/* X close — top left of modal */}
         <button
-          ref={closeBtnRef}
           onClick={onClose}
           style={{
-            position: "absolute", top: "16px", right: "24px",
-            width: "40px", height: "40px",
+            position: "absolute", top: "14px", right: "14px",
+            width: "35px", height: "35px",
             border: "1px solid rgba(255,255,255,0.14)",
             background: "rgba(255,255,255,0.02)",
             display: "flex", alignItems: "center", justifyContent: "center",
             cursor: "pointer", zIndex: 20,
-            clipPath: "polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px)",
+            clipPath: "polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px)",
             transition: "border-color 0.2s, background 0.2s",
           }}
           onMouseEnter={(e) => {
@@ -721,103 +736,255 @@ const ProjectModal = forwardRef<HTMLDivElement, {
             (e.currentTarget as HTMLElement).style.background  = "rgba(255,255,255,0.02)";
           }}
         >
-          <X size={15} color="rgba(255,255,255,0.8)"/>
+          <X size={13} color="rgba(255,255,255,0.8)"/>
         </button>
+<div style={{
+  position: "relative",
+  zIndex: 1,
+  padding: "10px 20px 16px 20px",
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
+  overflowY: "auto",
+  scrollbarWidth: "none",
+  height: "100%",
+}}>
 
-        {/* Main image */}
+  {/* TOP META BAR */}
+  <div style={{
+    height: "48px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexShrink: 0,
+  }}>
+    <div style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "8px",
+    }}>
+      <div style={{
+        width: "16px",
+        height: "1px",
+        background: "rgba(255, 255, 255, 0.52)",
+      }}/>
+
+      <span style={{
+        fontFamily: "var(--font-orbitron)",
+        fontSize: "0.7rem",
+        letterSpacing: "0.34em",
+        color: "rgba(255, 255, 255, 0.79)",
+      }}>
+        PROJECT VISUAL MODULE
+      </span>
+    </div>
+  </div>
+
+        {/* ── IMAGE VIEWER ──────────────────────────────── */}
         <div style={{
-          position: "relative", width: "100%", height: "220px",
-          overflow: "hidden", border: "1px solid rgba(255,255,255,0.08)", flexShrink: 0,
+          position: "relative",
+          width: "100%",
+          height: "75%",
+          flex: "1",
+          overflow: "hidden",
+          border: "1px solid rgba(255,255,255,0.08)",
+          background: "rgba(12,12,12,1)",
+          minHeight: "280px",
         }}>
+          {/* Current image */}
           <Image
-            src={project.image} alt={project.title} fill
-            style={{ objectFit:"cover", filter:"grayscale(100%) contrast(1.1) brightness(0.82)" }}
+            src={images[imgIdx]}
+            alt={`${project.title} — image ${imgIdx + 1}`}
+            fill
+            style={{
+              objectFit: "cover",
+              filter: "grayscale(100%) contrast(1.1) brightness(0.82)",
+              transition: "opacity 0.3s ease",
+            }}
           />
+
+          {/* Gradient */}
           <div style={{
-            position:"absolute", inset:0,
-            background:"linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.45))",
+            position: "absolute", inset: 0,
+            background: "linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.4))",
+            pointerEvents: "none",
           }}/>
+
+          {/* Image counter */}
           <div style={{
-            position:"absolute", bottom:"10px", left:"12px",
-            fontFamily:"var(--font-mono)", fontSize:"0.3rem",
-            letterSpacing:"0.26em", color:"rgba(255,255,255,0.3)",
+            position: "absolute", top: "10px", right: "10px",
+            fontFamily: "var(--font-mono)", fontSize: "0.3rem",
+            letterSpacing: "0.28em", color: "rgba(255,255,255,0.35)",
+            background: "rgba(0,0,0,0.6)", padding: "3px 8px",
           }}>
-            PRIMARY · {project.title.toUpperCase()}
+            {String(imgIdx + 1).padStart(2,"0")} / {String(images.length).padStart(2,"0")}
           </div>
-          {/* Corner marks on image */}
-          <div style={{ position:"absolute", top:6, left:6, zIndex:2 }}>
-            <div style={{ width:12, height:1, background:"rgba(255,255,255,0.5)" }}/>
-            <div style={{ width:1, height:12, background:"rgba(255,255,255,0.5)" }}/>
+
+          {/* Corner marks */}
+          <div style={{ position:"absolute", top:6, left:6, pointerEvents:"none", zIndex:2 }}>
+            <div style={{ width:10, height:1, background:"rgba(255,255,255,0.45)" }}/>
+            <div style={{ width:1, height:10, background:"rgba(255,255,255,0.45)" }}/>
           </div>
-          <div style={{ position:"absolute", bottom:6, right:6, zIndex:2, display:"flex", flexDirection:"column", alignItems:"flex-end" }}>
-            <div style={{ width:1, height:12, background:"rgba(255,255,255,0.5)", alignSelf:"flex-end" }}/>
-            <div style={{ width:12, height:1, background:"rgba(255,255,255,0.5)" }}/>
+          <div style={{ position:"absolute", bottom:6, right:6, pointerEvents:"none", zIndex:2, display:"flex", flexDirection:"column", alignItems:"flex-end" }}>
+            <div style={{ width:1, height:10, background:"rgba(255,255,255,0.45)", alignSelf:"flex-end" }}/>
+            <div style={{ width:10, height:1, background:"rgba(255,255,255,0.45)" }}/>
           </div>
+
+          {/* Left arrow */}
+          {images.length > 1 && (
+            <button
+              onClick={prev}
+              style={{
+                position: "absolute", left: "8px", top: "50%",
+                transform: "translateY(-50%)",
+                background: "rgba(0,0,0,0.55)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                color: "rgba(255,255,255,0.8)",
+                width: "32px", height: "32px",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                cursor: "pointer", zIndex: 5,
+                fontFamily: "var(--font-grotesk)",
+                fontSize: "1rem", lineHeight: 1,
+                transition: "background 0.2s, border-color 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.12)";
+                (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.5)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.55)";
+                (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.15)";
+              }}
+            >
+              ‹
+            </button>
+          )}
+
+          {/* Right arrow */}
+          {images.length > 1 && (
+            <button
+              onClick={next}
+              style={{
+                position: "absolute", right: "8px", top: "50%",
+                transform: "translateY(-50%)",
+                background: "rgba(0,0,0,0.55)",
+                border: "1px solid rgba(255,255,255,0.15)",
+                color: "rgba(255,255,255,0.8)",
+                width: "32px", height: "32px",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                cursor: "pointer", zIndex: 5,
+                fontFamily: "var(--font-grotesk)",
+                fontSize: "1rem", lineHeight: 1,
+                transition: "background 0.2s, border-color 0.2s",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.12)";
+                (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.5)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "rgba(0,0,0,0.55)";
+                (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.15)";
+              }}
+            >
+              ›
+            </button>
+          )}
         </div>
 
-        {/* Bottom: secondary image + github */}
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 130px", gap:"12px", flex:1, minHeight:"120px" }}>
-          {/* Secondary image */}
+        {/* ── THUMBNAIL STRIP ──────────────────────────── */}
+        {images.length > 1 && (
           <div style={{
-            position:"relative", overflow:"hidden",
-            border:"1px solid rgba(255,255,255,0.07)",
+            display: "flex",
+            gap: "10px",
+            flexShrink: 0,
           }}>
-            <Image
-              src={project.image} alt={project.title} fill
-              style={{ objectFit:"cover", filter:"grayscale(100%) contrast(1.05) brightness(0.6)" }}
-            />
-            <div style={{ position:"absolute", inset:0, background:"linear-gradient(135deg,rgba(0,0,0,0.2),rgba(0,0,0,0.65))" }}/>
-            <div style={{ position:"absolute", bottom:8, left:10, fontFamily:"var(--font-mono)", fontSize:"0.28rem", letterSpacing:"0.24em", color:"rgba(255,255,255,0.25)" }}>
-              SECONDARY VIEW
-            </div>
+            {images.map((src, i) => (
+              <button
+                key={i}
+                onClick={() => setImgIdx(i)}
+                style={{
+                  width: "50px", height: "50px",
+                  flexShrink: 0,
+                  padding: 0, border: "none",
+                  outline: "none", cursor: "pointer",
+                  position: "relative", overflow: "hidden",
+                  boxShadow: i === imgIdx
+                    ? "0 0 0 2px rgba(255, 255, 255, 0.53)"
+                    : "0 0 0 1px rgba(255,255,255,0.12)",
+                  opacity: i === imgIdx ? 1 : 0.5,
+                  transition: "all 0.18s ease",
+                  background: "#000",
+                }}
+                onMouseEnter={(e) => {
+                  if (i !== imgIdx) (e.currentTarget as HTMLElement).style.opacity = "0.8";
+                }}
+                onMouseLeave={(e) => {
+                  if (i !== imgIdx) (e.currentTarget as HTMLElement).style.opacity = "0.5";
+                }}
+              >
+                <Image
+                  src={src}
+                  alt={`thumb ${i + 1}`}
+                  fill
+                  style={{
+                    objectFit: "cover",
+                    filter: "grayscale(100%) brightness(0.75)",
+                  }}
+                />
+              </button>
+            ))}
           </div>
+        )}
 
-          {/* GitHub box */}
-          <a
-            href={project.github}
+        {/* ── GITHUB BOTTOM ─────────────────────────────── */}
+        <div style={{
+          flexShrink: 0,
+          display: "flex",
+          justifyContent: "flex-end",
+          paddingTop: "15px",
+          borderTop: "1px solid rgba(255,255,255,0.06)",
+        }}>
+          
+            <a href={project.github}
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              position:"relative",
-              border:"1px solid rgba(255,255,255,0.1)",
-              background:"rgba(255,255,255,0.02)",
-              display:"flex", flexDirection:"column",
-              justifyContent:"center", alignItems:"center",
-              gap:"10px", textDecoration:"none", overflow:"hidden",
-              cursor:"pointer",
-              transition:"border-color 0.2s, background 0.2s",
-              clipPath:"polygon(6px 0%,100% 0%,100% calc(100% - 6px),calc(100% - 6px) 100%,0% 100%,0% 6px)",
+              display: "flex", alignItems: "center", gap: "8px",
+              padding: "7px 14px",
+              border: "1px solid rgba(255,255,255,0.12)",
+              background: "rgba(255,255,255,0.02)",
+              textDecoration: "none",
+              cursor: "pointer",
+              transition: "border-color 0.2s, background 0.2s",
+              clipPath: "polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px)",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.35)";
-              (e.currentTarget as HTMLElement).style.background  = "rgba(255,255,255,0.05)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.4)";
+              (e.currentTarget as HTMLElement).style.background  = "rgba(255,255,255,0.06)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.1)";
+              (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.12)";
               (e.currentTarget as HTMLElement).style.background  = "rgba(255,255,255,0.02)";
             }}
           >
-            <div style={{ position:"absolute", top:"-30px", right:"-30px", width:80, height:80, borderRadius:"50%", background:"radial-gradient(circle,rgba(255,255,255,0.07),transparent)", pointerEvents:"none" }}/>
-            <FaGithub size={26} color="rgba(255,255,255,0.85)"/>
-            <div style={{ fontFamily:"var(--font-mono)", fontSize:"0.33rem", letterSpacing:"0.28em", color:"rgba(255,255,255,0.32)", textAlign:"center", lineHeight:1.6 }}>
-              GITHUB<br/>MODULE
-            </div>
-            <div style={{ position:"absolute", bottom:8, display:"flex", alignItems:"center", gap:4 }}>
-              <ArrowUpRight size={10} color="rgba(255,255,255,0.25)"/>
-              <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.27rem", letterSpacing:"0.18em", color:"rgba(255,255,255,0.2)" }}>OPEN</span>
-            </div>
+            <FaGithub size={15} color="rgba(255,255,255,0.75)"/>
+            <span style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.6rem",
+              letterSpacing: "0.24em",
+              color: "rgba(255,255,255,0.55)",
+            }}>
+              VIEW SOURCE
+            </span>
           </a>
         </div>
       </div>
     </div>
   );
 });
-
-ProjectModal.displayName = "ProjectModal";
-
 // ─── STAT CARD ───────────────────────────────────────────────────────────────
 
-function StatCard({ label, value, icon }: { label:string; value:string; icon:StatIcon }) {
+function StatCard({ label, value, icon }: { label: string; value: string; icon: StatIcon }) {
   const icons = {
     brain: <Brain size={14} color="rgba(255,255,255,0.65)"/>,
     db:    <Database size={14} color="rgba(255,255,255,0.65)"/>,
@@ -828,23 +995,27 @@ function StatCard({ label, value, icon }: { label:string; value:string; icon:Sta
   return (
     <div style={{
       padding: "12px 14px",
-      border: "1px solid rgba(255,255,255,0.07)",
+      border: "1px solid rgba(255, 255, 255, 0.1)",
       background: "rgba(255,255,255,0.018)",
       clipPath: "polygon(5px 0%,100% 0%,100% calc(100% - 5px),calc(100% - 5px) 100%,0% 100%,0% 5px)",
     }}>
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"10px" }}>
         {icons[icon] ?? icons.zap}
-        <div style={{ width:12, height:1, background:"rgba(255,255,255,0.12)" }}/>
+        <div style={{ width:12, height:1, background:"rgba(255, 255, 255, 0.26)" }}/>
       </div>
-      <div style={{ fontFamily:"var(--font-mono)", fontSize:"0.32rem", letterSpacing:"0.28em", color:"rgba(255,255,255,0.2)", marginBottom:"5px" }}>{label}</div>
-      <div style={{ fontFamily:"var(--font-orbitron)", fontSize:"0.65rem", fontWeight:700, color:"rgba(255,255,255,0.88)", letterSpacing:"0.05em" }}>{value}</div>
+      <div style={{ fontFamily:"var(--font-mono)", fontSize:"0.69rem", letterSpacing:"0.28em", color:"rgba(255, 255, 255, 0.46)", marginBottom:"5px" }}>
+        {label}
+      </div>
+      <div style={{ fontFamily:"var(--font-orbitron)", fontSize:"0.65rem", fontWeight:700, color:"rgba(255,255,255,0.88)", letterSpacing:"0.05em" }}>
+        {value}
+      </div>
     </div>
   );
 }
 
 // ─── TECH PILL ────────────────────────────────────────────────────────────────
 
-function TechPill({ tech }: { tech:string }) {
+function TechPill({ tech }: { tech: string }) {
   const [hov, setHov] = useState(false);
   return (
     <div
@@ -852,10 +1023,10 @@ function TechPill({ tech }: { tech:string }) {
       onMouseLeave={() => setHov(false)}
       style={{
         padding: "5px 10px",
-        border: `1px solid ${hov ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.08)"}`,
+        border: `1px solid ${hov ? "rgba(255, 255, 255, 0.09)" : "rgba(255, 255, 255, 0.25)"}`,
         background: hov ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.02)",
-        fontFamily: "var(--font-mono)", fontSize:"0.35rem", letterSpacing:"0.2em",
-        color: hov ? "rgba(255,255,255,0.72)" : "rgba(255,255,255,0.38)",
+        fontFamily: "var(--font-mono)", fontSize:"0.8rem", letterSpacing:"0.2em",
+        color: hov ? "rgba(255, 255, 255, 0.87)" : "rgba(255, 255, 255, 0.44)",
         transition: "all 0.18s ease", cursor:"default",
         clipPath: "polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px)",
       }}
@@ -864,3 +1035,4 @@ function TechPill({ tech }: { tech:string }) {
     </div>
   );
 }
+ProjectModal.displayName = "ProjectModal";

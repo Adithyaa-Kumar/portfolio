@@ -367,25 +367,38 @@ function CertCard({
         )}
       </div>
 
-      {/* Bottom info */}
-      <div style={{ padding: "12px 14px" }}>
+      {/* Bottom info — fixed height, nothing grows the card */}
+      <div style={{
+        padding: "12px 14px",
+        height: "80px",          /* fixed: 2-line title + org/year row always same height */
+        overflow: "hidden",       /* hard clip */
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        flexShrink: 0,
+      }}>
+        {/* Title — max 2 lines, ellipsis */}
         <div style={{
           fontFamily: "var(--font-orbitron)",
           fontSize: "1rem", fontWeight: 700,
           letterSpacing: "0.03em",
           color: isCenter ? "rgba(255,255,255,0.94)" : "rgba(255,255,255,0.5)",
           lineHeight: 1.3,
-          marginBottom: "6px",
+          // Fixed height = 2 lines × 1.3 lineHeight × 1rem
+          height: "calc(1rem * 1.3 * 2)",
+          overflow: "hidden",
           display: "-webkit-box",
           WebkitLineClamp: 2,
           WebkitBoxOrient: "vertical",
-          overflow: "hidden",
           transition: "color 0.25s ease",
+          flexShrink: 0,
         }}>
           {cert.title}
         </div>
+        {/* Org / year row — always pinned to bottom of the 80px box */}
         <div style={{
           display: "flex", justifyContent: "space-between", alignItems: "center",
+          flexShrink: 0,
         }}>
           <span style={{
             fontFamily: "var(--font-mono)", fontSize: "0.8rem",

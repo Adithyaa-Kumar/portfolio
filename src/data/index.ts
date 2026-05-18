@@ -9,60 +9,60 @@ import type {
 // ─── Sections ─────────────────────────────────────────────────────────────────
 
 export const SECTIONS: SectionMeta[] = [
-  { id: "hero",           index: 0, label: "HOME",           systemLabel: "00 / HOME" },
-  { id: "about",          index: 1, label: "ABOUT",          systemLabel: "01 / ABOUT" },
-  { id: "education",      index: 2, label: "EDUCATION",      systemLabel: "02 / EDUCATION" },
-  { id: "skills",         index: 3, label: "SKILLS",         systemLabel: "03 / SKILLS" },
-  { id: "projects",       index: 4, label: "PROJECTS",       systemLabel: "04 / PROJECTS" },
+  { id: "hero", index: 0, label: "HOME", systemLabel: "00 / HOME" },
+  { id: "about", index: 1, label: "ABOUT", systemLabel: "01 / ABOUT" },
+  { id: "education", index: 2, label: "EDUCATION", systemLabel: "02 / EDUCATION" },
+  { id: "skills", index: 3, label: "SKILLS", systemLabel: "03 / SKILLS" },
+  { id: "projects", index: 4, label: "PROJECTS", systemLabel: "04 / PROJECTS" },
   { id: "certifications", index: 5, label: "CERTIFICATIONS", systemLabel: "05 / CERTS" },
-  { id: "contact",        index: 6, label: "CONTACT",        systemLabel: "06 / CONTACT" },
+  { id: "contact", index: 6, label: "CONTACT", systemLabel: "06 / CONTACT" },
 ];
 
 // ─── Personal ─────────────────────────────────────────────────────────────────
 
 export const PERSONAL = {
-  name:        "Adithyaa K",
-  nameShort:   "AK",
-  title:       "AI&ML ENGINEER",                             // REPLACE
-  tagline:     "Building Intelligence at the Edge",       // REPLACE
-  location:    "Chennai, India",                          // REPLACE
-  email:       "adithyaa@email.com",                      // REPLACE
-  github:      "https://github.com/Adithyaa-Kumar",            // REPLACE
-  linkedin:    "https://www.linkedin.com/in/adithyaa-k-a496b03ba/",       // REPLACE
+  name: "Adithyaa K",
+  nameShort: "AK",
+  title: "AI&ML ENGINEER",                             // REPLACE
+  tagline: "Building Intelligence at the Edge",       // REPLACE
+  location: "Chennai, India",                          // REPLACE
+  email: "adithyaa@email.com",                      // REPLACE
+  github: "https://github.com/Adithyaa-Kumar",            // REPLACE
+  linkedin: "https://www.linkedin.com/in/adithyaa-k-a496b03ba/",       // REPLACE
   bio: {
     p1: "I engineer intelligent systems that sit at the intersection of machine learning, computer vision, and real-world deployment. My work focuses on building AI that doesn't just run in notebooks — it ships.", // REPLACE
     p2: "I believe the best AI systems are invisible to users and indispensable to workflows. Every model I train, every pipeline I deploy, is designed with that philosophy.",                                       // REPLACE
     p3: "When I'm not training models or optimizing inference pipelines, I'm exploring multimodal systems, generative architectures, and the edges of what current AI can do.",                                      // REPLACE
   },
   philosophy: "Engineering matters when intelligence meets execution.",
-  systemStatus:  "ONLINE",
-  coordinates:   "13.0827° N, 80.2707° E",                                  // REPLACE
-  stock:         "/images/stock/stock.png",
-  profile:       "/images/profile/adithyaa.jpg",
+  systemStatus: "ONLINE",
+  coordinates: "13.0827° N, 80.2707° E",                                  // REPLACE
+  stock: "/images/stock/stock.png",
+  profile: "/images/profile/adithyaa.jpg",
 };
 
 // EDUCATION
 export const EDUCATION = [
   {
-    title:     "Secondary Education",
+    title: "Secondary Education",
     institute: "Narayana Institute of Technology, Chennai",
-    duration:  "2020 - 2022",
-    grade:     "91.6%",
-    status:    "ARCHIVED",
+    duration: "2020 - 2022",
+    grade: "91.6%",
+    status: "ARCHIVED",
   },
   {
-    title:     "Higher Secondary",
+    title: "Higher Secondary",
     institute: "Narayana Institute of Technology, Chennai",
-    duration:  "2022 - 2024",
-    grade:     "85%",
-    status:    "COMPLETED",
+    duration: "2022 - 2024",
+    grade: "85%",
+    status: "COMPLETED",
   },
   {
-    title:     "Undergraduate - B.Tech CSE (AI & ML)",
+    title: "Undergraduate - B.Tech CSE (AI & ML)",
     institute: "Vellore Institute of Technology, Chennai",
-    duration:  "2024 - 2028",
-    grade:     "9.03 CGPA",
-    status:    "ACTIVE NODE",
+    duration: "2024 - 2028",
+    grade: "9.03 CGPA",
+    status: "ACTIVE NODE",
   },
 ];
 // ─── Skills ───────────────────────────────────────────────────────────────────
@@ -99,16 +99,20 @@ export const PROJECTS = [
     short: "Futuristic OS-inspired portfolio with cinematic motion systems.",
     description:
       "A futuristic AI operating-system-inspired portfolio built with cinematic motion systems, layered UI architecture, persistent dashboard states, and immersive transformation-driven navigation. Every transition is engineered for cinematic quality — boot sequences, glitch reveals, parallax portrait, and signal corruption effects.",
-    image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?q=80&w=1200&auto=format&fit=crop",
+    ],
     github: "https://github.com/adithyaak",
     stack: ["Next.js", "TypeScript", "GSAP", "TailwindCSS", "Framer Motion"],
     category: "INTERFACE",
     year: "2025",
     stats: [
-      { label: "INTELLIGENCE", value: "ACTIVE",    icon: "brain" },
-      { label: "STATE",        value: "ONLINE",    icon: "db"    },
-      { label: "SYSTEM",       value: "OPTIMIZED", icon: "cpu"   },
-      { label: "MODULE",       value: "DEPLOYED",  icon: "arrow" },
+      { label: "INTELLIGENCE", value: "ACTIVE", icon: "brain" },
+      { label: "STATE", value: "ONLINE", icon: "db" },
+      { label: "SYSTEM", value: "OPTIMIZED", icon: "cpu" },
+      { label: "MODULE", value: "DEPLOYED", icon: "arrow" },
     ],
   },
   {
@@ -117,16 +121,20 @@ export const PROJECTS = [
     short: "Transformer-based multimodal assistant with vision + language.",
     description:
       "An intelligent multimodal system capable of processing text, image, and contextual reasoning using transformer pipelines, LangChain orchestration, and optimized inference workflows. Supports real-time streaming, tool use, and persistent memory across sessions.",
-    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1200&auto=format&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1200&auto=format&fit=crop",
+    ],
     github: "https://github.com/adithyaak",
     stack: ["PyTorch", "LangChain", "OpenCV", "Transformers", "FastAPI", "Docker"],
     category: "AI / ML",
     year: "2024",
     stats: [
-      { label: "INFERENCE",  value: "REALTIME",  icon: "brain" },
-      { label: "STATE",      value: "STREAMING", icon: "db"    },
-      { label: "MODALITIES", value: "3 ACTIVE",  icon: "cpu"   },
-      { label: "MODULE",     value: "DEPLOYED",  icon: "arrow" },
+      { label: "INFERENCE", value: "REALTIME", icon: "brain" },
+      { label: "STATE", value: "STREAMING", icon: "db" },
+      { label: "MODALITIES", value: "3 ACTIVE", icon: "cpu" },
+      { label: "MODULE", value: "DEPLOYED", icon: "arrow" },
     ],
   },
   {
@@ -135,16 +143,20 @@ export const PROJECTS = [
     short: "Real-time computer vision pipeline for edge inference.",
     description:
       "A real-time computer vision pipeline for intelligent visual analysis, optimized object tracking, and edge inference deployment with high-performance streaming systems. CUDA-accelerated, TensorRT optimized for sub-10ms detection on edge hardware.",
-    image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=1200&auto=format&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1200&auto=format&fit=crop",
+    ],
     github: "https://github.com/adithyaak",
     stack: ["Python", "YOLO", "OpenCV", "TensorRT", "CUDA", "Flask"],
     category: "VISION",
     year: "2024",
     stats: [
-      { label: "LATENCY",  value: "<10ms",    icon: "brain" },
-      { label: "STATE",    value: "ONLINE",   icon: "db"    },
-      { label: "HARDWARE", value: "CUDA",     icon: "cpu"   },
-      { label: "MODULE",   value: "DEPLOYED", icon: "arrow" },
+      { label: "LATENCY", value: "<10ms", icon: "brain" },
+      { label: "STATE", value: "ONLINE", icon: "db" },
+      { label: "HARDWARE", value: "CUDA", icon: "cpu" },
+      { label: "MODULE", value: "DEPLOYED", icon: "arrow" },
     ],
   },
   {
@@ -153,16 +165,19 @@ export const PROJECTS = [
     short: "Autonomous crypto trading engine with signal intelligence.",
     description:
       "A meme-coin trading automation engine featuring signal analysis, transaction orchestration, liquidity monitoring, and intelligent execution systems. Real-time WebSocket feeds, Redis-backed state management, and Docker-orchestrated microservices.",
-    image: "https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=1200&auto=format&fit=crop",
-    github: "https://github.com/adithyaak",
+    images: [
+      "https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1559526324-4b87b5e36e44?q=80&w=1200&auto=format&fit=crop",
+    ], github: "https://github.com/adithyaak",
     stack: ["Node.js", "Python", "WebSockets", "Redis", "MongoDB", "Docker"],
     category: "AUTOMATION",
     year: "2024",
     stats: [
-      { label: "SIGNAL",  value: "LIVE",     icon: "brain" },
-      { label: "STATE",   value: "ACTIVE",   icon: "db"    },
-      { label: "LATENCY", value: "<50ms",    icon: "cpu"   },
-      { label: "MODULE",  value: "DEPLOYED", icon: "arrow" },
+      { label: "SIGNAL", value: "LIVE", icon: "brain" },
+      { label: "STATE", value: "ACTIVE", icon: "db" },
+      { label: "LATENCY", value: "<50ms", icon: "cpu" },
+      { label: "MODULE", value: "DEPLOYED", icon: "arrow" },
     ],
   },
   {
@@ -171,15 +186,18 @@ export const PROJECTS = [
     short: "Automated communication and scheduling platform.",
     description:
       "A scheduling and automated communication platform enabling timed email delivery, relationship tracking, intelligent reminders, and personalized interaction systems. JWT-authenticated, AWS-hosted, with Next.js frontend and FastAPI backend.",
-    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop",
-    github: "https://github.com/adithyaak",
+    images: [
+      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=1200&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200&auto=format&fit=crop",
+    ], github: "https://github.com/adithyaak",
     stack: ["Next.js", "FastAPI", "MongoDB", "SMTP", "JWT", "AWS"],
     category: "PLATFORM",
     year: "2023",
     stats: [
-      { label: "USERS",  value: "ACTIVE",   icon: "brain" },
-      { label: "STATE",  value: "ONLINE",   icon: "db"    },
-      { label: "INFRA",  value: "AWS",      icon: "cpu"   },
+      { label: "USERS", value: "ACTIVE", icon: "brain" },
+      { label: "STATE", value: "ONLINE", icon: "db" },
+      { label: "INFRA", value: "AWS", icon: "cpu" },
       { label: "MODULE", value: "DEPLOYED", icon: "arrow" },
     ],
   },
