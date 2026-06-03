@@ -110,7 +110,7 @@ export const PROJECTS = [
       "/images/misinfo/3.png",
     ],
 
-    github: "https://github.com/adithyaak",
+    github: "https://github.com/Adithyaa-Kumar/misinfo_detector",
 
     stack: [
       "Python",
@@ -150,7 +150,7 @@ export const PROJECTS = [
       "/images/cafe/3.png",
     ],
 
-    github: "https://github.com/adithyaak",
+    github: "https://github.com/Adithyaa-Kumar/cafe_project",
 
     stack: [
       "Python",
@@ -190,7 +190,7 @@ export const PROJECTS = [
       "/images/grocery/3.png",
     ],
 
-    github: "https://github.com/adithyaak",
+    github: "https://github.com/Adithyaa-Kumar/smart-grocery",
 
     stack: [
       "Next.js",
@@ -280,12 +280,12 @@ export const CONTACT_DETAILS = [
     icon: "github",
     label: "GITHUB",
     value: "github.com/adithyaak",
-    href: "https://github.com/adithyaak",
+    href: "https://github.com/Adithyaa-Kumar",
   },
   {
     icon: "linkedin",
     label: "LINKEDIN",
     value: "linkedin.com/in/adithyaak",
-    href: "https://linkedin.com/in/adithyaak",
+    href: "https://www.linkedin.com/in/adithyaa-k-a496b03ba/",
   },
 ];
