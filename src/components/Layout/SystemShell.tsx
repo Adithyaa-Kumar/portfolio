@@ -10,39 +10,6 @@ import SkillsSection from "../Skills/SkillsSection";
 import ProjectsSection from "../Projects/ProjectsSection";
 import CertificationsSection from "../Certifications/CertificationsSection";
 import ContactSection from "../Contact/ContactSection";
-/*
-  SystemShell.tsx
-  ─────────────────────────────────────────────────────────────
-  SCROLL BEHAVIOUR — Section snap system:
-
-  Rule 1 — Section fits in one screen (contentHeight ≤ viewportH):
-    ANY wheel scroll → immediately jump to next/prev section.
-
-  Rule 2 — Section is taller than screen (contentHeight > viewportH):
-    Wheel scroll → normal scroll within section.
-    When user reaches the BOTTOM of the section content and
-    scrolls DOWN → snap to next section.
-    When user is at the TOP of the section content and
-    scrolls UP → snap to prev section.
-
-  Implementation:
-    - Single scrollable contentRef div contains all sections stacked.
-    - Each section wrapper has a known offsetTop and offsetHeight.
-    - Custom wheel handler intercepts events:
-        a) Determines which section the viewport is currently "in"
-           (activeSection = section whose top ≤ scrollTop + small offset).
-        b) Checks if that section's content fits in one viewport.
-        c) If yes → calls snapToSection(next/prev).
-        d) If no → checks if scroll is at the boundary of the section.
-           At top boundary + scroll up → snapToSection(prev).
-           At bottom boundary + scroll down → snapToSection(next).
-           Otherwise → allow native scroll.
-    - snapToSection animates scrollTop with GSAP (smooth, not CSS scroll).
-    - A "locked" flag prevents multiple snaps firing from one gesture.
-
-  SideNav navigation calls switchSection(id) which also uses snapToSection.
-  Section label updates whenever scrollTop crosses a section boundary.
-*/
 
 export type SectionId =
   | "about"
@@ -61,11 +28,8 @@ const SECTION_ORDER: SectionId[] = [
   "contact",
 ];
 
-// How many px from the section boundary counts as "at the boundary"
 const BOUNDARY_THRESHOLD = 8;
-// Minimum wheel delta to trigger a snap (filters micro-scrolls / trackpad drift)
 const MIN_DELTA = 30;
-// Lock duration in ms — prevents double-firing one gesture
 const LOCK_MS = 700;
 
 export default function SystemShell() {
@@ -78,25 +42,38 @@ export default function SystemShell() {
   const [activeSection, setActiveSection] = useState<SectionId>("about");
   const [labelKey, setLabelKey] = useState(0);
 
-  // Snap lock — prevents multiple sections firing from one wheel gesture
+  // ── NEW: modal-open flag — freezes all outer scroll while true
+  const modalOpenRef = useRef(false);
+
   const snapLocked = useRef(false);
-  // Track accumulated wheel delta for touchpad (which fires many small events)
   const wheelAccum = useRef(0);
   const wheelTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // ── HELPERS ──────────────────────────────────────────────
+  // ── Called by ProjectsSection when modal opens/closes ──────
+  const handleModalOpen = useCallback((open: boolean) => {
+    modalOpenRef.current = open;
 
-  /** Get the DOM element for a section id */
+    const container = contentRef.current;
+    if (!container) return;
+
+    if (open) {
+      // Hard-freeze the outer scroll container
+      container.style.overflow = "hidden";
+    } else {
+      // Restore scrollability
+      container.style.overflowY = "scroll";
+      container.style.overflowX = "hidden";
+    }
+  }, []);
+
   const getSectionEl = (id: SectionId) =>
     document.getElementById(`section-${id}`) as HTMLElement | null;
 
-  /** Which section is currently "active" based on scrollTop */
   const getActiveSectionFromScroll = useCallback((): SectionId => {
     const container = contentRef.current;
     if (!container) return "about";
     const scrollTop = container.scrollTop;
     const viewH = container.clientHeight;
-    // Walk backwards — find the last section whose top is within view
     for (let i = SECTION_ORDER.length - 1; i >= 0; i--) {
       const el = getSectionEl(SECTION_ORDER[i]);
       if (!el) continue;
@@ -107,7 +84,6 @@ export default function SystemShell() {
     return "about";
   }, []);
 
-  /** Animate scroll to a specific section's top */
   const snapToSection = useCallback((id: SectionId) => {
     const container = contentRef.current;
     const el = getSectionEl(id);
@@ -117,62 +93,57 @@ export default function SystemShell() {
 
     const targetTop = el.offsetTop;
 
-    // GSAP scroll tween — smooth, controlled, no CSS scroll-behavior interference
     gsap.to(container, {
       scrollTop: targetTop,
       duration: 0.65,
       ease: "power3.inOut",
       onComplete: () => {
-        // Release lock after animation + small buffer
         setTimeout(() => {
           snapLocked.current = false;
         }, LOCK_MS - 650);
       },
     });
 
-    // Update active section + label
     if (id !== activeSection) {
       setActiveSection(id);
       setLabelKey(k => k + 1);
     }
   }, [activeSection]);
 
-  /** Navigate via SideNav click */
   const switchSection = useCallback((id: SectionId) => {
     snapToSection(id);
   }, [snapToSection]);
 
-  // ── WHEEL HANDLER ────────────────────────────────────────
   useEffect(() => {
     const container = contentRef.current;
     if (!container) return;
 
     const handleWheel = (e: WheelEvent) => {
-      // If snap animation is running, block all scroll
+      // Block ALL outer scroll while modal is open
+      if (modalOpenRef.current) {
+        e.preventDefault();
+        return;
+      }
+
       if (snapLocked.current) {
         e.preventDefault();
         return;
       }
 
       const deltaY = e.deltaY;
-
-      // Accumulate delta (handles touchpad which fires many small events)
       wheelAccum.current += deltaY;
 
-      // Reset accumulator after brief idle
       if (wheelTimer.current) clearTimeout(wheelTimer.current);
       wheelTimer.current = setTimeout(() => {
         wheelAccum.current = 0;
       }, 150);
 
-      // Only act on meaningful scroll
       if (Math.abs(wheelAccum.current) < MIN_DELTA) {
-        // Don't prevent default yet — let tiny scrolls through
         return;
       }
 
       const scrollingDown = wheelAccum.current > 0;
-      wheelAccum.current = 0; // reset after consuming
+      wheelAccum.current = 0;
 
       const currentId = getActiveSectionFromScroll();
       const currentIdx = SECTION_ORDER.indexOf(currentId);
@@ -184,14 +155,10 @@ export default function SystemShell() {
       const sectionTop = currentEl.offsetTop;
       const scrollTop = container.scrollTop;
 
-      // How far into the current section are we?
       const scrollWithinSection = scrollTop - sectionTop;
-
-      // Does this section fit entirely in one viewport?
       const fitsSingleScreen = sectionH <= viewH + BOUNDARY_THRESHOLD;
 
       if (fitsSingleScreen) {
-        // Section fits — any scroll jumps to next/prev
         e.preventDefault();
         if (scrollingDown) {
           const nextId = SECTION_ORDER[currentIdx + 1];
@@ -199,26 +166,22 @@ export default function SystemShell() {
         } else {
           const prevId = SECTION_ORDER[currentIdx - 1];
           if (prevId) snapToSection(prevId);
-          else snapToSection(currentId); // already first — snap to its own top
+          else snapToSection(currentId);
         }
       } else {
-        // Section is tall — check if we're at its scroll boundary
         const atSectionTop = scrollWithinSection <= BOUNDARY_THRESHOLD;
         const atSectionBottom = scrollWithinSection >= sectionH - viewH - BOUNDARY_THRESHOLD;
 
         if (scrollingDown && atSectionBottom) {
-          // At bottom of tall section → snap to next
           e.preventDefault();
           const nextId = SECTION_ORDER[currentIdx + 1];
           if (nextId) snapToSection(nextId);
         } else if (!scrollingDown && atSectionTop) {
-          // At top of tall section → snap to prev
           e.preventDefault();
           const prevId = SECTION_ORDER[currentIdx - 1];
           if (prevId) snapToSection(prevId);
-          else snapToSection(currentId); // already first
+          else snapToSection(currentId);
         }
-        // Otherwise: let native scroll happen within the section
       }
     };
 
@@ -226,8 +189,6 @@ export default function SystemShell() {
     return () => container.removeEventListener("wheel", handleWheel);
   }, [getActiveSectionFromScroll, snapToSection]);
 
-  // ── SCROLL → LABEL SYNC ──────────────────────────────────
-  // Also update label when user scrolls naturally inside a tall section
   useEffect(() => {
     const container = contentRef.current;
     if (!container) return;
@@ -245,7 +206,6 @@ export default function SystemShell() {
     return () => container.removeEventListener("scroll", handleScroll);
   }, [activeSection, getActiveSectionFromScroll]);
 
-  // ── ENTRY ANIMATION ──────────────────────────────────────
   useEffect(() => {
     if (contentRef.current) contentRef.current.scrollTop = 0;
 
@@ -284,7 +244,6 @@ export default function SystemShell() {
     return () => ctx.revert();
   }, []);
 
-  // ── RENDER ───────────────────────────────────────────────
   return (
     <div ref={shellRef} style={{
       position: "relative",
@@ -378,17 +337,10 @@ export default function SystemShell() {
           overflowY: "scroll",
           overflowX: "hidden",
           scrollbarWidth: "none",
-          // Disable CSS scroll snap — handled entirely by our wheel handler
           scrollSnapType: "none",
         }}
       >
         <style>{`div::-webkit-scrollbar { display: none; }`}</style>
-
-        {/*
-          Each section wrapper has minHeight: 100% so it fills at least one
-          full viewport. Tall sections grow beyond that naturally.
-          The wheel handler reads offsetHeight to decide snap vs free-scroll.
-        */}
 
         <div id="section-about" style={{
           minHeight: "100vh",
@@ -417,12 +369,15 @@ export default function SystemShell() {
         </div>
 
         <div id="section-projects" style={{
-          minHeight: "100vh",
+          height: "100vh",
+          maxHeight: "100vh",
           padding: "80px 70px",
           boxSizing: "border-box",
           borderTop: "1px solid rgba(255,255,255,0.05)",
+          display: "flex",
+          flexDirection: "column",
         }}>
-          <ProjectsSection />
+          <ProjectsSection onModalOpen={handleModalOpen} />
         </div>
 
         <div id="section-certifications" style={{
@@ -450,7 +405,6 @@ export default function SystemShell() {
   );
 }
 
-// ── CORNER MARKS ─────────────────────────────────────────────
 function ShellCornerMk({ pos }: { pos: "tl" | "bl" }) {
   const top = pos === "tl";
   return (

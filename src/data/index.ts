@@ -182,18 +182,18 @@ export const PROJECTS = [
   {
     id: "1",
 
-    title: "Multi-Agent Misinformation Detection System",
+    title: "Multi-Agent Information Verification Framework",
 
     short:
-      "Distributed AI agent architecture for detecting and analyzing misinformation across multimodal sources.",
+      "Agent-based AI framework for real-time misinformation detection, source verification, and evidence-driven content analysis.",
 
     description:
-      "A multi-agent intelligence system designed for misinformation detection using coordinated AI agents capable of contextual reasoning, source validation, semantic verification, and response orchestration. The architecture integrates NLP pipelines, transformer inference systems, contextual memory handling, and autonomous agent collaboration for real-time misinformation analysis across digital content streams.",
+      "A distributed multi-agent intelligence framework designed to identify, analyze, and verify potentially misleading information across digital content streams. The system employs specialized AI agents for claim extraction, evidence retrieval, source credibility assessment, semantic consistency analysis, and reasoning orchestration. By combining transformer-based NLP models, retrieval-augmented workflows, contextual memory management, and vector search infrastructure, the framework enables scalable, explainable, and real-time verification of textual information. The architecture is designed to support trust and safety systems, media monitoring, open-source intelligence (OSINT), fact-checking workflows, and large-scale content moderation environments.",
 
     images: [
-      "/images/misinfo/1.png",
-      "/images/misinfo/2.png",
-      "/images/misinfo/3.png",
+      "/images/projects/misinfo/misinfo_1.jpeg",
+      "/images/projects/misinfo/misinfo_2.jpeg",
+      "/images/projects/misinfo/misinfo_3.jpeg",
     ],
 
     github: "https://github.com/Adithyaa-Kumar/misinfo_detector",
@@ -203,37 +203,40 @@ export const PROJECTS = [
       "Transformers",
       "LangChain",
       "FastAPI",
-      "Vector DB",
+      "RAG",
+      "Vector Databases",
+      "LLM Agents",
+      "FAISS",
       "Docker",
+      "NLP"
     ],
 
-    category: "AI SYSTEMS",
+    category: "MULTI-AGENT AI",
 
     year: "2025",
 
     stats: [
-      { label: "ARCHITECTURE", value: "MULTI-AGENT", icon: "brain" },
-      { label: "REASONING", value: "CONTEXTUAL", icon: "db" },
-      { label: "PIPELINE", value: "REALTIME", icon: "cpu" },
-      { label: "VALIDATION", value: "SOURCE-AWARE", icon: "arrow" },
+      { label: "AGENTS", value: "COORDINATED", icon: "brain" },
+      { label: "REASONING", value: "CONTEXT-AWARE", icon: "db" },
+      { label: "PIPELINE", value: "REAL-TIME", icon: "cpu" },
+      { label: "VERIFICATION", value: "EVIDENCE-BASED", icon: "arrow" },
     ],
   },
-
   {
     id: "2",
 
-    title: "CAFE — Context Aware Flow Embeddings",
+    title: "CAFE — Context-Aware Flow Embeddings",
 
     short:
-      "Context-aware embedding framework for intelligent network packet analysis.",
+      "AI-powered encrypted network traffic classification framework using transformer-based flow embeddings.",
 
     description:
-      "CAFE is a network intelligence framework engineered for generating context-aware flow embeddings from packet-level network traffic. The system focuses on extracting semantic behavioral representations from flow sequences to improve traffic understanding, anomaly detection, and intelligent packet classification workflows. Designed with scalable embedding pipelines, temporal flow analysis, and efficient feature orchestration for cybersecurity and network intelligence applications.",
+      "CAFE (Context-Aware Flow Embeddings) is an advanced network intelligence framework designed for real-time classification of encrypted network traffic without relying on Deep Packet Inspection (DPI). The system extracts 60 behavioral flow features—including inter-arrival times, jitter, packet-size distributions, flow asymmetry, and traffic statistics—and transforms them into high-dimensional semantic embeddings using a custom FlowTransformer architecture. By leveraging contrastive learning, supervised classification, and embedding-space analysis, CAFE achieves 93.8% traffic classification accuracy while maintaining sub-3ms inference latency. The framework was trained on over 560,000 network flows from CESNET-QUIC22 and real-world 5G traffic datasets, enabling accurate identification of streaming, gaming, browsing, and video-call traffic even when payloads are fully encrypted. Designed for cybersecurity, ISP traffic management, 5G network slicing, encrypted threat detection, and edge AI deployment, CAFE demonstrates how behavioral intelligence can replace traditional payload inspection in modern encrypted networks.",
 
     images: [
-      "/images/cafe/1.png",
-      "/images/cafe/2.png",
-      "/images/cafe/3.png",
+      "/images/projects/cafe/cafe_1.png",
+      "/images/projects/cafe/cafe_2.png",
+      "/images/projects/cafe/cafe_3.png",
     ],
 
     github: "https://github.com/Adithyaa-Kumar/cafe_project",
@@ -241,10 +244,14 @@ export const PROJECTS = [
     stack: [
       "Python",
       "PyTorch",
-      "Network Analysis",
-      "Embedding Models",
+      "Transformer Networks",
+      "Contrastive Learning",
+      "Network Traffic Analysis",
       "Scikit-learn",
       "NumPy",
+      "Wireshark",
+      "Cybersecurity AI",
+      "Feature Engineering"
     ],
 
     category: "NETWORK INTELLIGENCE",
@@ -252,10 +259,10 @@ export const PROJECTS = [
     year: "2025",
 
     stats: [
-      { label: "EMBEDDINGS", value: "FLOW-AWARE", icon: "brain" },
-      { label: "ANALYSIS", value: "PACKET-LEVEL", icon: "db" },
-      { label: "PIPELINE", value: "SCALABLE", icon: "cpu" },
-      { label: "SECURITY", value: "NETWORK AI", icon: "arrow" },
+      { label: "ACCURACY", value: "93.8%", icon: "brain" },
+      { label: "LATENCY", value: "2.7ms P99", icon: "cpu" },
+      { label: "DATASET", value: "560K+ FLOWS", icon: "db" },
+      { label: "ENCRYPTED AI", value: "DPI-FREE", icon: "arrow" },
     ],
   },
 

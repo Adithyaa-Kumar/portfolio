@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback, forwardRef } from "react";
+import { createPortal } from "react-dom";
 import { gsap } from "gsap";
 import Image from "next/image";
 import { FaGithub } from "react-icons/fa";
@@ -32,11 +33,11 @@ interface Project {
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
-const CARD_W      = 380;
-const CARD_H      = 460;
-const CARD_GAP    = 20;
+const CARD_W = 380;
+const CARD_H = 460;
+const CARD_GAP = 20;
 const CARD_STRIDE = CARD_W + CARD_GAP;
-const BASE_SPEED  = 0.55;
+const BASE_SPEED = 0.55;
 
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 
@@ -45,20 +46,20 @@ interface ProjectsSectionProps {
 }
 
 export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
-  const trackRef       = useRef<HTMLDivElement>(null);
-  const offsetRef      = useRef(0);
-  const speedRef       = useRef(BASE_SPEED);
-  const modalRef       = useRef<HTMLDivElement>(null);
-  const overlayRef     = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const offsetRef = useRef(0);
+  const speedRef = useRef(BASE_SPEED);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   const [activeProject, setActiveProject] = useState<Project | null>(null);
-  const [modalVisible,  setModalVisible]  = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   // ── GSAP TICKER ────────────────────────────────────────────
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
-    const sw = PROJECTS.length * CARD_STRIDE*2;
+    const sw = PROJECTS.length * CARD_STRIDE * 2;
     const xSetter = gsap.quickSetter(track, "x", "px");
     const tick = () => {
       if (speedRef.current === 0) return;
@@ -71,7 +72,7 @@ export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
     return () => gsap.ticker.remove(tick);
   }, []);
 
-  const pause  = useCallback(() => { speedRef.current = 0; }, []);
+  const pause = useCallback(() => { speedRef.current = 0; }, []);
   const resume = useCallback(() => { speedRef.current = BASE_SPEED; }, []);
 
   // ── OPEN MODAL ─────────────────────────────────────────────
@@ -79,26 +80,28 @@ export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
     pause();
     setActiveProject(project);
     setModalVisible(true);
-    onModalOpen?.(true);
-  }, [pause, onModalOpen]);
+    // onModalOpen(true) fires in the entry useEffect AFTER modal DOM renders
+  }, [pause]);
 
   // ── CLOSE MODAL ────────────────────────────────────────────
   const closeModal = useCallback(() => {
     if (!modalRef.current || !overlayRef.current) return;
-    gsap.to(modalRef.current,  { scale: 0.95, opacity: 0, y: 16, duration: 0.25, ease: "power2.in" });
-    gsap.to(overlayRef.current, { opacity: 0, duration: 0.25, ease: "power2.in",
+    gsap.to(modalRef.current, { scale: 0.95, opacity: 0, y: 16, duration: 0.25, ease: "power2.in" });
+    gsap.to(overlayRef.current, {
+      opacity: 0, duration: 0.25, ease: "power2.in",
       onComplete: () => {
         setModalVisible(false);
         setActiveProject(null);
         resume();
-        onModalOpen?.(false);
+        onModalOpen?.(false);  // unlock dashboard after modal fully gone
       },
     });
   }, [resume, onModalOpen]);
 
-  // ── MODAL ENTRY ANIM ───────────────────────────────────────
+  // ── MODAL ENTRY ANIM — fires after modal DOM is rendered ───
   useEffect(() => {
     if (modalVisible && modalRef.current && overlayRef.current) {
+      onModalOpen?.(true);  // lock dashboard now that refs are valid
       gsap.fromTo(overlayRef.current,
         { opacity: 0 },
         { opacity: 1, duration: 0.3, ease: "power2.out" }
@@ -108,7 +111,7 @@ export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
         { scale: 1, opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }
       );
     }
-  }, [modalVisible]);
+  }, [modalVisible, onModalOpen]);
 
   // Key close
   useEffect(() => {
@@ -141,14 +144,14 @@ export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
           gap: "10px",
           marginBottom: "8px",
         }}>
-          <div style={{ width: "20px", height: "1px", background: "rgba(255,255,255,0.2)" }}/>
+          <div style={{ width: "20px", height: "1px", background: "rgba(255,255,255,0.2)" }} />
           <span style={{
             fontFamily: "var(--font-mono)",
             fontSize: "0.6rem",
             letterSpacing: "0.44em",
             color: "rgba(255,255,255,0.2)",
           }}>
-          PROJECT MODULE ARCHIVE · {PROJECTS.length} SYSTEMS
+            PROJECT MODULE ARCHIVE · {PROJECTS.length} SYSTEMS
           </span>
         </div>
         <p style={{
@@ -179,7 +182,7 @@ export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
           width: "500px", height: "300px",
           background: "radial-gradient(circle, rgba(255,255,255,0.03), transparent 70%)",
           pointerEvents: "none", zIndex: 0,
-        }}/>
+        }} />
 
         {/* Track sweep line */}
         <div style={{
@@ -188,7 +191,7 @@ export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
           background: "linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent)",
           animation: "track-sweep 5s linear infinite",
           zIndex: 10, pointerEvents: "none",
-        }}/>
+        }} />
 
         {/* Moving track */}
         <div
@@ -220,12 +223,12 @@ export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
           position: "absolute", top: 0, left: 0, bottom: 0, width: "48px",
           background: "linear-gradient(to right, rgba(0,0,0,0.95), transparent)",
           pointerEvents: "none", zIndex: 6,
-        }}/>
+        }} />
         <div style={{
           position: "absolute", top: 0, right: 0, bottom: 0, width: "48px",
           background: "linear-gradient(to left, rgba(0,0,0,0.95), transparent)",
           pointerEvents: "none", zIndex: 6,
-        }}/>
+        }} />
       </div>
 
       {/* ── HINT ────────────────────────────────────────────── */}
@@ -245,14 +248,15 @@ export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
       </div>
 
       {/* ── MODAL OVERLAY — inside section, position:absolute ── */}
-      {modalVisible && activeProject && (
+      {modalVisible && activeProject && typeof document !== "undefined" && createPortal(
         <div
           ref={overlayRef}
           onClick={(e) => { if (e.target === overlayRef.current) closeModal(); }}
+          onWheel={(e) => e.stopPropagation()}
           style={{
-            position: "absolute",   // ← absolute, NOT fixed — stays inside section
+            position: "fixed",
             inset: 0,
-            zIndex: 100,
+            zIndex: 9999,
             background: "rgba(0,0,0,0.82)",
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
@@ -267,7 +271,8 @@ export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
             project={activeProject}
             onClose={closeModal}
           />
-        </div>
+        </div>,
+        document.body
       )}
 
       <style>{`
@@ -297,30 +302,30 @@ function ProjectCard({
   onSelect: (p: Project) => void;
   isPriority: boolean;
 }) {
-  const cardRef   = useRef<HTMLDivElement>(null);
-  const imageRef  = useRef<HTMLDivElement>(null);
-  const glowRef   = useRef<HTMLDivElement>(null);
-  const lineRef   = useRef<HTMLDivElement>(null);
-  const scanRef   = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const scanRef = useRef<HTMLDivElement>(null);
 
   const onEnter = useCallback(() => {
     onHoverStart();
     gsap.killTweensOf([cardRef.current, imageRef.current, glowRef.current]);
-    gsap.to(cardRef.current,  { y: -16, scale: 1.02, duration: 0.22, ease: "power2.out" });
+    gsap.to(cardRef.current, { y: -16, scale: 1.02, duration: 0.22, ease: "power2.out" });
     gsap.to(imageRef.current, { scale: 1.07, duration: 0.5, ease: "power2.out" });
-    gsap.to(glowRef.current,  { opacity: 1, duration: 0.3 });
-    gsap.to(lineRef.current,  { scaleX: 1, duration: 0.45, ease: "expo.out" });
-    gsap.to(scanRef.current,  { opacity: 1, duration: 0.2 });
+    gsap.to(glowRef.current, { opacity: 1, duration: 0.3 });
+    gsap.to(lineRef.current, { scaleX: 1, duration: 0.45, ease: "expo.out" });
+    gsap.to(scanRef.current, { opacity: 1, duration: 0.2 });
   }, [onHoverStart]);
 
   const onLeave = useCallback(() => {
     onHoverEnd();
     gsap.killTweensOf([cardRef.current, imageRef.current, glowRef.current]);
-    gsap.to(cardRef.current,  { y: 0, scale: 1, duration: 0.25, ease: "power2.out" });
+    gsap.to(cardRef.current, { y: 0, scale: 1, duration: 0.25, ease: "power2.out" });
     gsap.to(imageRef.current, { scale: 1, duration: 0.45, ease: "power2.out" });
-    gsap.to(glowRef.current,  { opacity: 0, duration: 0.3 });
-    gsap.to(lineRef.current,  { scaleX: 0, duration: 0.3, ease: "power2.in" });
-    gsap.to(scanRef.current,  { opacity: 0, duration: 0.2 });
+    gsap.to(glowRef.current, { opacity: 0, duration: 0.3 });
+    gsap.to(lineRef.current, { scaleX: 0, duration: 0.3, ease: "power2.in" });
+    gsap.to(scanRef.current, { opacity: 0, duration: 0.2 });
   }, [onHoverEnd]);
 
   const onClick = useCallback(() => {
@@ -359,7 +364,7 @@ function ProjectCard({
         width: "260px", height: "260px", borderRadius: "50%",
         background: "radial-gradient(circle, rgba(255,255,255,0.07), transparent 65%)",
         opacity: 0, pointerEvents: "none", zIndex: 2,
-      }}/>
+      }} />
 
       {/* ── IMAGE — 50% height ─────────────────────────── */}
       <div style={{
@@ -376,7 +381,7 @@ function ProjectCard({
             priority={isPriority}
             style={{
               objectFit: "cover",
-              filter: "grayscale(100%) contrast(1.1) brightness(0.75)",
+              filter: "grayscale(50%) contrast(1.1) brightness(1.5)",
             }}
           />
         </div>
@@ -386,7 +391,7 @@ function ProjectCard({
           position: "absolute", inset: 0,
           background: "linear-gradient(to bottom, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.7) 100%)",
           zIndex: 2,
-        }}/>
+        }} />
 
         {/* Top bar: category + pulse dot */}
         <div style={{
@@ -399,7 +404,7 @@ function ProjectCard({
             background: "rgba(255, 255, 255, 0.82)",
             clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
             animation: "card-pulse 2.2s ease infinite",
-          }}/>
+          }} />
         </div>
 
         {/* Bottom bar: sys ID + year */}
@@ -414,7 +419,7 @@ function ProjectCard({
             letterSpacing: "0.2em",
             color: "rgba(255, 255, 255, 0.6)",
           }}>
-            {String(project.id).padStart(3,"0")}
+            {String(project.id).padStart(3, "0")}
           </span>
           <span style={{
             fontFamily: "var(--font-orbitron)",
@@ -438,8 +443,8 @@ function ProjectCard({
         transformOrigin: "left",
         transform: "scaleX(0)",
         zIndex: 4,
-      }}/>
-{/* ── CONTENT — 50% height — fixed layout, no dynamic growth ── */}
+      }} />
+      {/* ── CONTENT — 50% height — fixed layout, no dynamic growth ── */}
       <div style={{
         position: "absolute",
         top: "50%", left: 0, right: 0, bottom: 0,
@@ -547,20 +552,20 @@ function ProjectCard({
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.5)";
-              (e.currentTarget as HTMLElement).style.background  = "rgba(255,255,255,0.1)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.1)";
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.15)";
-              (e.currentTarget as HTMLElement).style.background  = "rgba(255,255,255,0.03)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.03)";
             }}
           >
-            <FaGithub size={16} color="rgba(255,255,255,0.75)"/>
+            <FaGithub size={16} color="rgba(255,255,255,0.75)" />
           </a>
         </div>
       </div>
 
       {/* Corner brackets */}
-      <CardCorners/>
+      <CardCorners />
     </div>
   );
 }
@@ -572,16 +577,16 @@ function CardCorners() {
   return (
     <>
       <div style={{ ...s, top: 2, left: 2 }}>
-        <div style={{ width: 10, height: 1, background: "rgba(255,255,255,0.45)" }}/>
-        <div style={{ width: 1, height: 10, background: "rgba(255,255,255,0.45)" }}/>
+        <div style={{ width: 10, height: 1, background: "rgba(255,255,255,0.45)" }} />
+        <div style={{ width: 1, height: 10, background: "rgba(255,255,255,0.45)" }} />
       </div>
-      <div style={{ ...s, bottom: 2, left: 2, display:"flex", flexDirection:"column", justifyContent:"flex-end" }}>
-        <div style={{ width: 1, height: 10, background: "rgba(255,255,255,0.45)" }}/>
-        <div style={{ width: 10, height: 1, background: "rgba(255,255,255,0.45)" }}/>
+      <div style={{ ...s, bottom: 2, left: 2, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
+        <div style={{ width: 1, height: 10, background: "rgba(255,255,255,0.45)" }} />
+        <div style={{ width: 10, height: 1, background: "rgba(255,255,255,0.45)" }} />
       </div>
-      <div style={{ ...s, bottom: 2, right: 2, display:"flex", flexDirection:"column", alignItems:"flex-end", justifyContent:"flex-end" }}>
-        <div style={{ width: 1, height: 10, background: "rgba(255,255,255,0.45)", alignSelf:"flex-end" }}/>
-        <div style={{ width: 10, height: 1, background: "rgba(255,255,255,0.45)" }}/>
+      <div style={{ ...s, bottom: 2, right: 2, display: "flex", flexDirection: "column", alignItems: "flex-end", justifyContent: "flex-end" }}>
+        <div style={{ width: 1, height: 10, background: "rgba(255,255,255,0.45)", alignSelf: "flex-end" }} />
+        <div style={{ width: 10, height: 1, background: "rgba(255,255,255,0.45)" }} />
       </div>
     </>
   );
@@ -618,16 +623,16 @@ const ProjectModal = forwardRef<HTMLDivElement, {
         position: "absolute", inset: 0, pointerEvents: "none", zIndex: 0, opacity: 0.018,
         backgroundImage: `linear-gradient(rgba(255,255,255,0.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.08) 1px,transparent 1px)`,
         backgroundSize: "44px 44px",
-      }}/>
+      }} />
 
       {/* Corner brackets */}
-      <div style={{ position:"absolute", top:4, left:4, zIndex:20, pointerEvents:"none" }}>
-        <div style={{ width:14, height:1, background:"rgba(255,255,255,0.45)" }}/>
-        <div style={{ width:1, height:14, background:"rgba(255,255,255,0.45)" }}/>
+      <div style={{ position: "absolute", top: 4, left: 4, zIndex: 20, pointerEvents: "none" }}>
+        <div style={{ width: 14, height: 1, background: "rgba(255,255,255,0.45)" }} />
+        <div style={{ width: 1, height: 14, background: "rgba(255,255,255,0.45)" }} />
       </div>
-      <div style={{ position:"absolute", bottom:4, right:4, zIndex:20, pointerEvents:"none", display:"flex", flexDirection:"column", alignItems:"flex-end" }}>
-        <div style={{ width:1, height:14, background:"rgba(255,255,255,0.45)", alignSelf:"flex-end" }}/>
-        <div style={{ width:14, height:1, background:"rgba(255,255,255,0.45)" }}/>
+      <div style={{ position: "absolute", bottom: 4, right: 4, zIndex: 20, pointerEvents: "none", display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+        <div style={{ width: 1, height: 14, background: "rgba(255,255,255,0.45)", alignSelf: "flex-end" }} />
+        <div style={{ width: 14, height: 1, background: "rgba(255,255,255,0.45)" }} />
       </div>
 
       {/* ── LEFT PANEL — independently scrollable ──────────── */}
@@ -643,10 +648,10 @@ const ProjectModal = forwardRef<HTMLDivElement, {
       }}>
 
         {/* System label */}
-        <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"10px", marginTop:"10px" }}>
-          <div style={{ width:16, height:1, background:"rgba(255,255,255,0.18)" }}/>
-          <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.45rem", letterSpacing:"0.36em", color:"rgba(255,255,255,0.2)" }}>
-            SYS_{String(project.id).padStart(3,"0")} · {project.category}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px", marginTop: "10px" }}>
+          <div style={{ width: 16, height: 1, background: "rgba(255,255,255,0.18)" }} />
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.45rem", letterSpacing: "0.36em", color: "rgba(255,255,255,0.2)" }}>
+            SYS_{String(project.id).padStart(3, "0")} · {project.category}
           </span>
         </div>
 
@@ -662,25 +667,25 @@ const ProjectModal = forwardRef<HTMLDivElement, {
         </div>
 
         {/* Category + year */}
-        <div style={{ display:"flex", gap:"7px", marginBottom:"16px", flexWrap:"wrap" }}>
+        <div style={{ display: "flex", gap: "7px", marginBottom: "16px", flexWrap: "wrap" }}>
           <div style={{
-            padding:"3px 9px", border:"1px solid rgba(255, 255, 255, 0.27)",
-            fontFamily:"var(--font-mono)", fontSize:"0.6rem", letterSpacing:"0.24em",
-            color:"rgba(255, 255, 255, 0.83)",
+            padding: "3px 9px", border: "1px solid rgba(255, 255, 255, 0.27)",
+            fontFamily: "var(--font-mono)", fontSize: "0.6rem", letterSpacing: "0.24em",
+            color: "rgba(255, 255, 255, 0.83)",
           }}>
             {project.category}
           </div>
           <div style={{
-            padding:"3px 9px", border:"1px solid rgba(255, 255, 255, 0.37)",
-            fontFamily:"var(--font-mono)", fontSize:"0.6rem", letterSpacing:"0.24em",
-            color:"rgba(255, 255, 255, 0.71)",
+            padding: "3px 9px", border: "1px solid rgba(255, 255, 255, 0.37)",
+            fontFamily: "var(--font-mono)", fontSize: "0.6rem", letterSpacing: "0.24em",
+            color: "rgba(255, 255, 255, 0.71)",
           }}>
             {project.year}
           </div>
         </div>
 
         {/* Divider */}
-        <div style={{ width:100, height:1, background:"rgba(255,255,255,0.16)", marginBottom:"10px" }}/>
+        <div style={{ width: 100, height: 1, background: "rgba(255,255,255,0.16)", marginBottom: "10px" }} />
 
         {/* Description */}
         <p style={{
@@ -691,114 +696,114 @@ const ProjectModal = forwardRef<HTMLDivElement, {
           {project.description}
         </p>
         {/* Stats grid */}
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"10px", marginBottom:"15px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginBottom: "15px" }}>
           {project.stats.map((stat) => (
-            <StatCard key={stat.label} label={stat.label} value={stat.value} icon={stat.icon as "brain" | "db" | "cpu" | "arrow" | "zap"}/>
+            <StatCard key={stat.label} label={stat.label} value={stat.value} icon={stat.icon as "brain" | "db" | "cpu" | "arrow" | "zap"} />
           ))}
         </div>
 
         {/* Stack */}
         <div>
           <div style={{
-            fontFamily:"var(--font-mono)", fontSize:"0.7rem",
-            letterSpacing:"0.6em", color:"rgba(255, 255, 255, 0.5)", marginBottom:"10px",
+            fontFamily: "var(--font-mono)", fontSize: "0.7rem",
+            letterSpacing: "0.6em", color: "rgba(255, 255, 255, 0.5)", marginBottom: "10px",
           }}>
             TECHNOLOGY STACK
           </div>
-          <div style={{ display:"flex", flexWrap:"wrap", gap:"6px" }}>
-            {project.stack.map((tech) => <TechPill key={tech} tech={tech}/>)}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+            {project.stack.map((tech) => <TechPill key={tech} tech={tech} />)}
           </div>
         </div>
       </div>
 
-      
+
 
       {/* ── RIGHT PANEL — independently scrollable ─────────── */}
       {/* X close — top left of modal */}
-        <button
-          onClick={onClose}
-          style={{
-            position: "absolute", top: "14px", right: "14px",
-            width: "35px", height: "35px",
-            border: "1px solid rgba(255,255,255,0.14)",
-            background: "rgba(255,255,255,0.02)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            cursor: "pointer", zIndex: 20,
-            clipPath: "polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px)",
-            transition: "border-color 0.2s, background 0.2s",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.5)";
-            (e.currentTarget as HTMLElement).style.background  = "rgba(255,255,255,0.08)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.14)";
-            (e.currentTarget as HTMLElement).style.background  = "rgba(255,255,255,0.02)";
-          }}
-        >
-          <X size={13} color="rgba(255,255,255,0.8)"/>
-        </button>
-<div style={{
-  position: "relative",
-  zIndex: 1,
-  padding: "10px 20px 16px 20px",
-  display: "flex",
-  flexDirection: "column",
-  gap: "10px",
-  overflowY: "auto",
-  scrollbarWidth: "none",
-  height: "100%",
-}}>
-
-  {/* TOP META BAR */}
-  <div style={{
-    height: "48px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    flexShrink: 0,
-  }}>
-    <div style={{
-      display: "flex",
-      alignItems: "center",
-      gap: "8px",
-    }}>
+      <button
+        onClick={onClose}
+        style={{
+          position: "absolute", top: "14px", right: "14px",
+          width: "35px", height: "35px",
+          border: "1px solid rgba(255,255,255,0.14)",
+          background: "rgba(255,255,255,0.02)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          cursor: "pointer", zIndex: 20,
+          clipPath: "polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px)",
+          transition: "border-color 0.2s, background 0.2s",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.5)";
+          (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.08)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.14)";
+          (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)";
+        }}
+      >
+        <X size={13} color="rgba(255,255,255,0.8)" />
+      </button>
       <div style={{
-        width: "16px",
-        height: "1px",
-        background: "rgba(255, 255, 255, 0.52)",
-      }}/>
-
-      <span style={{
-        fontFamily: "var(--font-orbitron)",
-        fontSize: "0.7rem",
-        letterSpacing: "0.34em",
-        color: "rgba(255, 255, 255, 0.79)",
+        position: "relative",
+        zIndex: 1,
+        padding: "10px 20px 16px 20px",
+        display: "flex",
+        flexDirection: "column",
+        gap: "10px",
+        overflowY: "auto",
+        scrollbarWidth: "none",
+        height: "100%",
+        justifyContent: "space-between",
       }}>
-        PROJECT VISUAL MODULE
-      </span>
-    </div>
-  </div>
+
+        {/* TOP META BAR */}
+        <div style={{
+          height: "48px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexShrink: 0,
+        }}>
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+          }}>
+            <div style={{
+              width: "16px",
+              height: "1px",
+              background: "rgba(255, 255, 255, 0.52)",
+            }} />
+
+            <span style={{
+              fontFamily: "var(--font-orbitron)",
+              fontSize: "0.7rem",
+              letterSpacing: "0.34em",
+              color: "rgba(255, 255, 255, 0.79)",
+            }}>
+              PROJECT VISUAL MODULE
+            </span>
+          </div>
+        </div>
 
         {/* ── IMAGE VIEWER ──────────────────────────────── */}
         <div style={{
           position: "relative",
           width: "100%",
-          height: "75%",
-          flex: "1",
-          overflow: "hidden",
           border: "1px solid rgba(255,255,255,0.08)",
           background: "rgba(12,12,12,1)",
-          minHeight: "280px",
+          lineHeight: 0,
+          overflow: "hidden",
         }}>
-          {/* Current image */}
-          <Image
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={images[imgIdx]}
             alt={`${project.title} — image ${imgIdx + 1}`}
-            fill
             style={{
-              objectFit: "cover",
-              filter: " contrast(1.1) brightness(0.82)",
+              display: "block",
+              width: "100%",
+              height: "auto",
+              filter: " brightness(1.5) ",
               transition: "opacity 0.3s ease",
             }}
           />
@@ -808,7 +813,7 @@ const ProjectModal = forwardRef<HTMLDivElement, {
             position: "absolute", inset: 0,
             background: "linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.4))",
             pointerEvents: "none",
-          }}/>
+          }} />
 
           {/* Image counter */}
           <div style={{
@@ -817,17 +822,17 @@ const ProjectModal = forwardRef<HTMLDivElement, {
             letterSpacing: "0.28em", color: "rgba(255,255,255,0.35)",
             background: "rgba(0,0,0,0.6)", padding: "3px 8px",
           }}>
-            {String(imgIdx + 1).padStart(2,"0")} / {String(images.length).padStart(2,"0")}
+            {String(imgIdx + 1).padStart(2, "00")} / {String(images.length).padStart(2, "00")}
           </div>
 
           {/* Corner marks */}
-          <div style={{ position:"absolute", top:6, left:6, pointerEvents:"none", zIndex:2 }}>
-            <div style={{ width:10, height:1, background:"rgba(255,255,255,0.45)" }}/>
-            <div style={{ width:1, height:10, background:"rgba(255,255,255,0.45)" }}/>
+          <div style={{ position: "absolute", top: 6, left: 6, pointerEvents: "none", zIndex: 2 }}>
+            <div style={{ width: 10, height: 1, background: "rgba(255,255,255,0.45)" }} />
+            <div style={{ width: 1, height: 10, background: "rgba(255,255,255,0.45)" }} />
           </div>
-          <div style={{ position:"absolute", bottom:6, right:6, pointerEvents:"none", zIndex:2, display:"flex", flexDirection:"column", alignItems:"flex-end" }}>
-            <div style={{ width:1, height:10, background:"rgba(255,255,255,0.45)", alignSelf:"flex-end" }}/>
-            <div style={{ width:10, height:1, background:"rgba(255,255,255,0.45)" }}/>
+          <div style={{ position: "absolute", bottom: 6, right: 6, pointerEvents: "none", zIndex: 2, display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+            <div style={{ width: 1, height: 10, background: "rgba(255,255,255,0.45)", alignSelf: "flex-end" }} />
+            <div style={{ width: 10, height: 1, background: "rgba(255,255,255,0.45)" }} />
           </div>
 
           {/* Left arrow */}
@@ -944,8 +949,8 @@ const ProjectModal = forwardRef<HTMLDivElement, {
           paddingTop: "15px",
           borderTop: "1px solid rgba(255,255,255,0.06)",
         }}>
-          
-            <a href={project.github}
+
+          <a href={project.github}
             target="_blank"
             rel="noopener noreferrer"
             style={{
@@ -960,14 +965,14 @@ const ProjectModal = forwardRef<HTMLDivElement, {
             }}
             onMouseEnter={(e) => {
               (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.4)";
-              (e.currentTarget as HTMLElement).style.background  = "rgba(255,255,255,0.06)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
             }}
             onMouseLeave={(e) => {
               (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.12)";
-              (e.currentTarget as HTMLElement).style.background  = "rgba(255,255,255,0.02)";
+              (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)";
             }}
           >
-            <FaGithub size={15} color="rgba(255,255,255,0.75)"/>
+            <FaGithub size={15} color="rgba(255,255,255,0.75)" />
             <span style={{
               fontFamily: "var(--font-mono)",
               fontSize: "0.6rem",
@@ -986,11 +991,11 @@ const ProjectModal = forwardRef<HTMLDivElement, {
 
 function StatCard({ label, value, icon }: { label: string; value: string; icon: StatIcon }) {
   const icons = {
-    brain: <Brain size={14} color="rgba(255,255,255,0.65)"/>,
-    db:    <Database size={14} color="rgba(255,255,255,0.65)"/>,
-    cpu:   <Cpu size={14} color="rgba(255,255,255,0.65)"/>,
-    arrow: <ArrowUpRight size={14} color="rgba(255,255,255,0.65)"/>,
-    zap:   <Zap size={14} color="rgba(255,255,255,0.65)"/>,
+    brain: <Brain size={14} color="rgba(255,255,255,0.65)" />,
+    db: <Database size={14} color="rgba(255,255,255,0.65)" />,
+    cpu: <Cpu size={14} color="rgba(255,255,255,0.65)" />,
+    arrow: <ArrowUpRight size={14} color="rgba(255,255,255,0.65)" />,
+    zap: <Zap size={14} color="rgba(255,255,255,0.65)" />,
   };
   return (
     <div style={{
@@ -999,14 +1004,14 @@ function StatCard({ label, value, icon }: { label: string; value: string; icon: 
       background: "rgba(255,255,255,0.018)",
       clipPath: "polygon(5px 0%,100% 0%,100% calc(100% - 5px),calc(100% - 5px) 100%,0% 100%,0% 5px)",
     }}>
-      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:"10px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
         {icons[icon] ?? icons.zap}
-        <div style={{ width:12, height:1, background:"rgba(255, 255, 255, 0.26)" }}/>
+        <div style={{ width: 12, height: 1, background: "rgba(255, 255, 255, 0.26)" }} />
       </div>
-      <div style={{ fontFamily:"var(--font-mono)", fontSize:"0.69rem", letterSpacing:"0.28em", color:"rgba(255, 255, 255, 0.46)", marginBottom:"5px" }}>
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.69rem", letterSpacing: "0.28em", color: "rgba(255, 255, 255, 0.46)", marginBottom: "5px" }}>
         {label}
       </div>
-      <div style={{ fontFamily:"var(--font-orbitron)", fontSize:"0.65rem", fontWeight:700, color:"rgba(255,255,255,0.88)", letterSpacing:"0.05em" }}>
+      <div style={{ fontFamily: "var(--font-orbitron)", fontSize: "0.65rem", fontWeight: 700, color: "rgba(255,255,255,0.88)", letterSpacing: "0.05em" }}>
         {value}
       </div>
     </div>
@@ -1025,9 +1030,9 @@ function TechPill({ tech }: { tech: string }) {
         padding: "5px 10px",
         border: `1px solid ${hov ? "rgba(255, 255, 255, 0.09)" : "rgba(255, 255, 255, 0.25)"}`,
         background: hov ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.02)",
-        fontFamily: "var(--font-mono)", fontSize:"0.8rem", letterSpacing:"0.2em",
+        fontFamily: "var(--font-mono)", fontSize: "0.8rem", letterSpacing: "0.2em",
         color: hov ? "rgba(255, 255, 255, 0.87)" : "rgba(255, 255, 255, 0.44)",
-        transition: "all 0.18s ease", cursor:"default",
+        transition: "all 0.18s ease", cursor: "default",
         clipPath: "polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px)",
       }}
     >
