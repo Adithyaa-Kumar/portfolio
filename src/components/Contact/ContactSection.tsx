@@ -13,15 +13,15 @@ type SendStatus = "idle" | "sending" | "success" | "error";
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 
 export default function ContactSection() {
-  const [email,   setEmail]   = useState("");
+  const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-  const [status,  setStatus]  = useState<SendStatus>("idle");
+  const [status, setStatus] = useState<SendStatus>("idle");
   const [fileName, setFileName] = useState<string | null>(null);
 
-  const formRef    = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
   const successRef = useRef<HTMLDivElement>(null);
-  const fileRef    = useRef<HTMLInputElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   // ── CLEAR ──────────────────────────────────────────────────
   const handleClear = () => {
@@ -120,32 +120,32 @@ export default function ContactSection() {
       }}>
         {/* Header */}
         <div>
-          <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"8px" }}>
-            <div style={{ width:20, height:1, background:"rgba(255,255,255,0.2)" }}/>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
+            <div style={{ width: 20, height: 1, background: "rgba(255,255,255,0.2)" }} />
           </div>
           <div style={{
-            fontFamily:"var(--font-bebas)",
-            fontSize:"clamp(2.5rem, 5vw, 4rem)",
-            letterSpacing:"0.04em",
-            color:"rgba(255,255,255,0.92)",
-            lineHeight:0.9,
-            marginBottom:"12px",
+            fontFamily: "var(--font-bebas)",
+            fontSize: "clamp(2.5rem, 5vw, 4rem)",
+            letterSpacing: "0.04em",
+            color: "rgba(255,255,255,0.92)",
+            lineHeight: 0.9,
+            marginBottom: "12px",
           }}>
-            LET'S BUILD<br/>TOGETHER
+            CREATE. CODE.<br />INNOVATE.
           </div>
           <p style={{
-            fontFamily:"var(--font-grotesk)",
-            fontSize:"0.78rem", fontWeight:300,
-            color:"rgba(255,255,255,0.6)",
-            lineHeight:1.7, margin:0, maxWidth:"280px",
+            fontFamily: "var(--font-grotesk)",
+            fontSize: "0.78rem", fontWeight: 300,
+            color: "rgba(255,255,255,0.6)",
+            lineHeight: 1.7, margin: 0, maxWidth: "280px",
           }}>
-            Open to collaborations, roles, and interesting problems.
-            Transmit your signal below.
+            Software Engineering and AI enthusiast.
+            Building skills, products, and solutions for the future.
           </p>
         </div>
 
         {/* Contact rows */}
-        <div style={{ display:"flex", flexDirection:"column", gap:"4px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
           {CONTACT_DETAILS.map((item) => (
             <ContactRow key={item.label} item={item} />
           ))}
@@ -153,22 +153,22 @@ export default function ContactSection() {
 
         {/* System status */}
         <div style={{
-          padding:"12px 16px",
-          border:"1px solid rgba(255,255,255,0.07)",
-          background:"rgba(255,255,255,0.015)",
-          display:"flex", justifyContent:"space-between", alignItems:"center",
+          padding: "12px 16px",
+          border: "1px solid rgba(255,255,255,0.07)",
+          background: "rgba(255,255,255,0.015)",
+          display: "flex", justifyContent: "space-between", alignItems: "center",
         }}>
-          <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <div style={{
-              width:6, height:6, borderRadius:"50%",
-              background:"rgba(255,255,255,0.85)",
-              animation:"blink-block 2s step-end infinite",
-            }}/>
-            <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.55rem", letterSpacing:"0.3em", color:"rgba(255,255,255,0.6)" }}>
+              width: 6, height: 6, borderRadius: "50%",
+              background: "rgba(255,255,255,0.85)",
+              animation: "blink-block 2s step-end infinite",
+            }} />
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.55rem", letterSpacing: "0.3em", color: "rgba(255,255,255,0.6)" }}>
               TRANSMISSION READY
             </span>
           </div>
-          <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.52rem", letterSpacing:"0.22em", color:"rgba(255,255,255,0.55)" }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.52rem", letterSpacing: "0.22em", color: "rgba(255,255,255,0.55)" }}>
             AK/OS v3.1.4
           </span>
         </div>
@@ -184,20 +184,20 @@ export default function ContactSection() {
         overflow: "hidden",
       }}>
         {/* Form header */}
-        <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"4px" }}>
-          <div style={{ width:20, height:1, background:"rgba(255,255,255,0.15)" }}/>
-          <span style={{ fontFamily:"var(--font-mono)", fontSize:"0.55rem", letterSpacing:"0.4em", color:"rgba(255,255,255,0.5)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "4px" }}>
+          <div style={{ width: 20, height: 1, background: "rgba(255,255,255,0.15)" }} />
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.55rem", letterSpacing: "0.4em", color: "rgba(255,255,255,0.5)" }}>
             TRANSMISSION CONSOLE
           </span>
         </div>
 
         {/* Form body */}
         <div ref={formRef} style={{
-          flex:1,
-          display:"flex",
-          flexDirection:"column",
-          gap:"10px",
-          position:"relative",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          position: "relative",
         }}>
           {/* Email */}
           <FormField
@@ -217,10 +217,10 @@ export default function ContactSection() {
           />
 
           {/* Message */}
-          <div style={{ flex:1, display:"flex", flexDirection:"column", gap:"5px" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "5px" }}>
             <label style={{
-              fontFamily:"var(--font-mono)", fontSize:"0.55rem",
-              letterSpacing:"0.55em", color:"rgba(255,255,255,0.5)",
+              fontFamily: "var(--font-mono)", fontSize: "0.55rem",
+              letterSpacing: "0.55em", color: "rgba(255,255,255,0.5)",
             }}>
               MESSAGE
             </label>
@@ -230,19 +230,19 @@ export default function ContactSection() {
               placeholder="Compose your transmission..."
               rows={5}
               style={{
-                flex:1,
-                background:"rgba(255,255,255,0.02)",
-                border:"1px solid rgba(255,255,255,0.1)",
-                color:"rgba(255,255,255,0.85)",
-                fontFamily:"var(--font-grotesk)",
-                fontSize:"0.78rem",
-                fontWeight:300,
-                lineHeight:1.7,
-                padding:"12px 14px",
-                resize:"none",
-                outline:"none",
-                transition:"border-color 0.2s ease, box-shadow 0.2s ease",
-                minHeight:"100px",
+                flex: 1,
+                background: "rgba(255,255,255,0.02)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                color: "rgba(255,255,255,0.85)",
+                fontFamily: "var(--font-grotesk)",
+                fontSize: "0.78rem",
+                fontWeight: 300,
+                lineHeight: 1.7,
+                padding: "12px 14px",
+                resize: "none",
+                outline: "none",
+                transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+                minHeight: "100px",
               }}
               onFocus={(e) => {
                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
@@ -261,7 +261,7 @@ export default function ContactSection() {
               ref={fileRef}
               type="file"
               id="file-attach"
-              style={{ display:"none" }}
+              style={{ display: "none" }}
               onChange={(e) => {
                 const f = e.target.files?.[0];
                 setFileName(f ? f.name : null);
@@ -270,19 +270,19 @@ export default function ContactSection() {
             <label
               htmlFor="file-attach"
               style={{
-                display:"inline-flex",
-                alignItems:"center",
-                gap:"7px",
-                padding:"6px 12px",
-                border:"1px solid rgba(255,255,255,0.08)",
-                background:"rgba(255,255,255,0.02)",
-                fontFamily:"var(--font-mono)",
-                fontSize:"0.55rem",
-                letterSpacing:"0.28em",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "7px",
+                padding: "6px 12px",
+                border: "1px solid rgba(255,255,255,0.08)",
+                background: "rgba(255,255,255,0.02)",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.55rem",
+                letterSpacing: "0.28em",
                 color: fileName ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.6)",
-                cursor:"pointer",
-                transition:"all 0.2s ease",
-                clipPath:"polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px)",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                clipPath: "polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px)",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.25)";
@@ -293,7 +293,7 @@ export default function ContactSection() {
                 (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.02)";
               }}
             >
-              <Paperclip size={11} color="rgba(255,255,255,0.4)"/>
+              <Paperclip size={11} color="rgba(255,255,255,0.4)" />
               {fileName ? fileName.slice(0, 28) + (fileName.length > 28 ? "..." : "") : "ATTACH FILE"}
               {fileName && (
                 <span
@@ -302,7 +302,7 @@ export default function ContactSection() {
                     setFileName(null);
                     if (fileRef.current) fileRef.current.value = "";
                   }}
-                  style={{ marginLeft:"4px", color:"rgba(255,255,255,0.4)" }}
+                  style={{ marginLeft: "4px", color: "rgba(255,255,255,0.4)" }}
                 >
                   ×
                 </span>
@@ -313,13 +313,13 @@ export default function ContactSection() {
           {/* Error message */}
           {status === "error" && (
             <div style={{
-              padding:"8px 12px",
-              border:"1px solid rgba(255,80,80,0.3)",
-              background:"rgba(255,60,60,0.05)",
-              fontFamily:"var(--font-mono)",
-              fontSize:"0.32rem",
-              letterSpacing:"0.22em",
-              color:"rgba(255,120,120,0.8)",
+              padding: "8px 12px",
+              border: "1px solid rgba(255,80,80,0.3)",
+              background: "rgba(255,60,60,0.05)",
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.32rem",
+              letterSpacing: "0.22em",
+              color: "rgba(255,120,120,0.8)",
             }}>
               TRANSMISSION FAILED — CHECK CONNECTION AND RETRY
             </div>
@@ -330,24 +330,24 @@ export default function ContactSection() {
             <div
               ref={successRef}
               style={{
-                position:"absolute", inset:0, zIndex:10,
-                background:"rgba(0,0,0,0.88)",
-                backdropFilter:"blur(8px)",
-                WebkitBackdropFilter:"blur(8px)",
-                display:"flex", flexDirection:"column",
-                alignItems:"center", justifyContent:"center",
-                gap:"16px",
-                border:"1px solid rgba(255,255,255,0.1)",
+                position: "absolute", inset: 0, zIndex: 10,
+                background: "rgba(0,0,0,0.88)",
+                backdropFilter: "blur(8px)",
+                WebkitBackdropFilter: "blur(8px)",
+                display: "flex", flexDirection: "column",
+                alignItems: "center", justifyContent: "center",
+                gap: "16px",
+                border: "1px solid rgba(255,255,255,0.1)",
               }}
             >
               {/* Tick circle */}
               <div style={{
-                width:"56px", height:"56px",
-                border:"1px solid rgba(255,255,255,0.35)",
-                borderRadius:"50%",
-                display:"flex", alignItems:"center", justifyContent:"center",
-                background:"rgba(255,255,255,0.04)",
-                boxShadow:"0 0 30px rgba(255,255,255,0.08)",
+                width: "56px", height: "56px",
+                border: "1px solid rgba(255,255,255,0.35)",
+                borderRadius: "50%",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                background: "rgba(255,255,255,0.04)",
+                boxShadow: "0 0 30px rgba(255,255,255,0.08)",
               }}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <path
@@ -358,22 +358,22 @@ export default function ContactSection() {
                     strokeLinejoin="round"
                     strokeDasharray="28"
                     strokeDashoffset="0"
-                    style={{ animation:"draw-check 0.5s ease forwards" }}
+                    style={{ animation: "draw-check 0.5s ease forwards" }}
                   />
                 </svg>
               </div>
               <div style={{
-                fontFamily:"var(--font-orbitron)",
-                fontSize:"0.65rem", fontWeight:700,
-                letterSpacing:"0.2em",
-                color:"rgba(255,255,255,0.9)",
+                fontFamily: "var(--font-orbitron)",
+                fontSize: "0.65rem", fontWeight: 700,
+                letterSpacing: "0.2em",
+                color: "rgba(255,255,255,0.9)",
               }}>
                 TRANSMISSION COMPLETE
               </div>
               <div style={{
-                fontFamily:"var(--font-mono)",
-                fontSize:"0.35rem", letterSpacing:"0.3em",
-                color:"rgba(255,255,255,0.5)",
+                fontFamily: "var(--font-mono)",
+                fontSize: "0.35rem", letterSpacing: "0.3em",
+                color: "rgba(255,255,255,0.5)",
               }}>
                 MESSAGE SENT — SIGNAL DELIVERED
               </div>
@@ -383,11 +383,11 @@ export default function ContactSection() {
 
         {/* ── BUTTONS — outside form ────────────────────── */}
         <div style={{
-          display:"flex",
-          gap:"10px",
-          paddingTop:"8px",
-          borderTop:"1px solid rgba(255,255,255,0.06)",
-          flexShrink:0,
+          display: "flex",
+          gap: "10px",
+          paddingTop: "8px",
+          borderTop: "1px solid rgba(255,255,255,0.06)",
+          flexShrink: 0,
         }}>
           {/* CLEAR */}
           <ClearButton onClick={handleClear} disabled={status === "sending" || status === "success"} />
@@ -422,12 +422,12 @@ function ContactRow({ item }: {
     const color = hov ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.4)";
     const size = 14;
     switch (item.icon) {
-      case "mail":     return <Mail size={size} color={color}/>;
-      case "location": return <MapPin size={size} color={color}/>;
-      case "github":   return <FaGithub size={size} color={color}/>;
-      case "linkedin": return <FaLinkedin size={size} color={color}/>;
-      case "phone":    return <Phone size={size} color={color}/>;
-      default:         return <Mail size={size} color={color}/>;
+      case "mail": return <Mail size={size} color={color} />;
+      case "location": return <MapPin size={size} color={color} />;
+      case "github": return <FaGithub size={size} color={color} />;
+      case "linkedin": return <FaLinkedin size={size} color={color} />;
+      case "phone": return <Phone size={size} color={color} />;
+      default: return <Mail size={size} color={color} />;
     }
   };
 
@@ -436,33 +436,33 @@ function ContactRow({ item }: {
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        display:"flex", alignItems:"center", gap:"14px",
-        padding:"12px 14px",
-        border:`1px solid ${hov ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.06)"}`,
+        display: "flex", alignItems: "center", gap: "14px",
+        padding: "12px 14px",
+        border: `1px solid ${hov ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.06)"}`,
         background: hov ? "rgba(255,255,255,0.04)" : "transparent",
-        transition:"all 0.22s ease",
+        transition: "all 0.22s ease",
         cursor: item.href ? "pointer" : "default",
-        position:"relative", overflow:"hidden",
+        position: "relative", overflow: "hidden",
       }}
     >
       {/* Sweep on hover */}
       {hov && (
         <div style={{
-          position:"absolute", inset:0,
-          background:"linear-gradient(90deg, rgba(255,255,255,0.03) 0%, transparent 60%)",
-          pointerEvents:"none",
-        }}/>
+          position: "absolute", inset: 0,
+          background: "linear-gradient(90deg, rgba(255,255,255,0.03) 0%, transparent 60%)",
+          pointerEvents: "none",
+        }} />
       )}
 
       {/* Icon box */}
       <div style={{
-        width:"32px", height:"32px",
-        border:`1px solid ${hov ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.6)"}`,
+        width: "32px", height: "32px",
+        border: `1px solid ${hov ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.6)"}`,
         background: hov ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.02)",
-        display:"flex", alignItems:"center", justifyContent:"center",
-        flexShrink:0,
-        clipPath:"polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px)",
-        transition:"all 0.22s ease",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        flexShrink: 0,
+        clipPath: "polygon(3px 0%,100% 0%,100% calc(100% - 3px),calc(100% - 3px) 100%,0% 100%,0% 3px)",
+        transition: "all 0.22s ease",
       }}>
         {iconEl()}
       </div>
@@ -470,17 +470,17 @@ function ContactRow({ item }: {
       {/* Text */}
       <div>
         <div style={{
-          fontFamily:"var(--font-mono)", fontSize:"0.55rem",
-          letterSpacing:"0.38em", color:"rgba(255,255,255,0.5)",
-          marginBottom:"3px",
+          fontFamily: "var(--font-mono)", fontSize: "0.55rem",
+          letterSpacing: "0.38em", color: "rgba(255,255,255,0.5)",
+          marginBottom: "3px",
         }}>
           {item.label}
         </div>
         <div style={{
-          fontFamily:"var(--font-orbitron)", fontSize:"0.52rem",
-          fontWeight:600, letterSpacing:"0.06em",
+          fontFamily: "var(--font-orbitron)", fontSize: "0.52rem",
+          fontWeight: 600, letterSpacing: "0.06em",
           color: hov ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.65)",
-          transition:"color 0.22s ease",
+          transition: "color 0.22s ease",
         }}>
           {item.value}
         </div>
@@ -489,9 +489,9 @@ function ContactRow({ item }: {
       {/* Arrow on hover */}
       {item.href && hov && (
         <div style={{
-          marginLeft:"auto",
-          fontFamily:"var(--font-mono)", fontSize:"0.5rem",
-          color:"rgba(255,255,255,0.6)",
+          marginLeft: "auto",
+          fontFamily: "var(--font-mono)", fontSize: "0.5rem",
+          color: "rgba(255,255,255,0.6)",
         }}>
           →
         </div>
@@ -499,18 +499,18 @@ function ContactRow({ item }: {
 
       {/* Bottom line on hover */}
       <div style={{
-        position:"absolute", bottom:0, left:0,
-        height:"1px",
+        position: "absolute", bottom: 0, left: 0,
+        height: "1px",
         width: hov ? "100%" : "0%",
-        background:"rgba(255,255,255,0.2)",
-        transition:"width 0.3s ease",
-      }}/>
+        background: "rgba(255,255,255,0.2)",
+        transition: "width 0.3s ease",
+      }} />
     </div>
   );
 
   if (item.href) {
     return (
-      <a href={item.href} target="_blank" rel="noopener noreferrer" style={{ textDecoration:"none", display:"block" }}>
+      <a href={item.href} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>
         {content}
       </a>
     );
@@ -530,10 +530,10 @@ function FormField({
   type?: string;
 }) {
   return (
-    <div style={{ display:"flex", flexDirection:"column", gap:"5px" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
       <label style={{
-        fontFamily:"var(--font-mono)", fontSize:"0.55rem",
-        letterSpacing:"0.38em", color:"rgba(255,255,255,0.5)",
+        fontFamily: "var(--font-mono)", fontSize: "0.55rem",
+        letterSpacing: "0.38em", color: "rgba(255,255,255,0.5)",
       }}>
         {label}
       </label>
@@ -543,16 +543,16 @@ function FormField({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         style={{
-          background:"rgba(255,255,255,0.02)",
-          border:"1px solid rgba(255,255,255,0.1)",
-          color:"rgba(255,255,255,0.85)",
-          fontFamily:"var(--font-grotesk)",
-          fontSize:"0.78rem",
-          fontWeight:300,
-          padding:"10px 14px",
-          outline:"none",
-          transition:"border-color 0.2s ease, box-shadow 0.2s ease",
-          width:"100%",
+          background: "rgba(255,255,255,0.02)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          color: "rgba(255,255,255,0.85)",
+          fontFamily: "var(--font-grotesk)",
+          fontSize: "0.78rem",
+          fontWeight: 300,
+          padding: "10px 14px",
+          outline: "none",
+          transition: "border-color 0.2s ease, box-shadow 0.2s ease",
+          width: "100%",
         }}
         onFocus={(e) => {
           e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)";
@@ -578,21 +578,21 @@ function ClearButton({ onClick, disabled }: { onClick: () => void; disabled: boo
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        padding:"11px 24px",
-        border:`1px solid ${hov ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.12)"}`,
+        padding: "11px 24px",
+        border: `1px solid ${hov ? "rgba(255,255,255,0.35)" : "rgba(255,255,255,0.12)"}`,
         background: hov ? "rgba(255,255,255,0.05)" : "transparent",
-        fontFamily:"var(--font-orbitron)",
-        fontSize:"0.52rem", fontWeight:700,
-        letterSpacing:"0.3em",
+        fontFamily: "var(--font-orbitron)",
+        fontSize: "0.52rem", fontWeight: 700,
+        letterSpacing: "0.3em",
         color: hov ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.4)",
         cursor: disabled ? "not-allowed" : "pointer",
         opacity: disabled ? 0.4 : 1,
-        transition:"all 0.22s ease",
-        display:"flex", alignItems:"center", gap:"8px",
-        clipPath:"polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px)",
+        transition: "all 0.22s ease",
+        display: "flex", alignItems: "center", gap: "8px",
+        clipPath: "polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px)",
       }}
     >
-      <X size={12} color={hov ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.4)"}/>
+      <X size={12} color={hov ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.4)"} />
       CLEAR
     </button>
   );
@@ -614,50 +614,50 @@ function SubmitButton({
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
-        flex:1,
-        padding:"11px 24px",
-        border:`1px solid ${disabled ? "rgba(255,255,255,0.08)" : hov ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.25)"}`,
+        flex: 1,
+        padding: "11px 24px",
+        border: `1px solid ${disabled ? "rgba(255,255,255,0.08)" : hov ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.25)"}`,
         background: disabled
           ? "rgba(255,255,255,0.02)"
           : hov
-          ? "rgba(255,255,255,0.1)"
-          : "rgba(255,255,255,0.04)",
-        fontFamily:"var(--font-orbitron)",
-        fontSize:"0.52rem", fontWeight:700,
-        letterSpacing:"0.3em",
+            ? "rgba(255,255,255,0.1)"
+            : "rgba(255,255,255,0.04)",
+        fontFamily: "var(--font-orbitron)",
+        fontSize: "0.52rem", fontWeight: 700,
+        letterSpacing: "0.3em",
         color: disabled ? "rgba(255,255,255,0.2)" : hov ? "#fff" : "rgba(255,255,255,0.8)",
         cursor: disabled ? "not-allowed" : "pointer",
-        transition:"all 0.22s ease",
-        display:"flex", alignItems:"center", justifyContent:"center", gap:"10px",
-        clipPath:"polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px)",
+        transition: "all 0.22s ease",
+        display: "flex", alignItems: "center", justifyContent: "center", gap: "10px",
+        clipPath: "polygon(4px 0%,100% 0%,100% calc(100% - 4px),calc(100% - 4px) 100%,0% 100%,0% 4px)",
         boxShadow: hov && !disabled ? "0 0 24px rgba(255,255,255,0.06)" : "none",
-        position:"relative", overflow:"hidden",
+        position: "relative", overflow: "hidden",
       }}
     >
       {/* Sweep shimmer on hover */}
       {hov && !disabled && (
         <div style={{
-          position:"absolute", top:0, left:"-100%", width:"60%", height:"100%",
-          background:"linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent)",
-          transform:"skewX(-20deg)",
-          animation:"btn-sweep 0.6s ease forwards",
-          pointerEvents:"none",
-        }}/>
+          position: "absolute", top: 0, left: "-100%", width: "60%", height: "100%",
+          background: "linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent)",
+          transform: "skewX(-20deg)",
+          animation: "btn-sweep 0.6s ease forwards",
+          pointerEvents: "none",
+        }} />
       )}
 
       {status === "sending" ? (
         <>
           <div style={{
-            width:"12px", height:"12px", borderRadius:"50%",
-            border:"1px solid rgba(255,255,255,0.5)",
-            borderTopColor:"transparent",
-            animation:"spin 0.7s linear infinite",
-          }}/>
+            width: "12px", height: "12px", borderRadius: "50%",
+            border: "1px solid rgba(255,255,255,0.5)",
+            borderTopColor: "transparent",
+            animation: "spin 0.7s linear infinite",
+          }} />
           {label}
         </>
       ) : (
         <>
-          <Send size={13} color={disabled ? "rgba(255,255,255,0.2)" : hov ? "#fff" : "rgba(255,255,255,0.7)"}/>
+          <Send size={13} color={disabled ? "rgba(255,255,255,0.2)" : hov ? "#fff" : "rgba(255,255,255,0.7)"} />
           {label}
         </>
       )}

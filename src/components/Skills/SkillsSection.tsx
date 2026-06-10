@@ -250,19 +250,19 @@ function SkillReel({
         }}
       >
         {/* Timeline line */}
-<motion.div
-  initial={{ scaleX: 0 }}
-  whileInView={{ scaleX: 1 }}
-  transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-  viewport={{ once: true }}
-  style={{
-    position: "absolute",
-    left: 0, right: 0, top: "32px",
-    height: "1px",
-    transformOrigin: "left",
-    background: "linear-gradient(to right, rgba(255,255,255,0.15), rgba(255,255,255,0.03))",
-  }}
-/>
+        <motion.div
+          initial={{ scaleX: 0 }}
+          whileInView={{ scaleX: 1 }}
+          transition={{ duration: 1, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          viewport={{ once: true }}
+          style={{
+            position: "absolute",
+            left: 0, right: 0, top: "32px",
+            height: "1px",
+            transformOrigin: "left",
+            background: "linear-gradient(to right, rgba(255,255,255,0.15), rgba(255,255,255,0.03))",
+          }}
+        />
 
         {group.skills.map((skill: string, skillIndex: number) => (
           <SkillTile
@@ -366,7 +366,7 @@ function SkillTile({ skill, delay, level }: {
 
         {/* Bottom Meta */}
         <div style={{
-          position: "absolute", bottom: "10px",
+          position: "absolute", bottom: "5px",
           left: "18px", right: "18px",
           display: "flex", justifyContent: "space-between", alignItems: "center",
         }}>
