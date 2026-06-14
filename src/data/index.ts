@@ -38,7 +38,7 @@ export const PERSONAL = {
   systemStatus: "ONLINE",
   coordinates: "13.0827° N, 80.2707° E",                                  // REPLACE
   stock: "/images/stock/stock.png",
-  profile: "/images/profile/adithyaa.jpg",
+  profile: "/images/profile/portfolio_logo.jpg",
 };
 
 // EDUCATION

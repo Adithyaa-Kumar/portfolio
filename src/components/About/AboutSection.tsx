@@ -506,7 +506,7 @@ function TechFrame() {
       {/* Image */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/images/stock/hero.png"
+        src="/images/profile/portfolio_main.jpg"
         alt="Adithyaa K"
         style={{
           width: "100%",
