@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import HeroSection from "@/components/Hero/HeroSection";
 import SystemShell from "@/components/Layout/SystemShell";
 
