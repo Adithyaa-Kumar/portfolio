@@ -370,8 +370,8 @@ export default function SystemShell() {
 
         <div id="section-projects" style={{
           height: "100vh",
-          maxHeight: "100vh",
-          padding: "80px 70px",
+          maxHeight: "150vh",
+          padding: "80px 70px 60px",
           boxSizing: "border-box",
           borderTop: "1px solid rgba(255,255,255,0.05)",
           display: "flex",

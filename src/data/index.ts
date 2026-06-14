@@ -37,8 +37,8 @@ export const PERSONAL = {
   philosophy: "Engineering matters when intelligence meets execution.",
   systemStatus: "ONLINE",
   coordinates: "13.0827° N, 80.2707° E",                                  // REPLACE
-  stock: "/images/stock/stock.png",
-  profile: "/images/profile/portfolio_logo.jpg",
+  stock: "/images/stock/hero.png",
+  profile: "/images/profile/portfolio_logo.jpeg",
 };
 
 // EDUCATION
@@ -269,40 +269,45 @@ export const PROJECTS = [
   {
     id: "3",
 
-    title: "Smart Grocery Management System",
+    title: "CyberSight",
 
     short:
-      "Intelligent grocery tracking and automation platform for inventory optimization.",
+      "AI-powered network threat detection and traffic intelligence platform.",
 
     description:
-      "A smart grocery management platform engineered to streamline inventory monitoring, product tracking, and automated management workflows through intelligent system orchestration. The platform focuses on reducing manual management overhead using structured inventory pipelines, automated updates, data-driven monitoring, and optimized user interaction systems for efficient grocery handling.",
+      "CyberSight is an intelligent cybersecurity platform designed for real-time network monitoring, anomaly detection, and threat classification. Built using machine learning and behavioral traffic analysis, the system processes network flows, extracts security-relevant features, and identifies malicious activities through AI-driven detection pipelines. The platform combines intrusion detection, traffic intelligence, automated alerting, and interactive monitoring dashboards to provide actionable insights for modern network security environments.",
 
     images: [
-      "/images/grocery/1.png",
-      "/images/grocery/2.png",
-      "/images/grocery/3.png",
+      "/images/projects/cybersight/1.png",
+      "/images/projects/cybersight/2.png",
+      "/images/projects/cybersight/3.png",
+      "/images/projects/cybersight/4.png",
     ],
 
-    github: "https://github.com/Adithyaa-Kumar/smart-grocery",
+    github: "https://github.com/Adithyaa-Kumar/threat_matrix",
 
     stack: [
-      "Next.js",
-      "Node.js",
-      "MongoDB",
-      "Express",
-      "REST API",
-      "JWT",
+      "Python",
+      "FastAPI",
+      "React",
+      "PyTorch",
+      "Scikit-Learn",
+      "SQLite",
+      "Docker",
+      "Wireshark",
+      "TShark",
+      "Machine Learning",
     ],
 
-    category: "SMART PLATFORM",
+    category: "AI SECURITY PLATFORM",
 
-    year: "2024",
+    year: "2025",
 
     stats: [
-      { label: "INVENTORY", value: "AUTOMATED", icon: "brain" },
-      { label: "TRACKING", value: "REALTIME", icon: "db" },
-      { label: "BACKEND", value: "API-DRIVEN", icon: "cpu" },
-      { label: "WORKFLOW", value: "OPTIMIZED", icon: "arrow" },
+      { label: "DETECTION", value: "AI-POWERED", icon: "brain" },
+      { label: "MONITORING", value: "REALTIME", icon: "db" },
+      { label: "THREATS", value: "CLASSIFIED", icon: "cpu" },
+      { label: "ANALYTICS", value: "INTELLIGENT", icon: "arrow" },
     ],
   },
 ];

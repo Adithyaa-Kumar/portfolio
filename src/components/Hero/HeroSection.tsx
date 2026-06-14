@@ -156,7 +156,6 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
 
     gsap.to(grainRef.current, { backgroundPosition: "300px 300px", duration: 12, repeat: -1, ease: "none" });
     gsap.to(gridRef.current, { backgroundPosition: "160px 160px", duration: 30, repeat: -1, ease: "none" });
-    // REPLACE WITH:
     const sweepLight = document.getElementById("sweep-light");
     if (sweepLight) {
       const frameW = sweepRef.current?.offsetWidth ?? (window.innerWidth * 0.92);
@@ -201,7 +200,6 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
     }, [], 0.1);
 
     tl.to({}, { duration: 3.6 }, 0.1);
-
 
     tl.to(bootWrapRef.current, {
       keyframes: [
@@ -284,18 +282,14 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
 
     if (!btnRef.current) return;
 
-    // Add glow animation class
     btnRef.current.classList.add("btn-enter-active");
 
-    // 1. Glow pulse on button
     gsap.to(btnRef.current, {
       scale: 0.96,
       duration: 0.1,
       ease: "back.out(3)",
     });
 
-    // 2. Brief white flash after a short delay
-    // 2. Scanline glitch exit — no white flash
     setTimeout(() => {
       gsap.to(secRef.current, {
         keyframes: [
@@ -325,8 +319,6 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
     color: e ? "rgba(255,255,255,0.94)" : "rgba(255,255,255,0.64)",
     duration: 0.35,
   });
-
-
 
   return (
     <section ref={secRef} id="hero" style={{
@@ -358,6 +350,7 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
         position: "absolute", inset: 0, zIndex: 4, pointerEvents: "none",
         background: "repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.05) 2px,rgba(0,0,0,0.05) 4px)",
       }} />
+
       {/* ── BOOT WRAPPER ── */}
       <div ref={bootWrapRef} style={{
         position: "absolute", inset: 0, zIndex: 200, pointerEvents: "none",
@@ -393,20 +386,23 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
           </div>
         </div>
 
-        {/* ── BOOT RIGHT HUD ── */}
+        {/* ── BOOT RIGHT HUD — IMPROVED ── */}
         <div ref={bootRightRef} style={{
           position: "absolute", top: 0, right: 0,
           width: "50%", height: "100%",
-          padding: "8% 7% 8% 4%",
+          padding: "5% 6% 5% 4%",
           display: "flex", flexDirection: "column",
-          justifyContent: "center", gap: "28px",
+          justifyContent: "center", gap: "16px",
+          background: "linear-gradient(135deg, rgba(255,255,255,0.01) 0%, transparent 60%)",
         }}>
-          <BootWireframe />
-          <BootCircuits />
-          <BootLoadingBars />
+          <BootRadar />
+          <BootNetworkTopology />
+          <BootTelemetryGrid />
+          <BootWaveform />
           <BootVisor />
         </div>
       </div>
+
       {/* ── MAIN UI ──────────────────────────────────── */}
       <div ref={mainRef} style={{
         position: "absolute", inset: 0, zIndex: 10,
@@ -516,7 +512,6 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
             style={{ opacity: 0, marginTop: "1.2rem", alignSelf: "flex-start" }}
             onClick={handleEnterSystem}
           >
-            {/* Sweep shimmer element */}
             <span style={{
               position: "absolute",
               top: 0,
@@ -552,7 +547,7 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
         </div>
       </div>
 
-      {/* PORTRAIT OVERLAY z=50 (between solid z=1 and stroke z=60) */}
+      {/* PORTRAIT OVERLAY z=50 */}
       <div ref={portRef} style={{
         position: "absolute", top: 0, bottom: 0,
         left: "54%", transform: "translateX(-50%)",
@@ -651,6 +646,7 @@ export default function HeroSection({ onEnter }: HeroSectionProps) {
   );
 }
 
+// ─── HERO RIGHT ROW ───────────────────────────────────────────────────────────
 function HeroRightRow({ index, label, value, href, isStatus }: { index: number; label: string; value: string; href: string | null; isStatus: boolean }) {
   const rowRef = useRef<HTMLDivElement>(null);
   const [hov, setHov] = useState(false);
@@ -689,15 +685,13 @@ function HeroRightRow({ index, label, value, href, isStatus }: { index: number; 
   );
 }
 
+// ─── HERO CORNER MK ───────────────────────────────────────────────────────────
 function HeroCornerMk({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) {
   const isTop = pos[0] === "t";
   const isLeft = pos[1] === "l";
   const COLOR = "rgba(255,255,255,0.45)";
-  const ARM_W = 20; // horizontal arm length px
-  const ARM_H = 20; // vertical arm height px
-  // Top corners sit AT the frame line (44px), not the screen edge.
-  // Bottom corners sit AT the bottom frame line (44px from bottom).
-  // Left/right offset: 24px so they align with the OS label text.
+  const ARM_W = 20;
+  const ARM_H = 20;
   return (
     <div
       className="hero-corner-mk"
@@ -712,25 +706,13 @@ function HeroCornerMk({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) {
         alignItems: isLeft ? "flex-start" : "flex-end",
       }}
     >
-      {/* Horizontal arm */}
-      <div style={{
-        width: `${ARM_W}px`,
-        height: "1px",
-        background: COLOR,
-        flexShrink: 0,
-      }} />
-      {/* Vertical arm */}
-      <div style={{
-        width: "1px",
-        height: `${ARM_H}px`,
-        background: COLOR,
-        flexShrink: 0,
-        alignSelf: isLeft ? "flex-start" : "flex-end",
-      }} />
+      <div style={{ width: `${ARM_W}px`, height: "1px", background: COLOR, flexShrink: 0 }} />
+      <div style={{ width: "1px", height: `${ARM_H}px`, background: COLOR, flexShrink: 0, alignSelf: isLeft ? "flex-start" : "flex-end" }} />
     </div>
   );
 }
 
+// ─── LIVE CLOCK ───────────────────────────────────────────────────────────────
 function LiveClock() {
   const [t, setT] = useState("");
   useEffect(() => {
@@ -739,237 +721,313 @@ function LiveClock() {
   }, []);
   return <div style={{ position: "absolute", top: "15px", right: "17px", fontFamily: "var(--font-orbitron)", fontSize: "0.6rem", letterSpacing: "0.3em", color: "rgba(255,255,255,0.28)" }}>{t}</div>;
 }
-// ─── BOOT WIREFRAME ──────────────────────────────────────────────────────────
-function BootWireframe() {
+
+// ─── NEW: BOOT RADAR ─────────────────────────────────────────────────────────
+function BootRadar() {
   return (
-    <div style={{ position: "relative", width: "100%", height: "100px" }}>
-      <svg width="100%" height="100" viewBox="0 0 400 100" fill="none"
-        style={{ position: "absolute", inset: 0 }}>
-        {/* Outer frame draws in */}
-        <rect x="1" y="1" width="398" height="98" rx="1"
-          stroke="rgba(255,255,255,0.15)" strokeWidth="1"
-          strokeDasharray="996" strokeDashoffset="996"
-          style={{ animation: "wire-draw 1.2s ease forwards 0.1s" }}
-        />
-        {/* Horizontal divider */}
-        <line x1="0" y1="50" x2="400" y2="50"
-          stroke="rgba(255,255,255,0.04)" strokeWidth="1"
-          strokeDasharray="400" strokeDashoffset="400"
-          style={{ animation: "wire-draw 0.6s ease forwards 0.8s" }}
-        />
-        {/* Corner brackets */}
-        <path d="M1 22 L1 1 L22 1" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5"
-          strokeDasharray="44" strokeDashoffset="44"
-          style={{ animation: "wire-draw 0.35s ease forwards 0.05s" }}
-        />
-        <path d="M378 1 L399 1 L399 22" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5"
-          strokeDasharray="44" strokeDashoffset="44"
-          style={{ animation: "wire-draw 0.35s ease forwards 0.1s" }}
-        />
-        <path d="M1 78 L1 99 L22 99" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5"
-          strokeDasharray="44" strokeDashoffset="44"
-          style={{ animation: "wire-draw 0.35s ease forwards 0.15s" }}
-        />
-        <path d="M378 99 L399 99 L399 78" stroke="rgba(255,255,255,0.6)" strokeWidth="1.5"
-          strokeDasharray="44" strokeDashoffset="44"
-          style={{ animation: "wire-draw 0.35s ease forwards 0.2s" }}
-        />
-        {/* Reticle circle */}
-        <circle cx="200" cy="50" r="16"
-          stroke="rgba(255,255,255,0.07)" strokeWidth="1"
-          strokeDasharray="101" strokeDashoffset="101"
-          style={{ animation: "wire-draw 0.7s ease forwards 0.9s" }}
-        />
-        <circle cx="200" cy="50" r="4"
-          stroke="rgba(255,255,255,0.3)" strokeWidth="1"
-          strokeDasharray="26" strokeDashoffset="26"
-          style={{ animation: "wire-draw 0.4s ease forwards 1.2s" }}
-        />
-        {/* Cross hairs */}
-        <line x1="200" y1="28" x2="200" y2="72"
-          stroke="rgba(255,255,255,0.06)" strokeWidth="1"
-          strokeDasharray="44" strokeDashoffset="44"
-          style={{ animation: "wire-draw 0.4s ease forwards 1.0s" }}
-        />
-        <line x1="178" y1="50" x2="222" y2="50"
-          stroke="rgba(255,255,255,0.06)" strokeWidth="1"
-          strokeDasharray="44" strokeDashoffset="44"
-          style={{ animation: "wire-draw 0.4s ease forwards 1.0s" }}
-        />
-        {/* Horizontal scan sweep */}
-        <line x1="0" y1="50" x2="0" y2="50"
-          stroke="rgba(255,255,255,0.5)" strokeWidth="1"
-          style={{ animation: "scan-x 2.4s ease-in-out infinite 0.4s" }}
-        />
-      </svg>
-      <div style={{
-        position: "absolute", bottom: "4px", left: "12px",
-        fontFamily: "var(--font-mono)", fontSize: "0.28rem",
-        letterSpacing: "0.38em", color: "rgba(255,255,255,0.18)",
-        animation: "fade-in 0.4s ease forwards 1.3s", opacity: 0,
-      }}>
-        FRAME LOCK · SCANNING
-      </div>
-      <div style={{
-        position: "absolute", bottom: "4px", right: "12px",
-        fontFamily: "var(--font-mono)", fontSize: "0.28rem",
-        letterSpacing: "0.2em", color: "rgba(255,255,255,0.12)",
-        animation: "fade-in 0.4s ease forwards 1.5s", opacity: 0,
-      }}>
-        SYS · INIT
-      </div>
-    </div>
-  );
-}
-
-// ─── BOOT CIRCUITS ────────────────────────────────────────────────────────────
-function BootCircuits() {
-  const rows = [
-    { d: "M0 6 H80 V18 H140 V6 H220 V18 H280", delay: "0.2s" },
-    { d: "M0 6 H50 V0 H110 V12 H170 V0 H240 V12 H300", delay: "0.5s" },
-    { d: "M0 6 H60 V18 H130 V6 H200 V18 H260", delay: "0.8s" },
-  ];
-
-  const nodes = [
-    [80, 6], [140, 6], [220, 6], [280, 6],
-    [50, 6], [110, 6], [170, 6], [240, 6],
-    [60, 6], [130, 6], [200, 6], [260, 6],
-  ];
-
-  return (
-    <div style={{ position: "relative", width: "100%", height: "68px" }}>
-      <div style={{
-        fontFamily: "var(--font-mono)", fontSize: "0.28rem",
-        letterSpacing: "0.44em", color: "rgba(255,255,255,0.18)",
-        marginBottom: "8px",
-        animation: "fade-in 0.3s ease forwards 0.1s", opacity: 0,
-      }}>
-        CIRCUIT MAP · ACTIVE
-      </div>
-      <svg width="100%" height="52" viewBox="0 0 400 52" fill="none">
-        {rows.map((row, i) => (
-          <g key={i} transform={`translate(0, ${i * 18})`}>
-            <path d={row.d} stroke="rgba(255,255,255,0.04)" strokeWidth="1" fill="none" />
-            <path d={row.d} stroke="rgba(255,255,255,0.4)" strokeWidth="1" fill="none"
-              strokeDasharray="500" strokeDashoffset="500"
-              style={{ animation: `wire-draw 1.0s ease forwards ${row.delay}` }}
+    <div style={{ position: "relative", width: "100%", height: "110px", display: "flex", alignItems: "center", gap: "20px" }}>
+      {/* Radar circle */}
+      <div style={{ position: "relative", width: "110px", height: "110px", flexShrink: 0 }}>
+        <svg width="110" height="110" viewBox="0 0 110 110" fill="none" style={{ position: "absolute", inset: 0 }}>
+          {/* Concentric rings */}
+          {[48, 36, 24, 12].map((r, i) => (
+            <circle key={i} cx="55" cy="55" r={r}
+              stroke="rgba(255,255,255,0.06)" strokeWidth="1"
+              strokeDasharray={`${2 * Math.PI * r}`} strokeDashoffset={`${2 * Math.PI * r}`}
+              style={{ animation: `wire-draw 0.6s ease forwards ${0.1 + i * 0.12}s` }}
             />
-          </g>
+          ))}
+          {/* Crosshair */}
+          <line x1="55" y1="7" x2="55" y2="103" stroke="rgba(255,255,255,0.04)" strokeWidth="1"
+            strokeDasharray="96" strokeDashoffset="96"
+            style={{ animation: "wire-draw 0.5s ease forwards 0.4s" }}
+          />
+          <line x1="7" y1="55" x2="103" y2="55" stroke="rgba(255,255,255,0.04)" strokeWidth="1"
+            strokeDasharray="96" strokeDashoffset="96"
+            style={{ animation: "wire-draw 0.5s ease forwards 0.4s" }}
+          />
+          {/* Outer ring */}
+          <circle cx="55" cy="55" r="52"
+            stroke="rgba(255,255,255,0.12)" strokeWidth="1"
+            strokeDasharray="327" strokeDashoffset="327"
+            style={{ animation: "wire-draw 1.0s ease forwards 0.05s" }}
+          />
+          {/* Rotating sweep arm */}
+          <line x1="55" y1="55" x2="55" y2="3"
+            stroke="rgba(255,255,255,0.55)" strokeWidth="1.5"
+            style={{ transformOrigin: "55px 55px", animation: "radar-spin 3s linear infinite 0.8s", opacity: 0 }}
+          />
+          {/* Sweep cone (faked with arc fill) */}
+          <path d="M55 55 L55 3 A52 52 0 0 1 103 55 Z"
+            fill="url(#radarGrad)"
+            style={{ transformOrigin: "55px 55px", animation: "radar-spin 3s linear infinite 0.8s", opacity: 0 }}
+          />
+          <defs>
+            <radialGradient id="radarGrad" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+              gradientTransform="translate(55 55) scale(52)">
+              <stop offset="0%" stopColor="rgba(255,255,255,0)" />
+              <stop offset="100%" stopColor="rgba(255,255,255,0.04)" />
+            </radialGradient>
+          </defs>
+          {/* Blip targets */}
+          <circle cx="38" cy="28" r="2.5" fill="rgba(255,255,255,0.7)"
+            style={{ animation: "radar-blip 3s ease-in-out infinite 1.2s", opacity: 0 }}
+          />
+          <circle cx="72" cy="68" r="1.8" fill="rgba(255,255,255,0.5)"
+            style={{ animation: "radar-blip 3s ease-in-out infinite 2.1s", opacity: 0 }}
+          />
+          <circle cx="48" cy="74" r="1.5" fill="rgba(255,255,255,0.4)"
+            style={{ animation: "radar-blip 3s ease-in-out infinite 0.4s", opacity: 0 }}
+          />
+          <circle cx="80" cy="35" r="2" fill="rgba(255,255,255,0.55)"
+            style={{ animation: "radar-blip 3s ease-in-out infinite 1.8s", opacity: 0 }}
+          />
+          {/* Center dot */}
+          <circle cx="55" cy="55" r="2.5" fill="rgba(255,255,255,0.9)"
+            style={{ animation: "fade-in 0.3s ease forwards 0.6s", opacity: 0 }}
+          />
+        </svg>
+      </div>
+
+      {/* Right side data stack */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "8px", animation: "fade-in 0.5s ease forwards 0.8s", opacity: 0 }}>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: "0.3rem", letterSpacing: "0.5em", color: "rgba(255,255,255,0.22)", marginBottom: "4px" }}>
+          SPATIAL SCAN · ACTIVE
+        </div>
+        {[
+          { label: "LAT", value: "13.0827°N", bar: 72 },
+          { label: "LON", value: "80.2707°E", bar: 85 },
+          { label: "ALT", value: "006.0 MSL", bar: 40 },
+          { label: "PING", value: "004ms", bar: 95 },
+        ].map((item, i) => (
+          <div key={i} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.3rem", letterSpacing: "0.3em", color: "rgba(255,255,255,0.3)", width: "28px", flexShrink: 0 }}>{item.label}</span>
+            <div style={{ flex: 1, height: "2px", background: "rgba(255,255,255,0.05)", position: "relative", overflow: "hidden" }}>
+              <div style={{
+                position: "absolute", left: 0, top: 0, height: "100%", width: `${item.bar}%`,
+                background: "linear-gradient(to right, rgba(255,255,255,0.15), rgba(255,255,255,0.7))",
+                transformOrigin: "left", animation: `bar-fill 0.8s ease forwards ${0.9 + i * 0.1}s`, transform: "scaleX(0)",
+              }} />
+            </div>
+            <span style={{ fontFamily: "var(--font-orbitron)", fontSize: "0.34rem", letterSpacing: "0.08em", color: "rgba(255,255,255,0.55)", width: "55px", textAlign: "right", flexShrink: 0 }}>{item.value}</span>
+          </div>
         ))}
-        {nodes.map(([x, y], i) => {
-          const row = Math.floor(i / 4);
-          return (
-            <g key={i}>
-              <circle cx={x} cy={y + row * 18} r="3.5"
-                fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="1"
-                style={{ animation: `fade-in 0.25s ease forwards ${0.3 + i * 0.06}s`, opacity: 0 }}
-              />
-              <circle cx={x} cy={y + row * 18} r="1.5"
-                fill="rgba(255,255,255,0.5)"
-                style={{ animation: `fade-in 0.25s ease forwards ${0.4 + i * 0.06}s`, opacity: 0 }}
-              />
-            </g>
-          );
-        })}
-        {/* Travelling pulse on first row */}
-        <circle r="2.5" fill="rgba(255,255,255,0.9)" cy="6"
-          style={{ animation: "pulse-travel 2.2s ease-in-out infinite 0.6s", opacity: 0 }}
-        />
-      </svg>
+      </div>
+
       <style>{`
-        @keyframes pulse-travel {
-          0%   { cx: 0;   opacity: 0; }
-          5%   { opacity: 1; }
-          90%  { opacity: 1; }
-          100% { cx: 300; opacity: 0; }
+        @keyframes radar-spin {
+          0%   { transform: rotate(0deg);   opacity: 1; }
+          100% { transform: rotate(360deg); opacity: 1; }
         }
-        @keyframes circuit-pulse-0 { 0%,100%{opacity:0} 50%{opacity:1} }
-        @keyframes circuit-pulse-1 { 0%,100%{opacity:0} 50%{opacity:1} }
-        @keyframes circuit-pulse-2 { 0%,100%{opacity:0} 50%{opacity:1} }
-        @keyframes circuit-pulse-3 { 0%,100%{opacity:0} 50%{opacity:1} }
+        @keyframes radar-blip {
+          0%,100% { opacity: 0; r: 2; }
+          20%     { opacity: 1; r: 3; }
+          60%     { opacity: 0.4; r: 2; }
+        }
       `}</style>
     </div>
   );
 }
 
-// ─── BOOT LOADING BARS ────────────────────────────────────────────────────────
-function BootLoadingBars() {
-  const bars = [
-    { label: "NEURAL CORE", pct: 100, delay: "0.2s", dur: "1.2s" },
-    { label: "VISION MODULE", pct: 94, delay: "0.4s", dur: "1.0s" },
-    { label: "MEMORY BANKS", pct: 100, delay: "0.6s", dur: "0.9s" },
-    { label: "IDENTITY SYSTEM", pct: 100, delay: "0.8s", dur: "0.8s" },
-    { label: "INFERENCE ENGINE", pct: 87, delay: "1.0s", dur: "0.7s" },
+// ─── NEW: BOOT NETWORK TOPOLOGY ───────────────────────────────────────────────
+function BootNetworkTopology() {
+  const nodes = [
+    { x: 200, y: 38, label: "CORE", r: 6, primary: true },
+    { x: 80,  y: 28, label: "ML",   r: 4, primary: false },
+    { x: 330, y: 22, label: "NET",  r: 4, primary: false },
+    { x: 50,  y: 85, label: "DB",   r: 3.5, primary: false },
+    { x: 165, y: 92, label: "API",  r: 3.5, primary: false },
+    { x: 300, y: 88, label: "SEC",  r: 3.5, primary: false },
+    { x: 360, y: 72, label: "ENC",  r: 3,   primary: false },
+    { x: 120, y: 62, label: "INF",  r: 3,   primary: false },
+  ];
+  const edges = [
+    [0,1],[0,2],[0,4],[0,5],[1,3],[1,7],[2,6],[2,5],[3,7],[4,5],
   ];
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+    <div style={{ position: "relative", width: "100%", height: "120px" }}>
       <div style={{
-        fontFamily: "var(--font-mono)", fontSize: "0.32rem",
-        letterSpacing: "0.44em", color: "rgba(255,255,255,0.2)",
-        marginBottom: "4px",
-        animation: "fade-in 0.4s ease forwards 0.3s", opacity: 0,
+        fontFamily: "var(--font-mono)", fontSize: "0.3rem", letterSpacing: "0.44em",
+        color: "rgba(255,255,255,0.2)", marginBottom: "6px",
+        animation: "fade-in 0.4s ease forwards 0.2s", opacity: 0,
       }}>
-        SUBSYSTEM INITIALIZATION
+        NETWORK TOPOLOGY · LIVE
       </div>
+      <svg width="100%" height="100" viewBox="0 0 400 100" fill="none" preserveAspectRatio="xMidYMid meet">
+        {/* Edges */}
+        {edges.map(([a, b], i) => {
+          const na = nodes[a]; const nb = nodes[b];
+          const len = Math.hypot(nb.x - na.x, nb.y - na.y);
+          return (
+            <g key={i}>
+              <line x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
+                stroke="rgba(255,255,255,0.06)" strokeWidth="1"
+              />
+              <line x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
+                stroke="rgba(255,255,255,0.35)" strokeWidth="0.8"
+                strokeDasharray={`${len}`} strokeDashoffset={`${len}`}
+                style={{ animation: `wire-draw 0.5s ease forwards ${0.3 + i * 0.07}s` }}
+              />
+              {/* Travelling packet */}
+              <circle r="1.5" fill="rgba(255,255,255,0.8)"
+                style={{ offsetPath: `path('M${na.x} ${na.y} L${nb.x} ${nb.y}')`, animation: `packet-travel 2.4s linear infinite ${i * 0.38}s`, opacity: 0 } as React.CSSProperties}
+              />
+            </g>
+          );
+        })}
+        {/* Nodes */}
+        {nodes.map((n, i) => (
+          <g key={i} style={{ animation: `fade-in 0.3s ease forwards ${0.4 + i * 0.06}s`, opacity: 0 }}>
+            {n.primary && (
+              <circle cx={n.x} cy={n.y} r={n.r + 6} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="1"
+                style={{ animation: "status-pulse 2.5s ease infinite" }}
+              />
+            )}
+            <circle cx={n.x} cy={n.y} r={n.r}
+              fill={n.primary ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.15)"}
+              stroke="rgba(255,255,255,0.4)" strokeWidth="0.8"
+            />
+            <text x={n.x} y={n.y + n.r + 8}
+              fill="rgba(255,255,255,0.3)" fontSize="5"
+              textAnchor="middle" fontFamily="monospace" letterSpacing="0.5">
+              {n.label}
+            </text>
+          </g>
+        ))}
+      </svg>
+      <style>{`
+        @keyframes packet-travel {
+          0%   { offset-distance: 0%;   opacity: 0; }
+          8%   { opacity: 1; }
+          90%  { opacity: 1; }
+          100% { offset-distance: 100%; opacity: 0; }
+        }
+      `}</style>
+    </div>
+  );
+}
 
-      {bars.map((bar, i) => (
-        <div key={i} style={{
-          animation: `fade-in 0.3s ease forwards ${bar.delay}`,
-          opacity: 0,
-        }}>
-          <div style={{
-            display: "flex", justifyContent: "space-between",
-            marginBottom: "4px",
-          }}>
-            <span style={{
-              fontFamily: "var(--font-mono)", fontSize: "0.34rem",
-              letterSpacing: "0.28em", color: "rgba(255,255,255,0.38)",
-            }}>
-              {bar.label}
+// ─── NEW: BOOT TELEMETRY GRID ─────────────────────────────────────────────────
+function BootTelemetryGrid() {
+  const metrics = [
+    { label: "CPU LOAD",   value: "94%",     bar: 94, blink: true  },
+    { label: "MEM ALLOC",  value: "61.2 GB", bar: 96, blink: false },
+    { label: "GPU UTIL",   value: "87%",     bar: 87, blink: false },
+    { label: "NET I/O",    value: "14 GB/s", bar: 78, blink: false },
+    { label: "TEMP",       value: "42°C",    bar: 35, blink: false },
+    { label: "UPTIME",     value: "00:03:41",bar: 100, blink: false },
+  ];
+
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 16px" }}>
+      <div style={{
+        gridColumn: "1 / -1",
+        fontFamily: "var(--font-mono)", fontSize: "0.3rem", letterSpacing: "0.44em",
+        color: "rgba(255,255,255,0.2)", marginBottom: "4px",
+        animation: "fade-in 0.4s ease forwards 0.2s", opacity: 0,
+      }}>
+        TELEMETRY · REALTIME
+      </div>
+      {metrics.map((m, i) => (
+        <div key={i} style={{ animation: `fade-in 0.3s ease forwards ${0.3 + i * 0.08}s`, opacity: 0 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "3px" }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.28rem", letterSpacing: "0.22em", color: "rgba(255,255,255,0.28)" }}>
+              {m.label}
             </span>
             <span style={{
-              fontFamily: "var(--font-orbitron)", fontSize: "0.34rem",
-              letterSpacing: "0.1em", color: "rgba(255,255,255,0.5)",
+              fontFamily: "var(--font-orbitron)", fontSize: "0.3rem", letterSpacing: "0.06em",
+              color: m.blink ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.55)",
+              animation: m.blink ? "blink-block 1.1s step-end infinite" : "none",
             }}>
-              {bar.pct}%
+              {m.value}
             </span>
           </div>
-          {/* Track */}
-          <div style={{
-            width: "100%", height: "2px",
-            background: "rgba(255,255,255,0.06)",
-            position: "relative", overflow: "hidden",
-          }}>
-            {/* Fill */}
+          <div style={{ height: "1.5px", background: "rgba(255,255,255,0.05)", position: "relative", overflow: "hidden" }}>
             <div style={{
-              position: "absolute", left: 0, top: 0, height: "100%",
-              width: `${bar.pct}%`,
-              background: "linear-gradient(to right, rgba(255,255,255,0.2), rgba(255,255,255,0.8))",
+              position: "absolute", left: 0, top: 0, height: "100%", width: `${m.bar}%`,
+              background: m.bar > 90
+                ? "linear-gradient(to right, rgba(255,200,100,0.3), rgba(255,200,100,0.8))"
+                : "linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0.6))",
               transformOrigin: "left",
-              animation: `bar-fill ${bar.dur} ease forwards ${bar.delay}`,
+              animation: `bar-fill 0.7s ease forwards ${0.35 + i * 0.08}s`,
               transform: "scaleX(0)",
-            }} />
-            {/* Shimmer */}
-            <div style={{
-              position: "absolute", top: 0, height: "100%", width: "30px",
-              background: "linear-gradient(to right, transparent, rgba(255,255,255,0.9), transparent)",
-              animation: `bar-shimmer 1.5s ease-in-out infinite ${bar.delay}`,
             }} />
           </div>
         </div>
       ))}
+    </div>
+  );
+}
 
+// ─── NEW: BOOT WAVEFORM ───────────────────────────────────────────────────────
+function BootWaveform() {
+  const W = 400; const H = 40; const cols = 80;
+  const colW = W / cols;
+
+  // Pre-generate heights for a realistic EEG-style waveform
+  const heights = Array.from({ length: cols }, (_, i) => {
+    const base = Math.sin(i * 0.4) * 8 + Math.sin(i * 0.13) * 5 + Math.sin(i * 1.1) * 3;
+    const spike = (i === 20 || i === 55) ? 18 : 0;
+    return Math.max(2, Math.abs(base) + spike);
+  });
+
+  return (
+    <div style={{ position: "relative", width: "100%", height: "52px" }}>
+      <div style={{
+        fontFamily: "var(--font-mono)", fontSize: "0.3rem", letterSpacing: "0.44em",
+        color: "rgba(255,255,255,0.2)", marginBottom: "5px",
+        animation: "fade-in 0.4s ease forwards 0.1s", opacity: 0,
+      }}>
+        NEURAL SIGNAL · EEG MONITOR
+      </div>
+      <svg width="100%" height="40" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none"
+        style={{ animation: "fade-in 0.5s ease forwards 0.3s", opacity: 0 }}>
+        {/* Baseline */}
+        <line x1="0" y1={H / 2} x2={W} y2={H / 2} stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+        {/* Bars */}
+        {heights.map((h, i) => (
+          <rect
+            key={i}
+            x={i * colW + colW * 0.15}
+            y={(H - h) / 2}
+            width={colW * 0.7}
+            height={h}
+            fill="rgba(255,255,255,0.22)"
+            rx="0.5"
+            style={{
+              animation: `waveform-pulse ${0.8 + Math.random() * 1.4}s ease-in-out infinite ${i * 0.025}s`,
+            }}
+          />
+        ))}
+        {/* Scan overlay */}
+        <rect x="0" y="0" width="18" height={H} fill="url(#waveGrad)"
+          style={{ animation: "waveform-scan 2.2s linear infinite 0.5s" }}
+        />
+        <defs>
+          <linearGradient id="waveGrad" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stopColor="rgba(255,255,255,0)" />
+            <stop offset="50%" stopColor="rgba(255,255,255,0.12)" />
+            <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div style={{
+        position: "absolute", right: 0, bottom: 0,
+        fontFamily: "var(--font-mono)", fontSize: "0.26rem", letterSpacing: "0.22em",
+        color: "rgba(255,255,255,0.14)",
+        animation: "fade-in 0.4s ease forwards 0.8s", opacity: 0,
+      }}>
+        128 CHANNELS · 4.8 GHz SAMPLE
+      </div>
       <style>{`
-        @keyframes bar-fill {
-          from { transform: scaleX(0); }
-          to   { transform: scaleX(1); }
+        @keyframes waveform-pulse {
+          0%,100% { transform: scaleY(1);   opacity: 0.22; }
+          50%      { transform: scaleY(1.4); opacity: 0.55; }
         }
-        @keyframes bar-shimmer {
-          0%   { left: -30px; opacity: 0; }
-          20%  { opacity: 1; }
-          80%  { opacity: 1; }
-          100% { left: 110%; opacity: 0; }
+        @keyframes waveform-scan {
+          0%   { transform: translateX(-18px); }
+          100% { transform: translateX(418px); }
         }
       `}</style>
     </div>
@@ -982,7 +1040,7 @@ function BootVisor() {
     <div style={{
       position: "relative",
       border: "1px solid rgba(255,255,255,0.12)",
-      padding: "18px 20px",
+      padding: "14px 18px",
       overflow: "hidden",
       animation: "fade-in 0.5s ease forwards 0.8s",
       opacity: 0,
@@ -1005,108 +1063,85 @@ function BootVisor() {
 
       {/* Top label */}
       <div style={{
-        fontFamily: "var(--font-mono)", fontSize: "0.32rem",
+        fontFamily: "var(--font-mono)", fontSize: "0.3rem",
         letterSpacing: "0.5em", color: "rgba(255,255,255,0.2)",
         marginBottom: "5px",
       }}>
         BIOMETRIC VERIFICATION
       </div>
 
-      {/* Main identity line */}
-      <div style={{
-        fontFamily: "var(--font-orbitron)", fontSize: "1.1rem",
-        fontWeight: 900, letterSpacing: "0.08em",
-        color: "rgba(255,255,255,0.9)",
-        marginBottom: "6px",
-        animation: "fade-in 0.4s ease forwards 1.0s",
-        opacity: 0,
-      }}>
-        USER DETECTED
-      </div>
+      {/* Two-column layout for compact display */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "16px" }}>
+        <div>
+          <div style={{
+            fontFamily: "var(--font-orbitron)", fontSize: "0.9rem",
+            fontWeight: 900, letterSpacing: "0.06em",
+            color: "rgba(255,255,255,0.9)", marginBottom: "4px",
+            animation: "fade-in 0.4s ease forwards 1.0s", opacity: 0,
+          }}>
+            USER DETECTED
+          </div>
+          <div style={{
+            fontFamily: "var(--font-mono)", fontSize: "0.35rem",
+            letterSpacing: "0.3em", color: "rgba(255,255,255,0.3)",
+            animation: "fade-in 0.4s ease forwards 1.2s", opacity: 0,
+          }}>
+            ROLE: SYS ADMINISTRATOR
+          </div>
+        </div>
 
-      {/* Role */}
-      <div style={{
-        fontFamily: "var(--font-mono)", fontSize: "0.42rem",
-        letterSpacing: "0.38em", color: "rgba(255,255,255,0.35)",
-        marginBottom: "16px",
-        animation: "fade-in 0.4s ease forwards 1.2s",
-        opacity: 0,
-      }}>
-        ACCESS ROLE: SYSTEM ADMINISTRATOR
-      </div>
-
-      {/* Divider */}
-      <div style={{
-        height: "1px", marginBottom: "14px",
-        background: "linear-gradient(to right, rgba(255,255,255,0.25), transparent)",
-        animation: "wire-draw 0.6s ease forwards 1.3s",
-        clipPath: "inset(0)",
-      }} />
-
-      {/* Verified badge */}
-      <div style={{
-        display: "flex", alignItems: "center", gap: "10px",
-        animation: "fade-in 0.5s ease forwards 1.5s",
-        opacity: 0,paddingBottom: "30px",
-      }}>
+        {/* Verified badge — right side */}
         <div style={{
-          width: "8px",
-          height: "8px",
-          borderRadius: "50%",
-          background: "rgba(255,255,255,0.9)",
-          boxShadow: "0 0 12px rgba(255,255,255,0.6)",
-          animation: "status-pulse 2s ease infinite 3.2s",
-          flexShrink: 0,
-          marginTop: "1px",
-        }} />
-        <span style={{
-          fontFamily: "var(--font-orbitron)", fontSize: "0.55rem",
-          fontWeight: 700, letterSpacing: "0.3em",
-          color: "rgba(255,255,255,0.85)",
-          paddingBottom: "0px",
+          display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "6px",
+          animation: "fade-in 0.5s ease forwards 1.4s", opacity: 0,
         }}>
-          IDENTITY VERIFIED
-        </span>
-      </div>
-
-      {/* Credential ID */}
-      <div style={{
-        marginTop: "12px",
-        fontFamily: "var(--font-orbitron)", fontSize: "0.3rem",
-        letterSpacing: "0.3em", color: "rgba(255,255,255,0.15)",
-        animation: "fade-in 0.4s ease forwards 1.7s",
-        opacity: 0,
-      }}>
-        SYS-ID: OS-2026QXJ · CLEARANCE: LEVEL 5
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span style={{ fontFamily: "var(--font-orbitron)", fontSize: "0.48rem", fontWeight: 700, letterSpacing: "0.22em", color: "rgba(255,255,255,0.85)" }}>
+              VERIFIED
+            </span>
+            <div style={{
+              width: "7px", height: "7px", borderRadius: "50%",
+              background: "rgba(255,255,255,0.9)",
+              boxShadow: "0 0 10px rgba(255,255,255,0.5)",
+              animation: "status-pulse 2s ease infinite 3.2s",
+            }} />
+          </div>
+          <div style={{
+            fontFamily: "var(--font-orbitron)", fontSize: "0.26rem",
+            letterSpacing: "0.22em", color: "rgba(255,255,255,0.15)",
+          }}>
+            SYS-ID: OS-2026QXJ · LVL 5
+          </div>
+        </div>
       </div>
 
       <style>{`
-  @keyframes blink-block { 0%,100%{opacity:1} 50%{opacity:0} }
-  @keyframes status-pulse { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,255,255,0.55)} 50%{opacity:0.3;box-shadow:0 0 0 5px rgba(255,255,255,0)} }
-  @keyframes underline-draw { from{width:0} to{width:100%} }
-  @keyframes row-scan { 0%{background-position:110% 0} 100%{background-position:-10% 0} }
-  @keyframes wire-draw { to { stroke-dashoffset: 0; } }
-  @keyframes fade-in   { to { opacity: 1; } }
-  @keyframes scan-x {
-    0%   { transform: translateX(0px);   opacity: 0; }
-    8%   { opacity: 1; }
-    92%  { opacity: 1; }
-    100% { transform: translateX(400px); opacity: 0; }
-  }
-  @keyframes bar-fill   { from{transform:scaleX(0)} to{transform:scaleX(1)} }
-  @keyframes bar-shimmer {
-    0%  { left:-30px; opacity:0; }
-    20% { opacity:1; }
-    80% { opacity:1; }
-    100%{ left:110%; opacity:0; }
-  }
-  @keyframes visor-scan {
-    0%   { top:-2px;  opacity:0; }
-    5%   { opacity:1; }
-    95%  { opacity:1; }
-    100% { top:100%;  opacity:0; }
-  }
-`}</style>
+        @keyframes blink-block    { 0%,100%{opacity:1} 50%{opacity:0} }
+        @keyframes status-pulse   { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,255,255,0.55)} 50%{opacity:0.3;box-shadow:0 0 0 5px rgba(255,255,255,0)} }
+        @keyframes underline-draw { from{width:0} to{width:100%} }
+        @keyframes row-scan       { 0%{background-position:110% 0} 100%{background-position:-10% 0} }
+        @keyframes wire-draw      { to { stroke-dashoffset: 0; } }
+        @keyframes fade-in        { to { opacity: 1; } }
+        @keyframes scan-x {
+          0%   { transform: translateX(0px);   opacity: 0; }
+          8%   { opacity: 1; }
+          92%  { opacity: 1; }
+          100% { transform: translateX(400px); opacity: 0; }
+        }
+        @keyframes bar-fill   { from{transform:scaleX(0)} to{transform:scaleX(1)} }
+        @keyframes bar-shimmer {
+          0%  { left:-30px; opacity:0; }
+          20% { opacity:1; }
+          80% { opacity:1; }
+          100%{ left:110%; opacity:0; }
+        }
+        @keyframes visor-scan {
+          0%   { top:-2px;  opacity:0; }
+          5%   { opacity:1; }
+          95%  { opacity:1; }
+          100% { top:100%;  opacity:0; }
+        }
+      `}</style>
     </div>
   );
 }

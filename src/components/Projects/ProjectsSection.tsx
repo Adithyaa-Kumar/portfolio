@@ -34,7 +34,7 @@ interface Project {
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 
 const CARD_W = 380;
-const CARD_H = 460;
+const CARD_H = 450;
 const CARD_GAP = 20;
 const CARD_STRIDE = CARD_W + CARD_GAP;
 const BASE_SPEED = 0.55;
@@ -234,7 +234,7 @@ export default function ProjectsSection({ onModalOpen }: ProjectsSectionProps) {
       {/* ── HINT ────────────────────────────────────────────── */}
       <div style={{
         textAlign: "center",
-        padding: "8px",
+        padding: "1px",
         flexShrink: 0,
       }}>
         <span style={{
